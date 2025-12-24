@@ -96,45 +96,45 @@
         </div>
 
         {{-- FILTERS --}}
-        <div class="mt-10 bg-gray-50 p-4 rounded-xl border border-gray-200">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Барај ученик</label>
-                    <div class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1111 5a6 6 0 016 6z" />
-                        </svg>
-                        <input type="text" wire:model.live="search" placeholder="Име..." class="w-full border-gray-300 rounded-lg p-2 pl-9 text-sm">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Тип на час</label>
-                    <div class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 12.414V19a1 1 0 01-.553.894l-3 1.5A1 1 0 018 21v-8.586L3.293 6.707A1 1 0 013 6V4z" />
-                        </svg>
-                        <select wire:model.live="filter_type" class="w-full border-gray-300 rounded-lg p-2 pl-9 text-sm">
-                            <option value="">Сите типови</option>
-                            @foreach($lessonTypes as $type)
-                                <option value="{{ $type->id }}">{{ str_replace('min', 'мин', $type->name) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="sr-only">Од датум</label>
-                    <div>
-                        <input type="date" wire:model.live="filter_from_date" class="w-full border-gray-300 rounded-lg p-2 mt-5 text-sm" placeholder="Од датум">
-                    </div>
-                </div>
-                <div>
-                    <label class="sr-only">До датум</label>
-                    <div>
-                        <input type="date" wire:model.live="filter_to_date" class="w-full border-gray-300 rounded-lg p-2 mt-5 text-sm" placeholder="До датум">
-                    </div>
-                </div>
+<div class="mt-10 bg-gray-50 p-4 rounded-xl border border-gray-200">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end"> {{-- CHANGED TO 5 COLUMNS --}}
+        <div>
+            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Барај ученик</label>
+            <div class="relative">
+                <input type="text" wire:model.live="search" placeholder="Име..." class="w-full border-gray-300 rounded-lg p-2 pr-9 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1111 5a6 6 0 016 6z" />
+                </svg>
             </div>
         </div>
+        <div>
+            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Тип на час</label>
+            <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 12.414V19a1 1 0 01-.553.894l-3 1.5A1 1 0 018 21v-8.586L3.293 6.707A1 1 0 013 6V4z" />
+                </svg>
+                <select wire:model.live="filter_type" class="w-full border-gray-300 rounded-lg p-2 pl-9 text-sm">
+                    <option value="">Сите типови</option>
+                    @foreach($lessonTypes as $type)
+                        <option value="{{ $type->id }}">{{ str_replace('min', 'мин', $type->name) }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div><label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Период од</label><input type="date" wire:model.live="filter_from_date" class="w-full border-gray-300 rounded-lg p-2 text-sm"></div>
+        <div><label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Период до</label><input type="date" wire:model.live="filter_to_date" class="w-full border-gray-300 rounded-lg p-2 text-sm"></div>
+
+        {{-- EXPORT BUTTON --}}
+        <div>
+            <button wire:click="exportExcel" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 shadow-sm transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Excel
+            </button>
+        </div>
+    </div>
+</div>
 
         {{-- TABLE --}}
         <div class="mt-4 overflow-x-auto border border-gray-100 rounded-xl shadow-sm bg-white">
@@ -151,7 +151,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-50 text-gray-600">
                     @foreach($lessonsLog as $log)
-                        <tr class="hover:bg-blue-50/50 transition-colors">
+                        <tr class="transition-colors {{ $editingLessonId == $log->id ? 'bg-orange-50' : 'hover:bg-blue-50/50' }}">
                             <td class="p-4 font-bold text-gray-800">{{ $log->student->first_name }} {{ $log->student->last_name }}</td>
                             <td class="p-4 text-[11px] uppercase">{{ str_replace('min', 'мин', $log->lessonType->name) }}</td>
                             <td class="p-3 text-black">

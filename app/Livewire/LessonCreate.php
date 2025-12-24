@@ -8,6 +8,8 @@ use App\Models\Student;
 use App\Models\LessonType;
 use App\Models\StudentLessonPrice;
 use App\Models\Lesson;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LessonsExport;
 
 class LessonCreate extends Component
 {
@@ -26,6 +28,15 @@ class LessonCreate extends Component
     public $filter_to_date = '';
 
     protected $paginationTheme = 'tailwind';
+
+    public function exportExcel()
+    {
+        // Тука ја повикуваш истата логика за филтрирање
+        // и го генерираш фајлот преку Laravel Excel
+        $date = now()->format('d-m-Y');
+        $filename = "dnevnik_chasovi_{$date}.xlsx";
+        return Excel::download(new LessonsExport($this->search, $this->filter_type, $this->filter_from_date, $this->filter_to_date), $filename);
+    }
 
     public function updatingSearch()
     {
