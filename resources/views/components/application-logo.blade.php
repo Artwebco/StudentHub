@@ -1,0 +1,1 @@
+<img src="{{ asset('images/logo-new.webp') }}" {{ $attributes }} alt="Application Logo">
