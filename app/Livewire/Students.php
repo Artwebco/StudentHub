@@ -4,11 +4,11 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Student;
-use Livewire\WithPagination; 
+use Livewire\WithPagination;
 
 class Students extends Component
 {
-    use WithPagination; 
+    use WithPagination;
 
     public $first_name, $last_name, $email, $phone, $country, $active = true, $invoice_type = 'individual', $company_id, $hourly_rate;
     public $studentId;
@@ -71,8 +71,10 @@ class Students extends Component
             'hourly_rate' => $this->hourly_rate,
         ]);
 
-        session()->flash('message', 
-            $this->studentId ? 'Корисникот е успешно ажуриран.' : 'Корисникот е успешно креиран.');
+        session()->flash(
+            'message',
+            $this->studentId ? 'Корисникот е успешно ажуриран.' : 'Корисникот е успешно креиран.'
+        );
 
         $this->closeModal();
         $this->resetInputFields();
