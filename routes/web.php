@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Students;
 use App\Livewire\StudentPriceManager;
-use App\Livewire\LessonCreate; 
+use App\Livewire\LessonCreate;
 
 Route::view('/', 'welcome');
 
@@ -15,7 +15,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('/profile-edit', function() {
+Route::get('/profile-edit', function () {
     return view('profile');
 })->middleware(['auth'])->name('profile.edit');
 
@@ -32,6 +32,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lessons-log', function () {
         return view('lessons-log'); // Овој фајл штотуку го направи
     })->name('lessons-log');
+
 });
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth'])->group(function () {
+    // ... твоите постоечки рути (students, lessons-log, etc.)
+
+    Route::get('/settings', function () {
+        return view('settings');
+    })->name('settings');
+
+    // ДОДАЈ ГО ОВА:
+    Route::get('/invoices', function () {
+        return view('invoices');
+    })->name('invoices');
+});
+
+require __DIR__ . '/auth.php';
