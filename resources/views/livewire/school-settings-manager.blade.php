@@ -71,18 +71,29 @@
                         class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
-                {{-- SWIFT број --}}
-                <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">SWIFT</label>
-                    <input type="text" wire:model="swift_number"
-                        class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
 
-                {{-- IBAN број --}}
-                <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">IBAN</label>
-                    <input type="text" wire:model="iban_number"
-                        class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
+                {{-- SWIFT, IBAN, Жиро сметка (bank_account) --}}
+                <div class="md:col-span-2">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label
+                                class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">SWIFT</label>
+                            <input type="text" wire:model="swift_number"
+                                class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label
+                                class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">IBAN</label>
+                            <input type="text" wire:model="iban_number"
+                                class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Жиро
+                                сметка</label>
+                            <input type="text" wire:model="bank_account"
+                                class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Адреса --}}
