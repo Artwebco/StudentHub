@@ -1,4 +1,5 @@
 # Docker ignores
+
 docker/
 docker-compose.yml
 DOCKER.md
@@ -6,9 +7,9 @@ DOCKER.md
 /node_modules
 /public/build
 /public/hot
-/public/storage
-/storage/*.key
-/storage/pail
+#/public/storage
+#/storage/*.key
+#/storage/pail
 /vendor
 .env
 .env.backup
@@ -27,6 +28,7 @@ yarn-error.log
 /.zed
 
 # Laravel recommended ignores
+
 storage/app/public
 storage/app/private
 storage/framework
@@ -35,15 +37,18 @@ storage/debugbar
 bootstrap/cache
 
 # Ignore composer & npm logs
+
 composer.lock
-package-lock.json
+#package-lock.json
 yarn.lock
 
 # Ignore database dumps/backups
+
 database/*.sqlite
 database/dumps
 
 # Ignore user-specific files
+
 *.sublime-workspace
 *.sublime-project
 *.swp

@@ -68,39 +68,44 @@ new #[Layout('layouts.guest')] class extends Component {
     }
 }; ?>
 
-<div>
-    <form wire:submit="resetPassword">
+<div class="flex flex-col gap-6">
+    <div class="text-center">
+        <h2 class="text-xl font-semibold text-slate-800">Ресетирај лозинка</h2>
+        <div class="mt-6 h-px w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+    </div>
 
-        <!-- Е-пошта -->
-        <div>
-            <x-input-label for="email" :value="__('Е-пошта')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required
-                autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <form wire:submit="resetPassword" class="space-y-5">
+        <div class="space-y-2">
+            <x-input-label for="email" :value="__('Е-пошта')" class="text-sm font-medium text-slate-500 ml-1" />
+            <x-text-input wire:model="email" id="email"
+                class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
+                type="email" name="email" required autofocus autocomplete="username" placeholder="вашата@е-пошта.мк" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs" />
         </div>
 
-        <!-- Лозинка -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Лозинка')" />
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full" type="password" name="password"
-                required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="space-y-2">
+            <x-input-label for="password" :value="__('Лозинка')" class="text-sm font-medium text-slate-500 ml-1" />
+            <x-text-input wire:model="password" id="password"
+                class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
+                type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs" />
         </div>
 
-        <!-- Потврди лозинка -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Потврди лозинка')" />
-
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                type="password" name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div class="space-y-2">
+            <x-input-label for="password_confirmation" :value="__('Потврди лозинка')"
+                class="text-sm font-medium text-slate-500 ml-1" />
+            <x-text-input wire:model="password_confirmation" id="password_confirmation"
+                class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
+                type="password" name="password_confirmation" required autocomplete="new-password"
+                placeholder="••••••••" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-xs" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+        <div class="pt-2">
+            <button type="submit"
+                class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
+                {{ __('Ресетирај лозинка') }}
+            </button>
         </div>
     </form>
 </div>
