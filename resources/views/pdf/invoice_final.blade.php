@@ -196,6 +196,8 @@
                     <br>
                     <strong>Банка депонент:</strong> {{ $settings->bank_name }}<br>
                     <strong>Бр. на сметката:</strong> {{ $settings->bank_account }}<br>
+                    <strong>SWIFT:</strong> {{ $settings->swift }}<br>
+                    <strong>IBAN:</strong> {{ $settings->iban }}<br>
                     <br>
                     <strong>Рок на плаќање до:</strong> {{ \Carbon\Carbon::now()->addDays(5)->format('d.m.Y') }}
                 </div>
