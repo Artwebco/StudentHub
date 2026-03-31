@@ -186,7 +186,7 @@
                                     {{-- НОВА КОЛОНА: ПОСЛЕДНА АКТИВНОСТ --}}
                                     <td class="px-2 py-2 text-sm text-gray-600">
                                         @if($student->user && $student->user->last_login_at)
-                                            <span class="text-xs font-medium text-gray-600 whitespace-nowrap">
+                                            <span class="px-2 py-2 text-sm text-gray-600">
                                                 {{ $student->user->last_login_at->format('d.m.Y H:i') }} ч.
                                             </span>
                                         @else
@@ -285,7 +285,7 @@
                                     {{-- НОВА КОЛОНА: ПОСЛЕДНА АКТИВНОСТ --}}
                                     <td class="px-2 py-2 text-sm text-gray-600">
                                         @if($student->user && $student->user->last_login_at)
-                                            <span class="text-xs font-medium text-gray-600 whitespace-nowrap">
+                                            <span class="px-2 py-2 text-sm text-gray-600">
                                                 {{ $student->user->last_login_at->format('d.m.Y H:i') }} ч.
                                             </span>
                                         @else

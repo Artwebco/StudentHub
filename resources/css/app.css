@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* resources/css/app.css */
+@keyframes swal2-show {
+    0% { transform: translate3d(0, -50px, 0) scale(0.9); opacity: 0; }
+    100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+}
+@keyframes swal2-hide {
+    0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+    100% { transform: translate3d(0, -50px, 0) scale(0.9); opacity: 0; }
+}
+.animate-swal-show { animation: swal2-show 0.1s ease-out forwards; }
+.animate-swal-hide { animation: swal2-hide 0.2s ease-in forwards; }
