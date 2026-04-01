@@ -7,23 +7,7 @@
     </div>
     {{-- SESSION MESSAGES --}}
     @if (session()->has('message'))
-        <div wire:key="{{ now() }}" x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show"
-            class="flex items-center justify-between bg-green-100 border-l-4 border-green-500 p-3 mb-6 text-green-800 rounded shadow-sm">
-            <div class="flex items-center">
-                <svg class="h-5 w-5 mr-2 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <span class="text-sm font-medium">{{ session('message') }}</span>
-            </div>
-            <button @click="show = false" class="text-green-500 hover:text-green-800">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 6L6 18M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
+        <x-flash-message :message="session('message')" />
     @endif
 
     {{-- ENTRY FORM --}}
@@ -281,8 +265,7 @@
                 <div class="w-full sm:w-[220px]">
                     <label class="block text-[14px] font-normal text-gray-900 mb-1">Статус</label>
                     <div class="relative">
-                        <select wire:model.live="filter_status"
-                            class="w-full border-gray-300 rounded-lg p-2 text-sm">
+                        <select wire:model.live="filter_status" class="w-full border-gray-300 rounded-lg p-2 text-sm">
                             <option value="">Сите статуси</option>
                             <option value="held">Одржан</option>
                             <option value="not_held">Неодржан</option>
@@ -352,9 +335,11 @@
                             </td>
                             <td class="px-2 py-2 text-sm">
                                 @if($log->lesson_status === 'held')
-                                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">Одржан</span>
+                                    <span
+                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">Одржан</span>
                                 @else
-                                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">Неодржан</span>
+                                    <span
+                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">Неодржан</span>
                                 @endif
                             </td>
                             <td class="px-2 py-2 text-md text-gray-800">

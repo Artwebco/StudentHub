@@ -1,20 +1,7 @@
 <div>
     {{-- Секција за пораки (Успех и Грешка) --}}
     @if (session()->has('message'))
-        <div wire:key="msg-{{ now() }}" x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show"
-            class="flex items-center justify-between bg-green-100 border-l-4 border-green-500 p-3 mb-6 text-green-800 rounded shadow-sm">
-            <div class="flex items-center">
-                <svg class="h-5 w-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span class="text-sm font-medium">{{ session('message') }}</span>
-            </div>
-            <button @click="show = false" class="text-green-500 hover:text-green-800">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
+        <x-flash-message :message="session('message')" />
     @endif
 
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">

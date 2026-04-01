@@ -16,19 +16,11 @@
     </div>
 
     @if (session()->has('message'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show"
-            class="mb-4 flex items-center justify-between rounded-lg border-l-4 border-green-500 bg-green-100 px-4 py-3 text-green-800 shadow-sm">
-            <span class="text-sm font-medium">{{ session('message') }}</span>
-            <button type="button" @click="show = false" class="text-green-600 hover:text-green-800">&times;</button>
-        </div>
+        <x-flash-message :message="session('message')" class="mb-4" />
     @endif
 
     @if (session()->has('error'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 7000)" x-show="show"
-            class="mb-4 flex items-center justify-between rounded-lg border-l-4 border-red-500 bg-red-100 px-4 py-3 text-red-800 shadow-sm">
-            <span class="text-sm font-medium">{{ session('error') }}</span>
-            <button type="button" @click="show = false" class="text-red-600 hover:text-red-800">&times;</button>
-        </div>
+        <x-flash-message type="error" :message="session('error')" class="mb-4" />
     @endif
 
 
@@ -259,33 +251,33 @@
 
                                         {{-- Dropdown мени за секундарни акции --}}
                                         <div x-data="{
-                                                                                                    open: false,
-                                                                                                    menuStyle: '',
-                                                                                                    toggleMenu(el) {
-                                                                                                        this.open = !this.open;
-                                                                                                        if (this.open) {
-                                                                                                            this.$nextTick(() => this.placeMenu(el));
-                                                                                                        }
-                                                                                                    },
-                                                                                                    placeMenu(el) {
-                                                                                                        const rect = el.getBoundingClientRect();
-                                                                                                        const menuWidth = 224;
-                                                                                                        const menuHeight = 132;
-                                                                                                        const gap = 8;
-                                                                                                        const viewportWidth = window.innerWidth;
-                                                                                                        const viewportHeight = window.innerHeight;
+                                                                                                            open: false,
+                                                                                                            menuStyle: '',
+                                                                                                            toggleMenu(el) {
+                                                                                                                this.open = !this.open;
+                                                                                                                if (this.open) {
+                                                                                                                    this.$nextTick(() => this.placeMenu(el));
+                                                                                                                }
+                                                                                                            },
+                                                                                                            placeMenu(el) {
+                                                                                                                const rect = el.getBoundingClientRect();
+                                                                                                                const menuWidth = 224;
+                                                                                                                const menuHeight = 132;
+                                                                                                                const gap = 8;
+                                                                                                                const viewportWidth = window.innerWidth;
+                                                                                                                const viewportHeight = window.innerHeight;
 
-                                                                                                        let left = rect.right - menuWidth;
-                                                                                                        left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
+                                                                                                                let left = rect.right - menuWidth;
+                                                                                                                left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
 
-                                                                                                        let top = rect.bottom + gap;
-                                                                                                        if (top + menuHeight > viewportHeight - gap) {
-                                                                                                            top = Math.max(gap, rect.top - menuHeight - gap);
-                                                                                                        }
+                                                                                                                let top = rect.bottom + gap;
+                                                                                                                if (top + menuHeight > viewportHeight - gap) {
+                                                                                                                    top = Math.max(gap, rect.top - menuHeight - gap);
+                                                                                                                }
 
-                                                                                                        this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
-                                                                                                    }
-                                                                                                }" class="relative">
+                                                                                                                this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
+                                                                                                            }
+                                                                                                        }" class="relative">
                                             <button type="button" @click="toggleMenu($event.currentTarget)"
                                                 class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition-all"
                                                 title="Повеќе акции">

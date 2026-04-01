@@ -15,23 +15,7 @@
 
 
     @if (session()->has('message'))
-        <div wire:key="{{ now() }}" x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show"
-            class="flex items-center justify-between bg-green-100 border-l-4 border-green-500 p-3 mb-6 text-green-800 rounded shadow-sm">
-            <div class="flex items-center">
-                <svg class="h-5 w-5 mr-2 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <span class="text-sm font-medium">{{ session('message') }}</span>
-            </div>
-            <button @click="show = false" class="text-green-500 hover:text-green-800">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 6L6 18M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
+        <x-flash-message :message="session('message')" />
     @endif
 
     <div class="bg-white p-4 mt-4 rounded-xl shadow">
