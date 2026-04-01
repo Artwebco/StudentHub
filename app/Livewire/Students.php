@@ -238,9 +238,8 @@ class Students extends Component
         // Избриши ги сите фактури поврзани со ученикот
         $student->invoices()->delete();
 
-        $user = $student->user()->withTrashed()->first();
-        if ($user) {
-            $user->forceDelete();
+        if ($student->user_id) {
+            User::withTrashed()->whereKey($student->user_id)->forceDelete();
         }
 
         $student->forceDelete();

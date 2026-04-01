@@ -483,6 +483,8 @@
     }
 
     function confirmPermanentDelete(id, name) {
+        const normalizeFullName = (text) => (text || '').trim().replace(/\s+/g, ' ');
+
         Swal.fire({
             title: 'Трајно бришење?',
             html: "За трајно бришење на ученикот <b>" + name + "</b>, внесете го точно името и презимето.<br><br>Ова дејство не може да се врати.",
@@ -490,7 +492,7 @@
             input: 'text',
             inputPlaceholder: 'Име и презиме',
             inputValidator: (value) => {
-                if (!value || value.trim() !== name) {
+                if (!value || normalizeFullName(value) !== normalizeFullName(name)) {
                     return 'Внесете го точно името и презимето за потврда.';
                 }
             },
