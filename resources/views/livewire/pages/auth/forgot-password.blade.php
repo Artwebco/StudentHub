@@ -54,7 +54,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
         <div class="pt-2">
             <button type="submit"
-                class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-[11px] font-bold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
+                class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
                 {{ __('Испрати линк за ресетирање') }}
             </button>
         </div>
