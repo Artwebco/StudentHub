@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Student;
 use App\Models\User;
+use App\Notifications\StudentWelcomeNotification;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
 
@@ -181,8 +182,14 @@ class Students extends Component
                 'invoice_type' => $this->invoice_type,
             ]);
 
-            // Испрати email со линк за ресетирање на лозинка
-            $user->sendPasswordResetNotification(app('auth.password.broker')->createToken($user));
+            // Испрати welcome email со валиден линк за поставување лозинка
+            $token = app('auth.password.broker')->createToken($user);
+            $resetUrl = url(route('password.reset', [
+                'token' => $token,
+                'email' => $user->email,
+            ], false));
+
+            $user->notify(new StudentWelcomeNotification($resetUrl));
         }
 
         session()->flash('message', $this->studentId ? 'Успешно ажурирано.' : 'Успешно креиран ученик.');

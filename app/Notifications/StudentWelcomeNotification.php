@@ -3,19 +3,18 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class StudentWelcomeNotification extends Notification implements ShouldQueue
+class StudentWelcomeNotification extends Notification
 {
     use Queueable;
 
-    protected $password;
+    protected string $resetUrl;
 
-    public function __construct($password)
+    public function __construct(string $resetUrl)
     {
-        $this->password = $password;
+        $this->resetUrl = $resetUrl;
     }
 
     public function via($notifiable)
@@ -30,7 +29,7 @@ class StudentWelcomeNotification extends Notification implements ShouldQueue
             ->greeting('Здраво, ' . $notifiable->name . '!')
             ->line('Вашата сметка е успешно креирана во системот за едукација.')
             ->line('За да ја активирате сметката, кликнете на копчето подолу и поставете си сопствена лозинка.')
-            ->action('Постави лозинка', url(config('app.url') . '/reset-password'))
+            ->action('Постави лозинка', $this->resetUrl)
             ->line('Доколку не сте го побарале ова, слободно игнорирајте ја пораката.');
     }
 }
