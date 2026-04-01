@@ -43,7 +43,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="sendPasswordResetLink" class="space-y-5">
+    <form wire:submit="sendPasswordResetLink" class="space-y-5" novalidate>
         <div class="space-y-2">
             <x-input-label for="email" :value="__('Е-пошта')" class="text-sm font-medium text-slate-500 ml-1" />
             <x-text-input wire:model="email" id="email"

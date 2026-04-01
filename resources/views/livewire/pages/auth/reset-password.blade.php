@@ -92,10 +92,12 @@ new #[Layout('layouts.guest')] class extends Component {
         </div>
 
         <div class="space-y-2">
-            <x-input-label for="password_confirmation" :value="__('Потврди лозинка')" class="text-sm font-medium text-slate-500 ml-1" />
+            <x-input-label for="password_confirmation" :value="__('Потврди лозинка')"
+                class="text-sm font-medium text-slate-500 ml-1" />
             <x-text-input wire:model="password_confirmation" id="password_confirmation"
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
-                type="password" name="password_confirmation" required autocomplete="new-password" placeholder="••••••••" />
+                type="password" name="password_confirmation" required autocomplete="new-password"
+                placeholder="••••••••" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-xs" />
         </div>
 
