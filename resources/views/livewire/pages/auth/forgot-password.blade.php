@@ -34,9 +34,9 @@ new #[Layout('layouts.guest')] class extends Component {
 
 <div class="flex flex-col gap-6">
     <div class="text-center">
-        <h2 class="text-xl font-semibold text-slate-800">Заборавена лозинка?</h2>
+        <h2 class="text-xl font-semibold text-slate-800">Forgot Password?</h2>
         <div class="mt-4 text-sm text-slate-500 leading-relaxed italic">
-            {{ __('Нема проблем. Само внесете ја вашата е-пошта и ќе ви испратиме линк за ресетирање на лозинката.') }}
+            {{ __('No problem. Enter your email address and we will send you a link to reset your password.') }}
         </div>
         <div class="mt-6 h-px w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
     </div>
@@ -45,24 +45,24 @@ new #[Layout('layouts.guest')] class extends Component {
 
     <form wire:submit="sendPasswordResetLink" class="space-y-5" novalidate>
         <div class="space-y-2">
-            <x-input-label for="email" :value="__('Е-пошта')" class="text-sm font-medium text-slate-500 ml-1" />
+            <x-input-label for="email" :value="__('Email')" class="text-sm font-medium text-slate-500 ml-1" />
             <x-text-input wire:model="email" id="email"
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10"
-                type="email" name="email" required autofocus placeholder="вашата@е-пошта.мк" />
+                type="email" name="email" required autofocus placeholder="your@email.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs" />
         </div>
 
         <div class="pt-2">
             <button type="submit"
                 class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
-                {{ __('Испрати линк за ресетирање') }}
+                {{ __('Send Reset Link') }}
             </button>
         </div>
 
         <div class="text-center mt-4">
             <a href="{{ route('login') }}" wire:navigate
                 class="text-xs font-medium text-slate-400 hover:text-blue-600 transition-colors">
-                {{ __('Назад кон најава') }}
+                {{ __('Back to Sign In') }}
             </a>
         </div>
     </form>

@@ -1,8 +1,8 @@
 <div>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
         <div>
-            <h2 class="text-xl font-bold text-gray-700">Моја статистика</h2>
-            <p class="text-md text-gray-600">Преглед на часови и фактури</p>
+            <h2 class="text-xl font-bold text-gray-700">My Statistics</h2>
+            <p class="text-md text-gray-600">Overview of lessons and invoices</p>
         </div>
     </div>
 
@@ -17,7 +17,7 @@
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                             </path>
                         </svg>
-                        Дневник
+                        Lessons
                     </button>
 
                     <button wire:click="setTab('invoices')"
@@ -27,7 +27,7 @@
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                             </path>
                         </svg>
-                        Фактури
+                        Invoices
                     </button>
 
                     <div class="relative w-full sm:w-72 md:w-80 max-w-full">
@@ -38,19 +38,19 @@
                             </svg>
                         </div>
                         <input wire:model.live="search" type="text"
-                            placeholder="{{ $tab === 'lessons' ? 'Пребарај по датум...' : 'Пребарај по број на фактура...' }}"
+                            placeholder="{{ $tab === 'lessons' ? 'Search by date...' : 'Search by invoice number...' }}"
                             class="block w-full pl-9 pr-3 py-1.5 border border-gray-200 rounded-lg text-md focus:ring-blue-500 focus:border-blue-500 transition-all">
                     </div>
 
                     <select wire:model.live="status"
                         class="block w-auto py-1.5 pl-3 pr-8 border border-gray-200 rounded-lg text-md bg-white cursor-pointer focus:ring-blue-500">
-                        <option value="all">Сите статуси</option>
+                        <option value="all">All statuses</option>
                         @if($tab === 'lessons')
-                            <option value="held">Одржан</option>
-                            <option value="not_held">Неодржан</option>
+                            <option value="held">Held</option>
+                            <option value="not_held">Not held</option>
                         @elseif($tab === 'invoices')
-                            <option value="paid">Платена</option>
-                            <option value="unpaid">Неплатена</option>
+                            <option value="paid">Paid</option>
+                            <option value="unpaid">Unpaid</option>
                         @endif
                     </select>
 
@@ -68,7 +68,7 @@
                 @if($tab === 'invoices' && $unpaid_amount > 0)
                     <div class="px-4 py-1.5 bg-red-50 border border-red-100 rounded-lg w-full md:w-auto md:ml-4 flex-shrink-0">
                         <span class="block text-xs font-bold text-red-700 text-center md:text-left">
-                            Неплатено вкупно: {{ number_format($unpaid_amount, 0, ',', '.') }} ден.
+                            Total unpaid: {{ number_format($unpaid_amount, 0, ',', '.') }} den.
                         </span>
                     </div>
                 @endif
@@ -80,11 +80,11 @@
                 <table class="w-full border-collapse bg-white">
                     <thead class="bg-gray-50 text-left font-semibold text-sm text-gray-900">
                         <tr>
-                            <th class="px-2 py-3">Датум</th>
-                            <th class="px-2 py-3">Време</th>
-                            <th class="px-2 py-3">Тип на час</th>
-                            <th class="px-2 py-3">Забелешка</th>
-                            <th class="px-2 py-3 text-right">Статус</th>
+                            <th class="px-2 py-3">Date</th>
+                            <th class="px-2 py-3">Time</th>
+                            <th class="px-2 py-3">Lesson Type</th>
+                            <th class="px-2 py-3">Note</th>
+                            <th class="px-2 py-3 text-right">Status</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -106,19 +106,19 @@
                                     @if($lesson->lesson_status === 'held')
                                         <span
                                             class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">
-                                            Одржан
+                                            Held
                                         </span>
                                     @else
                                         <span
                                             class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">
-                                            Неодржан
+                                            Not held
                                         </span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-12 text-center text-gray-400">Не се пронајдени записи.</td>
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-400">No records found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -133,12 +133,12 @@
                 <table class="w-full border-collapse bg-white">
                     <thead class="bg-gray-50 text-left font-semibold text-sm text-gray-900">
                         <tr>
-                            <th class="px-2 py-3">Бр. Фактура</th>
-                            <th class="px-2 py-3">Период</th>
-                            <th class="px-2 py-3 text-center">Часови</th>
-                            <th class="px-2 py-3">Износ</th>
-                            <th class="px-2 py-3">Статус</th>
-                            <th class="px-2 py-3 text-right tracking-wider">Акции</th>
+                            <th class="px-2 py-3">Invoice No.</th>
+                            <th class="px-2 py-3">Period</th>
+                            <th class="px-2 py-3 text-center">Lessons</th>
+                            <th class="px-2 py-3">Amount</th>
+                            <th class="px-2 py-3">Status</th>
+                            <th class="px-2 py-3 text-right tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -149,7 +149,7 @@
                                 </td>
                                 <td class="px-2 py-2 text-sm text-gray-600">
                                     @if($invoice->invoice_type === 'service')
-                                        <span class="text-blue-600 font-medium italic">Услуга: {{ $invoice->service_description }}</span>
+                                        <span class="text-blue-600 font-medium italic">Service: {{ $invoice->service_description }}</span>
                                     @else
                                         {{ \Carbon\Carbon::parse($invoice->date_from)->format('d.m') }} -
                                         {{ \Carbon\Carbon::parse($invoice->date_to)->format('d.m.Y') }}
@@ -166,15 +166,15 @@
                                     @endif
                                 </td>
                                 <td class="px-2 py-2 whitespace-nowrap text-md text-gray-800">
-                                    {{ number_format($invoice->total_amount, 0, ',', '.') }} ден.
+                                    {{ number_format($invoice->total_amount, 0, ',', '.') }} den.
                                 </td>
                                 <td class="px-2 py-2 whitespace-nowrap text-md font-medium">
                                     @if($invoice->status === 'paid')
-                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-600 border border-green-200">Платено</span>
+                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-600 border border-green-200">Paid</span>
                                     @elseif($invoice->status === 'cancelled')
-                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-red-100 text-red-700 border border-red-200">Поништено</span>
+                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-red-100 text-red-700 border border-red-200">Cancelled</span>
                                     @else
-                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-slate-100 text-slate-700 border border-slate-200">Неплатено</span>
+                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-slate-100 text-slate-700 border border-slate-200">Unpaid</span>
                                     @endif
                                 </td>
                                 <td class="px-2 py-2 whitespace-nowrap text-right text-sm font-medium">
@@ -183,7 +183,7 @@
                                             <a href="{{ route('student.invoice-preview', $invoice->id) }}" target="_blank"
                                                 rel="noopener noreferrer"
                                                 class="p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all inline-flex items-center justify-center"
-                                                title="Преглед">
+                                                title="Preview">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -198,7 +198,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center text-gray-400">Не се пронајдени фактури.</td>
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-400">No invoices found.</td>
                             </tr>
                         @endforelse
                     </tbody>

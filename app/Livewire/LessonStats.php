@@ -95,7 +95,7 @@ class LessonStats extends Component
         $settings = SchoolSetting::first();
 
         if (!$settings) {
-            session()->flash('error', 'Прво внесете ги податоците за училиштето во Подесувања!');
+            session()->flash('error', 'School information is not configured yet. Please contact an administrator.');
             return;
         }
 
@@ -178,7 +178,7 @@ class LessonStats extends Component
             'total_minutes' => (clone $lessonsQuery)->join('lesson_types', 'lessons.lesson_type_id', '=', 'lesson_types.id')->sum('lesson_types.duration'),
             'last_lesson' => ($lastLesson = (clone $lessonsQuery)->first())
                 ? Carbon::parse($lastLesson->lesson_date)->translatedFormat('d M, Y')
-                : 'Нема записи'
+                : 'No records'
         ];
 
         return view('livewire.lesson-stats', [

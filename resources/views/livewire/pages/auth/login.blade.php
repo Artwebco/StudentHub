@@ -25,7 +25,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
 <div class="flex flex-col gap-6">
     <div class="text-center">
-        <h2 class="text-xl font-semibold text-slate-800">Најава на системот</h2>
+        <h2 class="text-xl font-semibold text-slate-800">Sign In</h2>
         <div class="mt-6 h-px w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
     </div>
 
@@ -33,16 +33,16 @@ new #[Layout('layouts.guest')] class extends Component {
 
     <form wire:submit="login" class="space-y-5">
         <div class="space-y-2">
-            <x-input-label for="email" :value="__('Е-пошта')" class="text-sm font-medium text-slate-500 ml-1" />
+            <x-input-label for="email" :value="__('Email')" class="text-sm font-medium text-slate-500 ml-1" />
             <x-text-input wire:model="form.email" id="email"
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
-                type="email" name="email" required autofocus autocomplete="username" placeholder="вашата@е-пошта.мк" />
+                type="email" name="email" required autofocus autocomplete="username" placeholder="your@email.com" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2 text-xs" />
         </div>
 
         <div class="space-y-2">
             <div class="flex justify-between items-center">
-                <x-input-label for="password" :value="__('Лозинка')" class="text-sm font-medium text-slate-500 ml-1" />
+                <x-input-label for="password" :value="__('Password')" class="text-sm font-medium text-slate-500 ml-1" />
             </div>
 
             <x-text-input wire:model="form.password" id="password"
@@ -58,13 +58,13 @@ new #[Layout('layouts.guest')] class extends Component {
                     class="rounded border-slate-300 text-blue-600 shadow-sm focus:ring-blue-500/20 transition-all cursor-pointer"
                     name="remember">
                 <span
-                    class="ms-2 text-sm font-medium text-slate-500 group-hover:text-slate-700 transition-colors">{{ __('Запамети ме') }}</span>
+                    class="ms-2 text-sm font-medium text-slate-500 group-hover:text-slate-700 transition-colors">{{ __('Remember me') }}</span>
             </label>
 
             @if (Route::has('password.request'))
                 <a class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors"
                     href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Ја заборавивте лозинката?') }}
+                    {{ __('Forgot your password?') }}
                 </a>
             @endif
         </div>
@@ -72,7 +72,7 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="pt-2">
             <button type="submit"
                 class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
-                {{ __('Најави се') }}
+                {{ __('Sign In') }}
             </button>
         </div>
     </form>

@@ -25,11 +25,11 @@ class StudentWelcomeNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Добредојдовте! Вашата сметка е креирана')
-            ->greeting('Здраво, ' . $notifiable->name . '!')
-            ->line('Вашата сметка е успешно креирана во системот за едукација.')
-            ->line('За да ја активирате сметката, кликнете на копчето подолу и поставете си сопствена лозинка.')
-            ->action('Постави лозинка', $this->resetUrl)
-            ->line('Доколку не сте го побарале ова, слободно игнорирајте ја пораката.');
+            ->subject('Welcome! Your account has been created')
+            ->greeting('Hello, ' . $notifiable->name . '!')
+            ->line('Your account has been successfully created in the education system.')
+            ->line('To activate your account, click the button below and set your own password.')
+            ->action('Set Password', $this->resetUrl)
+            ->line('If you did not expect this email, you can safely ignore it.');
     }
 }

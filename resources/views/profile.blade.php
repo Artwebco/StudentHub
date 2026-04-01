@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Профил') }}
+            {{ auth()->user()->role === 'admin' ? 'Профил' : 'Profile' }}
         </h2>
     </x-slot>
 
@@ -18,32 +18,33 @@
                     <div class="space-y-6">
                         <header>
                             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase tracking-wider">
-                                Профилни информации
+                                Profile Information
                             </h2>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Вашите основни податоци регистрирани во системот.
+                                Your basic information registered in the system.
                             </p>
                         </header>
 
                         <div class="grid grid-cols-1 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest">Име и
-                                    презиме</label>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest">Full
+                                    Name</label>
                                 <p class="mt-1 text-md text-gray-900 dark:text-white font-medium">{{ auth()->user()->name }}
                                 </p>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest">Е-маил
-                                    адреса</label>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest">Email
+                                    Address</label>
                                 <p class="mt-1 text-md text-gray-900 dark:text-white font-medium">
-                                    {{ auth()->user()->email }}</p>
+                                    {{ auth()->user()->email }}
+                                </p>
                             </div>
                         </div>
 
                         <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-blue-700 text-xs">
-                            Доколку сакате да ги промените овие податоци, ве молиме контактирајте го вашиот
-                            ментор/администратор.
+                            If you would like to change this information, please contact your
+                            mentor/administrator.
                         </div>
                     </div>
                 @endif
@@ -58,7 +59,7 @@
         </div>
 
         {{-- СЕКЦИЈА 3: БРИШЕЊЕ НА АКАУНТ (Само за Админ) --}}
-@if (auth()->user()->role === 'admin')
+        @if (auth()->user()->role === 'admin')
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg border-t border-red-100">
                 <div class="max-w-xl text-red-600">
                     <h3 class="text-lg font-bold uppercase mb-4 text-red-500">Опасна зона</h3>

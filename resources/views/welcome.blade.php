@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Besedi - Најава</title>
+    <title>Besedi - Sign In</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -67,7 +67,7 @@
 
         <div
             class="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-            <h2 class="mb-6 text-center text-xl font-semibold text-slate-800">Најава на системот</h2>
+            <h2 class="mb-6 text-center text-xl font-semibold text-slate-800">Sign In</h2>
 
             <div class="mb-6 h-px w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
 
@@ -75,15 +75,15 @@
                 @csrf
 
                 <div class="space-y-2">
-                    <label class="text-sm font-medium text-slate-500 ml-1" for="email">Е-пошта</label>
+                    <label class="text-sm font-medium text-slate-500 ml-1" for="email">Email</label>
                     <input type="email" name="email" id="email" :value="old('email')" required autofocus
                         class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
-                        placeholder="вашата@е-пошта.мк">
+                        placeholder="your@email.com">
                     <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs" />
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-sm font-medium text-slate-500 ml-1" for="password">Лозинка</label>
+                    <label class="text-sm font-medium text-slate-500 ml-1" for="password">Password</label>
                     <input type="password" name="password" id="password" required
                         class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
                         placeholder="••••••••">
@@ -94,25 +94,25 @@
                     <label class="flex items-center gap-2 cursor-pointer group">
                         <input type="checkbox" name="remember" id="remember"
                             class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 transition-all">
-                        <span class="text-sm font-medium text-slate-500 group-hover:text-slate-700">Запамети ме</span>
+                        <span class="text-sm font-medium text-slate-500 group-hover:text-slate-700">Remember me</span>
                     </label>
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}"
                             class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                            Ја заборавивте лозинката?
+                            Forgot your password?
                         </a>
                     @endif
                 </div>
 
                 <button type="submit"
                     class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-semibold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
-                    Најави се
+                    Sign In
                 </button>
             </form>
         </div>
 
         <p class="relative z-10 mt-8 text-sm text-slate-400 font-medium">
-            Besedi &copy; {{ date('Y') }} | Систем за фактурирање
+            Besedi &copy; {{ date('Y') }} | Invoicing System
         </p>
     </div>
 </body>

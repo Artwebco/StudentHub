@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="mk">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Фактура {{ $invoice->invoice_number }}</title>
+    <title>Invoice {{ $invoice->invoice_number }}</title>
 </head>
 
 <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
@@ -14,28 +14,29 @@
                     style="max-width:640px;background:#ffffff;border-radius:12px;padding:24px;border:1px solid #e5e7eb;">
                     <tr>
                         <td>
-                            <h2 style="margin:0 0 16px 0;font-size:22px;color:#111827;">Нова фактура</h2>
-                            <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;">Почитуван/а
-                                {{ $recipientName }},</p>
+                            <h2 style="margin:0 0 16px 0;font-size:22px;color:#111827;">New Invoice</h2>
+                            <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;">Dear
+                                {{ $recipientName }},
+                            </p>
                             <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;">
-                                Во прилог ја добивате фактурата со број <strong>{{ $invoice->invoice_number }}</strong>.
+                                Please find attached your invoice <strong>{{ $invoice->invoice_number }}</strong>.
                             </p>
                             <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;">
-                                Вкупен износ: <strong>{{ number_format($invoice->total_amount, 0, ',', '.') }}
-                                    ден.</strong>
+                                Total amount: <strong>{{ number_format($invoice->total_amount, 0, ',', '.') }}
+                                    den.</strong>
                             </p>
 
                             <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;">
-                                За повеќе информации, најавете се на вашиот профил на <a href="https://edu.besedi.mk/"
+                                For more information, log in to your profile at <a href="https://edu.besedi.mk/"
                                     style="color:#2563eb;text-decoration:none;">edu.besedi.mk</a>.
                             </p>
 
                             <p style="margin:0;font-size:14px;line-height:1.6;color:#374151;">
-                                Доколку имате прашања, слободно одговорете на оваа порака.
+                                If you have any questions, feel free to reply to this email.
                             </p>
 
-                            <p style="margin:24px 0 0 0;font-size:14px;color:#6b7280;">Со
-                                почит,<br>{{ config('app.name') }}</p>
+                            <p style="margin:24px 0 0 0;font-size:14px;color:#6b7280;">Best
+                                regards,<br>{{ config('app.name') }}</p>
                         </td>
                     </tr>
                 </table>

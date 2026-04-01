@@ -171,7 +171,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span>Моја Статистика</span>
+                                    <span>{{ auth()->user()->role === 'admin' ? 'Моја Статистика' : 'My Statistics' }}</span>
                                 </a>
                             @endif
 
@@ -185,7 +185,7 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                 </span>
-                                <span>Мој Профил</span>
+                                <span>{{ auth()->user()->role === 'admin' ? 'Мој Профил' : 'My Profile' }}</span>
                             </a>
                         </nav>
 
@@ -198,7 +198,7 @@
                                 <div class="min-w-0">
                                     <p class="truncate text-sm font-bold text-slate-800">{{ auth()->user()->name }}</p>
                                     <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-black">
-                                        {{ auth()->user()->role === 'admin' ? 'Администратор' : 'Ученик' }}
+                                        {{ auth()->user()->role === 'admin' ? 'Администратор' : 'Student' }}
                                     </p>
                                 </div>
                             </div>
@@ -207,7 +207,7 @@
                                 @csrf
                                 <button type="submit"
                                     class="w-full rounded-xl bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 transition hover:bg-red-100">
-                                    Одјави се
+                                    {{ auth()->user()->role === 'admin' ? 'Одјави се' : 'Log Out' }}
                                 </button>
                             </form>
                         </div>
@@ -276,7 +276,8 @@
                                 d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                             </path>
                         </svg>
-                        <span class="hide-on-collapse ml-3 font-semibold text-sm truncate">Моја Статистика</span>
+                        <span
+                            class="hide-on-collapse ml-3 font-semibold text-sm truncate">{{ auth()->user()->role === 'admin' ? 'Моја Статистика' : 'My Statistics' }}</span>
                     </a>
                 @endif
 
@@ -291,7 +292,8 @@
                         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span class="hide-on-collapse ml-3 font-semibold text-sm">Мој Профил</span>
+                    <span
+                        class="hide-on-collapse ml-3 font-semibold text-sm">{{ auth()->user()->role === 'admin' ? 'Мој Профил' : 'My Profile' }}</span>
                 </a>
             </nav>
 
@@ -303,7 +305,7 @@
                 <div class="ml-3 overflow-hidden hide-on-collapse">
                     <p class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name }}</p>
                     <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">
-                        {{ auth()->user()->role === 'admin' ? 'Администратор' : 'Ученик' }}
+                        {{ auth()->user()->role === 'admin' ? 'Администратор' : 'Student' }}
                     </p>
                 </div>
             </div>
@@ -320,7 +322,8 @@
                         <polyline points="16 17 21 12 16 7"></polyline>
                         <line x1="21" y1="12" x2="9" y2="12"></line>
                     </svg>
-                    <span class="hide-on-collapse ml-3 text-sm font-bold">Одјави се</span>
+                    <span
+                        class="hide-on-collapse ml-3 text-sm font-bold">{{ auth()->user()->role === 'admin' ? 'Одјави се' : 'Log Out' }}</span>
                 </button>
             </form>
         </aside>
