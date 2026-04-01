@@ -372,18 +372,14 @@
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Име</label>
                             <input type="text" wire:model="first_name" placeholder="пр. Петар"
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                            @error('first_name')
-                                <span class="text-red-600 text-xs">{{ $message }}</span>
-                            @enderror
+                            <x-input-error :messages="$errors->get('first_name')" class="mt-1" />
                         </div>
                         <div>
                             <label
                                 class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Презиме</label>
                             <input type="text" wire:model="last_name" placeholder="пр. Петровски"
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                            @error('last_name')
-                                <span class="text-red-600 text-xs">{{ $message }}</span>
-                            @enderror
+                            <x-input-error :messages="$errors->get('last_name')" class="mt-1" />
                         </div>
                     </div>
 
@@ -391,9 +387,7 @@
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Е-пошта</label>
                         <input type="email" wire:model="email" placeholder="email@example.com"
                             class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                        @error('email')
-                            <span class="text-red-600 text-xs">{{ $message }}</span>
-                        @enderror
+                        <x-input-error :messages="$errors->get('email')" class="mt-1" />
                     </div>
                     {{-- Полето за лозинка е тргнато, лозинката се генерира автоматски и се праќа на email --}}
                     <div class="grid grid-cols-2 gap-4">

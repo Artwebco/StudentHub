@@ -80,9 +80,7 @@
                 </div>
 
                 <div class="h-3 mt-0.5">
-                    @error('student_id')
-                        <span class="text-[10px] text-red-600 font-bold uppercase block leading-4">{{ $message }}</span>
-                    @enderror
+                    <x-input-error :messages="$errors->get('student_id')" class="text-[10px] leading-4 uppercase" />
                 </div>
             </div>
 
@@ -96,9 +94,7 @@
                     @endforeach
                 </select>
                 <div class="h-3 mt-0.5">
-                    @error('lesson_type_id')
-                        <span class="text-[10px] text-red-600 font-bold uppercase block leading-4">{{ $message }}</span>
-                    @enderror
+                    <x-input-error :messages="$errors->get('lesson_type_id')" class="text-[10px] leading-4 uppercase" />
                 </div>
             </div>
 
@@ -107,9 +103,7 @@
                 <input type="date" wire:model="lesson_date"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_date') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-3 mt-0.5">
-                    @error('lesson_date')
-                        <span class="text-[10px] text-red-600 font-bold uppercase block leading-4">{{ $message }}</span>
-                    @enderror
+                    <x-input-error :messages="$errors->get('lesson_date')" class="text-[10px] leading-4 uppercase" />
                 </div>
             </div>
 
@@ -121,9 +115,7 @@
                     <option value="not_held">Неодржан</option>
                 </select>
                 <div class="h-3 mt-0.5">
-                    @error('lesson_status')
-                        <span class="text-[10px] text-red-600 font-bold uppercase block leading-4">{{ $message }}</span>
-                    @enderror
+                    <x-input-error :messages="$errors->get('lesson_status')" class="text-[10px] leading-4 uppercase" />
                 </div>
             </div>
 
@@ -132,9 +124,7 @@
                 <input type="time" wire:model.live="start_time"
                     class="w-full h-10 border px-2 rounded-lg shadow-sm text-[13px] text-right {{ $errors->has('start_time') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-3 mt-0.5">
-                    @error('start_time')
-                        <span class="text-[10px] text-red-600 font-bold uppercase block leading-4">{{ $message }}</span>
-                    @enderror
+                    <x-input-error :messages="$errors->get('start_time')" class="text-[10px] leading-4 uppercase" />
                 </div>
             </div>
 
@@ -143,9 +133,7 @@
                 <input type="time" wire:model="end_time"
                     class="w-full h-10 border pl-2 pr-1 rounded-lg shadow-sm text-[13px] {{ $errors->has('end_time') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-0 sm:h-3 mt-0 sm:mt-0.5">
-                    @error('end_time')
-                        <span class="text-[10px] text-red-600 font-bold uppercase block leading-4">{{ $message }}</span>
-                    @enderror
+                    <x-input-error :messages="$errors->get('end_time')" class="text-[10px] leading-4 uppercase" />
                 </div>
             </div>
 

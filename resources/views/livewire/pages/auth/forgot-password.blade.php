@@ -49,7 +49,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <x-text-input wire:model="email" id="email"
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10"
                 type="email" name="email" required autofocus placeholder="your@email.com" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div class="pt-2">

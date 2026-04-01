@@ -79,7 +79,7 @@
                     <input type="email" name="email" id="email" :value="old('email')" required autofocus
                         class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
                         placeholder="your@email.com">
-                    <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <div class="space-y-2">
@@ -87,7 +87,7 @@
                     <input type="password" name="password" id="password" required
                         class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
                         placeholder="••••••••">
-                    <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
                 <div class="flex items-center justify-between">

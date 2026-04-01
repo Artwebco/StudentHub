@@ -27,8 +27,8 @@
                     <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Име на училиште /
                         фирма</label>
                     <input type="text" wire:model="school_name"
-                        class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 @error('school_name') border-red-500 @enderror">
-                    @error('school_name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        class="w-full border rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('school_name') ? 'border-red-500' : 'border-gray-200' }}">
+                    <x-input-error :messages="$errors->get('school_name')" class="mt-1" />
                 </div>
 
                 {{-- Дејност --}}
@@ -99,8 +99,8 @@
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Е-пошта</label>
                     <input type="email" wire:model="email"
-                        class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
-                    @error('email') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        class="w-full border rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('email') ? 'border-red-500' : 'border-gray-200' }}">
+                    <x-input-error :messages="$errors->get('email')" class="mt-1" />
                 </div>
 
                 {{-- Веб --}}
@@ -108,9 +108,9 @@
                     <label
                         class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Веб-страница</label>
                     <input type="text" wire:model="website"
-                        class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 @error('website') border-red-500 @enderror"
+                        class="w-full border rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('website') ? 'border-red-500' : 'border-gray-200' }}"
                         placeholder="www.besedi.mk">
-                    @error('website') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    <x-input-error :messages="$errors->get('website')" class="mt-1" />
                 </div>
 
                 {{-- Лого --}}
@@ -155,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                    @error('logo') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    <x-input-error :messages="$errors->get('logo')" class="mt-1" />
                 </div>
             </div>
 

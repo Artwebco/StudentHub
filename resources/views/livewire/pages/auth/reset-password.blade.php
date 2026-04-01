@@ -80,7 +80,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <x-text-input wire:model="email" id="email"
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
                 type="email" name="email" required autofocus autocomplete="username" placeholder="your@email.com" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div class="space-y-2">
@@ -88,7 +88,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <x-text-input wire:model="password" id="password"
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
                 type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div class="space-y-2">
@@ -98,7 +98,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
                 type="password" name="password_confirmation" required autocomplete="new-password"
                 placeholder="••••••••" />
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-xs" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
         <div class="pt-2">
