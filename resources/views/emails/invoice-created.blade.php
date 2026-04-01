@@ -15,19 +15,27 @@
                     <tr>
                         <td>
                             <h2 style="margin:0 0 16px 0;font-size:22px;color:#111827;">Нова фактура</h2>
-                            <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;">Почитуван/а {{ $recipientName }},</p>
+                            <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;">Почитуван/а
+                                {{ $recipientName }},</p>
                             <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;">
                                 Во прилог ја добивате фактурата со број <strong>{{ $invoice->invoice_number }}</strong>.
                             </p>
                             <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;">
-                                Вкупен износ: <strong>{{ number_format($invoice->total_amount, 0, ',', '.') }} ден.</strong>
+                                Вкупен износ: <strong>{{ number_format($invoice->total_amount, 0, ',', '.') }}
+                                    ден.</strong>
+                            </p>
+
+                            <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;">
+                                За повеќе информации, најавете се на вашиот профил на <a href="https://edu.besedi.mk/"
+                                    style="color:#2563eb;text-decoration:none;">edu.besedi.mk</a>.
                             </p>
 
                             <p style="margin:0;font-size:14px;line-height:1.6;color:#374151;">
                                 Доколку имате прашања, слободно одговорете на оваа порака.
                             </p>
 
-                            <p style="margin:24px 0 0 0;font-size:14px;color:#6b7280;">Со почит,<br>{{ config('app.name') }}</p>
+                            <p style="margin:24px 0 0 0;font-size:14px;color:#6b7280;">Со
+                                почит,<br>{{ config('app.name') }}</p>
                         </td>
                     </tr>
                 </table>
