@@ -25,7 +25,7 @@ Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->intended('/home');
     }
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // 2. „ПАМЕТНА“ РУТА

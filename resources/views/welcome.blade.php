@@ -56,7 +56,7 @@
         </svg>
 
         <div class="relative z-10 mb-8 flex items-center gap-3">
-            <header class="grid grid-cols-1 items-center gap-2 py-10">
+            <header class="grid grid-cols-1 items-center gap-2 py-5">
                 <div class="flex justify-center">
                     <a href="/" wire:navigate>
                         <x-application-logo class="fill-current text-gray-500" />

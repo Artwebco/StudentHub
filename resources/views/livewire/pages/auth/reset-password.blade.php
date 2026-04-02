@@ -74,38 +74,38 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="mt-6 h-px w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
     </div>
 
+    <x-auth-session-status class="mb-4 text-center" :status="session('status')" />
+
     <form wire:submit="resetPassword" class="space-y-5">
         <div class="space-y-2">
-            <x-input-label for="email" :value="__('Email')" class="text-sm font-medium text-slate-500 ml-1" />
-            <x-text-input wire:model="email" id="email"
-                class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
-                type="email" name="email" required autofocus autocomplete="username" placeholder="your@email.com" />
+            <label class="text-sm font-medium text-slate-500 ml-1" for="email">Email</label>
+            <input wire:model="email" type="email" id="email" name="email" required autofocus autocomplete="username"
+                class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
+                placeholder="your@email.com">
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div class="space-y-2">
-            <x-input-label for="password" :value="__('Password')" class="text-sm font-medium text-slate-500 ml-1" />
-            <x-text-input wire:model="password" id="password"
-                class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
-                type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
+            <label class="text-sm font-medium text-slate-500 ml-1" for="password">Password</label>
+            <input wire:model="password" type="password" id="password" name="password" required
+                autocomplete="new-password"
+                class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
+                placeholder="••••••••">
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div class="space-y-2">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')"
-                class="text-sm font-medium text-slate-500 ml-1" />
-            <x-text-input wire:model="password_confirmation" id="password_confirmation"
-                class="block w-full h-11 rounded-lg border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
-                type="password" name="password_confirmation" required autocomplete="new-password"
-                placeholder="••••••••" />
+            <label class="text-sm font-medium text-slate-500 ml-1" for="password_confirmation">Confirm Password</label>
+            <input wire:model="password_confirmation" type="password" id="password_confirmation"
+                name="password_confirmation" required autocomplete="new-password"
+                class="flex h-11 w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm transition-all focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-400"
+                placeholder="••••••••">
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="pt-2">
-            <button type="submit"
-                class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
-                {{ __('Reset Password') }}
-            </button>
-        </div>
+        <button type="submit"
+            class="flex h-12 w-full items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-sm font-semibold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 transition-all hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]">
+            {{ __('Reset Password') }}
+        </button>
     </form>
 </div>
