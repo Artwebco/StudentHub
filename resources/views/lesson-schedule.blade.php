@@ -19,32 +19,32 @@
 
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 sm:p-5">
             @if (auth()->user()->role === 'admin')
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 items-start">
-                    <div class="self-start rounded-2xl border border-gray-200 bg-gray-50 p-3">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 items-stretch">
+                    <div class="rounded-2xl border border-gray-200 bg-gray-50 p-3 h-full">
                         <form method="POST" action="{{ route('lesson-schedule.store') }}" x-data="{
-                                    open: false,
-                                    search: '',
-                                    selectedId: @js((string) old('student_id', '')),
-                                    selectedName: @js(optional($students->firstWhere('id', (int) old('student_id')))->name ?? ''),
-                                    students: @js($students->map(fn($student) => ['id' => (string) $student->id, 'name' => $student->name])->values()),
-                                    filteredStudents() {
-                                        const term = this.search.trim().toLowerCase();
-                                        if (!term) return this.students;
-                                        return this.students.filter(student => student.name.toLowerCase().includes(term));
-                                    },
-                                    selectStudent(student) {
-                                        this.selectedId = student.id;
-                                        this.selectedName = student.name;
-                                        this.search = '';
-                                        this.open = false;
-                                    }
-                                }" x-on:click.outside="open = false"
+                                            open: false,
+                                            search: '',
+                                            selectedId: @js((string) old('student_id', '')),
+                                            selectedName: @js(optional($students->firstWhere('id', (int) old('student_id')))->name ?? ''),
+                                            students: @js($students->map(fn($student) => ['id' => (string) $student->id, 'name' => $student->name])->values()),
+                                            filteredStudents() {
+                                                const term = this.search.trim().toLowerCase();
+                                                if (!term) return this.students;
+                                                return this.students.filter(student => student.name.toLowerCase().includes(term));
+                                            },
+                                            selectStudent(student) {
+                                                this.selectedId = student.id;
+                                                this.selectedName = student.name;
+                                                this.search = '';
+                                                this.open = false;
+                                            }
+                                        }" x-on:click.outside="open = false"
                             class="grid grid-cols-1 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1.05fr)_minmax(150px,0.6fr)] gap-2.5">
                             @csrf
 
                             <div class="relative">
                                 <label for="student_id"
-                                    class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Student</label>
+                                    class="block text-[14px] font-normal text-gray-900 mb-1">Student</label>
                                 <input type="hidden" id="student_id" name="student_id" :value="selectedId">
 
                                 <button type="button" @click="open = !open"
@@ -99,7 +99,7 @@
                             </div>
 
                             <div>
-                                <label for="starts_at" class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Date &
+                                <label for="starts_at" class="block text-[14px] font-normal text-gray-900 mb-1">Date &
                                     Time</label>
                                 <input id="starts_at" name="starts_at" type="datetime-local" value="{{ old('starts_at') }}"
                                     class="w-full rounded-xl border-gray-300 pr-2 text-sm focus:border-blue-500 focus:ring-blue-500"
@@ -111,7 +111,7 @@
 
                             <div>
                                 <label for="duration_minutes"
-                                    class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Duration (min)</label>
+                                    class="block text-[14px] font-normal text-gray-900 mb-1">Duration (min)</label>
                                 <input id="duration_minutes" name="duration_minutes" type="number" min="15" max="240"
                                     value="{{ old('duration_minutes', 60) }}"
                                     class="w-full rounded-xl border-gray-300 text-sm focus:border-blue-500 focus:ring-blue-500"
@@ -124,10 +124,10 @@
                             <div
                                 class="md:col-span-3 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_180px] gap-2.5 items-end">
                                 <div>
-                                    <label for="note" class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Note
+                                    <label for="note" class="block text-[14px] font-normal text-gray-900 mb-1">Note
                                         (optional)</label>
                                     <input id="note" name="note" type="text" value="{{ old('note') }}"
-                                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                                        class="h-10 w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                                         placeholder="Optional note for this lesson">
                                     @error('note')
                                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -144,7 +144,7 @@
                         </form>
                     </div>
 
-                    <div class="rounded-2xl border border-gray-200 bg-gray-50 p-3">
+                    <div class="rounded-2xl border border-gray-200 bg-gray-50 p-3 h-full">
                         <form method="POST" action="{{ route('lesson-schedule.reminder-settings.update') }}"
                             id="reminder-settings-form" class="flex flex-col h-full gap-2.5">
                             @csrf
@@ -154,12 +154,12 @@
                                 class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_180px] gap-2.5 items-end">
                                 <div>
                                     <label for="first_reminder_minutes_before"
-                                        class="block text-xs font-bold uppercase text-gray-500 mb-1.5">First reminder
+                                        class="block text-[14px] font-normal text-gray-900 mb-1">First reminder
                                         (minutes before)</label>
                                     <input id="first_reminder_minutes_before" name="first_reminder_minutes_before"
                                         type="number" min="10" max="10080"
                                         value="{{ old('first_reminder_minutes_before', $reminderSettings?->first_reminder_minutes_before ?? 1440) }}"
-                                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                                        class="h-10 w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                                         required>
                                     @error('first_reminder_minutes_before')
                                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -168,12 +168,12 @@
 
                                 <div>
                                     <label for="second_reminder_minutes_before"
-                                        class="block text-xs font-bold uppercase text-gray-500 mb-1.5">Second reminder
+                                        class="block text-[14px] font-normal text-gray-900 mb-1">Second reminder
                                         (minutes before)</label>
                                     <input id="second_reminder_minutes_before" name="second_reminder_minutes_before"
                                         type="number" min="5" max="10080"
                                         value="{{ old('second_reminder_minutes_before', $reminderSettings?->second_reminder_minutes_before ?? 30) }}"
-                                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                                        class="h-10 w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                                         required>
                                     @error('second_reminder_minutes_before')
                                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -186,7 +186,8 @@
                                 </button>
                             </div>
 
-                            <div class="mt-auto rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+                            <div
+                                class="mt-auto rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
                                 <p>
                                     First reminder: <span id="first-reminder-preview" class="font-medium"></span>
                                 </p>

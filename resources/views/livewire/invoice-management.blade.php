@@ -113,13 +113,13 @@
                             <td class="px-2 py-2 whitespace-nowrap text-sm text-gray-700">
                                 @if($invoice->is_advance && $invoice->student_id)
                                     <div class="flex flex-col items-start">
-                                        <span class="font-semibold text-base text-blue-900">
-                                            {{ $invoice->realized_lessons }}<span class="text-gray-400"> / </span>{{ $invoice->expected_lessons }}<span class="text-gray-400"> {{ __('admin.invoices.hours_count') }}</span>
+                                        <span class="font-semibold text-sm text-blue-900">
+                                            {{ $invoice->realized_lessons }}<span class="text-gray-400"> / </span>{{ $invoice->expected_lessons }}<span class="text-xs font-medium text-gray-500"> {{ __('admin.invoices.realization_lessons_suffix') }}</span>
                                         </span>
                                         @if($invoice->progress_state === 'under')
                                             <span
-                                                class="inline-flex mt-1 items-center gap-1.5 py-0.5 px-2 rounded text-xs bg-yellow-50 text-yellow-800 border border-yellow-200 font-medium">
-                                                <svg class="w-3 h-3 mr-1 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                                class="inline-flex mt-1 items-center gap-1 py-px px-1.5 rounded text-[11px] bg-yellow-50 text-yellow-800 border border-yellow-200 font-medium">
+                                                <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                                     <path
                                                         d="M8.257 3.099c.366-.756 1.42-.756 1.786 0l7.451 15.377A1 1 0 0 1 16.451 20H3.549a1 1 0 0 1-.893-1.524L8.257 3.1zM11 16a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm-1-2a1 1 0 0 0 1-1V9a1 1 0 1 0-2 0v4a1 1 0 0 0 1 1z" />
                                                 </svg>

@@ -16,7 +16,7 @@
         <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-[0.9fr_2.35fr_1.7fr_1.1fr_0.95fr_0.78fr_0.78fr_1fr_0.95fr_0.55fr] gap-2.5 items-end">
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.pricing.price') }}</label>
+                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.pricing.price') }}</label>
                 <div
                     class="h-10 border border-blue-200 bg-blue-50 rounded-lg px-3 inline-flex w-full items-center justify-between whitespace-nowrap">
                     <span
@@ -28,7 +28,7 @@
 
             <div class="w-full relative sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto"
                 x-data="{ open: @entangle('showDropdown') }" x-on:click.outside="open = false">
-                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.nav.students') }}</label>
+                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.nav.students') }}</label>
 
                 <div @click="open = !open"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] cursor-pointer bg-white flex justify-between items-center {{ $errors->has('student_id') ? 'border-red-500' : 'border-gray-300' }}">
@@ -88,7 +88,7 @@
 
             <div class="w-full sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto">
                 <label
-                    class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.lesson_type') }}</label>
+                    class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.lesson_type') }}</label>
                 <select wire:model.live="lesson_type_id"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_type_id') ? 'border-red-500' : 'border-gray-300' }}">
                     <option value="">-- {{ __('admin.lessons.choose') }} --</option>
@@ -102,7 +102,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.date') }}</label>
+                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.date') }}</label>
                 <input type="date" wire:model="lesson_date"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_date') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-3 mt-0.5">
@@ -111,7 +111,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.status') }}</label>
+                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.status') }}</label>
                 <select wire:model.live="lesson_status"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_status') ? 'border-red-500' : 'border-gray-300' }}">
                     <option value="held">{{ __('admin.lessons.held') }}</option>
@@ -123,7 +123,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.start') }}</label>
+                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.start') }}</label>
                 <input type="time" wire:model.live="start_time"
                     class="w-full h-10 border px-2 rounded-lg shadow-sm text-[13px] text-right {{ $errors->has('start_time') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-3 mt-0.5">
@@ -132,7 +132,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.end') }}</label>
+                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.end') }}</label>
                 <input type="time" wire:model="end_time"
                     class="w-full h-10 border pl-2 pr-1 rounded-lg shadow-sm text-[13px] {{ $errors->has('end_time') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-0 sm:h-3 mt-0 sm:mt-0.5">
@@ -188,7 +188,8 @@
                 <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                     <div>
                         <h3 class="text-lg font-bold text-gray-900 tracking-tight">
-                            {{ __('admin.lessons.detail_entry') }}</h3>
+                            {{ __('admin.lessons.detail_entry') }}
+                        </h3>
                         <p class="text-sm text-gray-500 mt-1 font-medium">{{ __('admin.lessons.detail_subtitle') }}</p>
                     </div>
                     <button type="button" @click="showDetailModal = false"

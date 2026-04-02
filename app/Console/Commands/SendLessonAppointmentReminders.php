@@ -7,7 +7,6 @@ use App\Models\Appointment;
 use App\Models\AppointmentSetting;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
-use Throwable;
 
 class SendLessonAppointmentReminders extends Command
 {
@@ -76,12 +75,7 @@ class SendLessonAppointmentReminders extends Command
             foreach ($recipients as $recipient) {
                 $mailable = new LessonAppointmentReminderMail($appointment, $label, $recipient['name']);
 
-                try {
-                    Mail::to($recipient['email'])->queue($mailable);
-                } catch (Throwable $e) {
-                    // Fallback for environments without active queue workers/drivers.
-                    Mail::to($recipient['email'])->send($mailable);
-                }
+                Mail::to($recipient['email'])->send($mailable);
             }
 
             $appointment->forceFill([

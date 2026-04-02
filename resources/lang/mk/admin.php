@@ -164,6 +164,7 @@ return [
         'lesson_type' => 'Тип на час',
         'choose' => 'Избери...',
         'hours_count' => 'Бр. часови',
+        'realization_lessons_suffix' => 'часа',
         'discount' => 'Попуст (%)',
         'from_date' => 'Од датум',
         'to_date' => 'До датум',

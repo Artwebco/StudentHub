@@ -164,6 +164,7 @@ return [
         'lesson_type' => 'Lesson type',
         'choose' => 'Choose...',
         'hours_count' => 'Hours count',
+        'realization_lessons_suffix' => 'lessons',
         'discount' => 'Discount (%)',
         'from_date' => 'From date',
         'to_date' => 'To date',
