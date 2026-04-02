@@ -7,6 +7,7 @@ use App\Livewire\StudentPriceManager;
 use App\Livewire\InvoiceManagement;
 use App\Livewire\SchoolSettingsManager;
 use App\Livewire\LessonStats;
+use App\Http\Controllers\LessonScheduleController;
 use App\Http\Controllers\DashboardController;
 use App\Models\Invoice;
 use App\Models\Lesson;
@@ -41,6 +42,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::view('profile', 'profile')->name('profile.edit');
     Route::view('profile-view', 'profile')->name('profile');
+    Route::get('/lesson-schedule', [LessonScheduleController::class, 'index'])->name('lesson-schedule');
+    Route::get('/lesson-schedule/events', [LessonScheduleController::class, 'events'])->name('lesson-schedule.events');
+    Route::post('/lesson-schedule/events', [LessonScheduleController::class, 'store'])->middleware('admin')->name('lesson-schedule.store');
+    Route::patch('/lesson-schedule/events/{appointment}', [LessonScheduleController::class, 'update'])->middleware('admin')->name('lesson-schedule.update');
+    Route::delete('/lesson-schedule/events/{appointment}', [LessonScheduleController::class, 'destroy'])->middleware('admin')->name('lesson-schedule.destroy');
+    Route::put('/lesson-schedule/reminder-settings', [LessonScheduleController::class, 'updateReminderSettings'])->middleware('admin')->name('lesson-schedule.reminder-settings.update');
 
     // АДМИН РУТИ
     Route::middleware(['admin'])->group(function () {

@@ -122,6 +122,7 @@
                             ['route' => 'students', 'label' => 'Students', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75'],
                             ['route' => 'student-prices', 'label' => 'Pricing', 'icon' => 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
                             ['route' => 'lessons-log', 'label' => 'Lesson Log', 'icon' => 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
+                            ['route' => 'lesson-schedule', 'label' => 'Lesson Schedule', 'icon' => 'M8 2v4 M16 2v4 M3 10h18 M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2'],
                             ['route' => 'invoices', 'label' => 'Invoices', 'icon' => 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8'],
                             ['route' => 'company-info', 'label' => 'My Company', 'icon' => 'M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16'],
                         ];
@@ -172,6 +173,19 @@
                                         </svg>
                                     </span>
                                     <span>My Statistics</span>
+                                </a>
+
+                                <a href="{{ route('lesson-schedule') }}" @click="mobileMenuOpen = false"
+                                    class="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ request()->routeIs('lesson-schedule') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-gray-50 hover:text-slate-900' }}">
+                                    <span
+                                        class="inline-flex h-9 w-9 items-center justify-center rounded-xl {{ request()->routeIs('lesson-schedule') ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-slate-500' }}">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 2v4 M16 2v4 M3 10h18 M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    <span>Lesson Schedule</span>
                                 </a>
                             @endif
 
@@ -244,6 +258,7 @@
                         $adminItems = [
                             ['route' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'M3 3h7v9H3V3zm11 0h7v5h-7V3zm0 9h7v9h-7v-9zm-11 4h7v5H3v-5z'],
                             ['route' => 'lessons-log', 'label' => 'Lesson Log', 'icon' => 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
+                            ['route' => 'lesson-schedule', 'label' => 'Lesson Schedule', 'icon' => 'M8 2v4 M16 2v4 M3 10h18 M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2'],
                             ['route' => 'invoices', 'label' => 'Invoices', 'icon' => 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8'],
                             ['route' => 'students', 'label' => 'Students', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75'],
                             ['route' => 'student-prices', 'label' => 'Pricing', 'icon' => 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
@@ -277,6 +292,17 @@
                             </path>
                         </svg>
                         <span class="hide-on-collapse ml-3 font-semibold text-sm truncate">My Statistics</span>
+                    </a>
+
+                    <a href="{{ route('lesson-schedule') }}"
+                        class="center-on-collapse flex items-center h-11 px-6 mx-3 rounded-xl transition-all duration-200 group {{ request()->routeIs('lesson-schedule') ? 'bg-blue-50 text-blue-600 shadow-sm' : 'text-slate-500 hover:bg-gray-50 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('lesson-schedule') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 2v4 M16 2v4 M3 10h18 M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2">
+                            </path>
+                        </svg>
+                        <span class="hide-on-collapse ml-3 font-semibold text-sm truncate">Lesson Schedule</span>
                     </a>
                 @endif
 
