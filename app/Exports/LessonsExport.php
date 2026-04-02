@@ -90,7 +90,7 @@ class LessonsExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoS
 
         return [
             $lesson->student->first_name . ' ' . $lesson->student->last_name,
-            str_replace('min', 'мин', $lesson->lessonType->name),
+            $lesson->lessonType->admin_name,
             \Carbon\Carbon::parse($lesson->lesson_date)->format('d.m.Y'),
             $this->statusLabel($lesson->lesson_status),
             $timeRange,

@@ -1,8 +1,8 @@
 <div>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
         <div>
-            <h2 class="text-xl font-bold text-gray-700">Подесувања на училиштето</h2>
-            <p class="text-md text-gray-600">Овие податоци ќе се појавуваат на секоја генерирана фактура.</p>
+            <h2 class="text-xl font-bold text-gray-700">{{ __('admin.settings.title') }}</h2>
+            <p class="text-md text-gray-600">{{ __('admin.settings.subtitle') }}</p>
         </div>
         <div class="h-16 w-16 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
             <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
@@ -24,8 +24,8 @@
 
                 {{-- Име --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Име на училиште /
-                        фирма</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.school_name') }}</label>
                     <input type="text" wire:model="school_name"
                         class="w-full border rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('school_name') ? 'border-red-500' : 'border-gray-200' }}">
                     <x-input-error :messages="$errors->get('school_name')" class="mt-1" />
@@ -33,24 +33,25 @@
 
                 {{-- Дејност --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Дејност</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.activity') }}</label>
                     <input type="text" wire:model="activity"
                         class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Пример: Образование">
+                        placeholder="{{ __('admin.settings.activity_placeholder') }}">
                 </div>
 
                 {{-- Матичен број --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Матичен
-                        број</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.registration_number') }}</label>
                     <input type="text" wire:model="registration_number"
                         class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 {{-- ЕДБ --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">ЕДБ (Даночен
-                        број)</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.tax_number') }}</label>
                     <input type="text" wire:model="tax_number"
                         class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
@@ -61,43 +62,46 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label
-                                class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">SWIFT</label>
+                                class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.swift') }}</label>
                             <input type="text" wire:model="swift_number"
                                 class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label
-                                class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">IBAN</label>
+                                class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.iban') }}</label>
                             <input type="text" wire:model="iban_number"
                                 class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Жиро
-                                сметка</label>
-                            <input type="text" wire:model="bank_account"
-                                class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
+                                <label
+                                    class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.bank_account') }}</label>
+                                <input type="text" wire:model="bank_account"
+                                    class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                 </div>
 
                 {{-- Адреса --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Целосна
-                        адреса</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.address') }}</label>
                     <input type="text" wire:model="address"
                         class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 {{-- Телефон --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Телефон</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.phone') }}</label>
                     <input type="text" wire:model="phone"
                         class="w-full border-gray-200 rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 {{-- Е-маил --}}
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Е-пошта</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.email') }}</label>
                     <input type="email" wire:model="email"
                         class="w-full border rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('email') ? 'border-red-500' : 'border-gray-200' }}">
                     <x-input-error :messages="$errors->get('email')" class="mt-1" />
@@ -106,7 +110,7 @@
                 {{-- Веб --}}
                 <div>
                     <label
-                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Веб-страница</label>
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.website') }}</label>
                     <input type="text" wire:model="website"
                         class="w-full border rounded-xl p-3 bg-gray-50 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('website') ? 'border-red-500' : 'border-gray-200' }}"
                         placeholder="www.besedi.mk">
@@ -115,8 +119,8 @@
 
                 {{-- Лого --}}
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">Лого на
-                        училиштето</label>
+                    <label
+                        class="block text-xs font-bold uppercase text-gray-400 mb-2 tracking-wider">{{ __('admin.settings.logo') }}</label>
                     <div
                         class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 transition-colors">
                         <div class="flex-shrink-0">
@@ -144,14 +148,14 @@
                             <div class="flex flex-col items-start gap-2">
                                 <label for="logo-upload"
                                     class="inline-flex items-center justify-center px-4 py-2 rounded-full border-0 text-sm font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer transition-colors">
-                                    Избери фајл
+                                    {{ __('admin.settings.choose_file') }}
                                 </label>
 
                                 <p class="w-full text-sm text-gray-500 break-words">
-                                    {{ $logo ? $logo->getClientOriginalName() : 'Нема избрано датотека' }}
+                                    {{ $logo ? $logo->getClientOriginalName() : __('admin.settings.no_file') }}
                                 </p>
 
-                                <p class="text-[11px] text-gray-400 italic">Максимална големина 2MB (JPG, PNG)</p>
+                                <p class="text-[11px] text-gray-400 italic">{{ __('admin.settings.logo_hint') }}</p>
                             </div>
                         </div>
                     </div>
@@ -162,8 +166,8 @@
             <div class="flex justify-end pt-4">
                 <button type="submit" wire:loading.attr="disabled"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-12 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2">
-                    <span wire:loading.remove>Зачувај</span>
-                    <span wire:loading>Се зачувува...</span>
+                    <span wire:loading.remove>{{ __('admin.settings.save') }}</span>
+                    <span wire:loading>{{ __('admin.settings.saving') }}</span>
                     <svg wire:loading class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">

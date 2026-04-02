@@ -6,8 +6,8 @@
 
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
         <div>
-            <h1 class="text-xl font-bold text-gray-700">Ценовник</h1>
-            <p class="text-md text-gray-600">Управување со типови на часови и цени</p>
+            <h1 class="text-xl font-bold text-gray-700">{{ __('admin.pricing.title') }}</h1>
+            <p class="text-md text-gray-600">{{ __('admin.pricing.subtitle') }}</p>
         </div>
         <button wire:click="create"
             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 ">
@@ -15,7 +15,7 @@
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
-            Тип на час
+            {{ __('admin.pricing.add_lesson_type') }}
         </button>
     </div>
 
@@ -33,19 +33,27 @@
                                 </path>
                             </svg>
                         </div>
-                        <h3 class="font-bold text-gray-800">{{ $template->name }}</h3>
+                        <div>
+                            <h3 class="font-bold text-gray-800">{{ $template->admin_name }}</h3>
+                            <p class="text-[11px] text-gray-400 mt-0.5">{{ __('admin.pricing.invoice_label') }}
+                                {{ $template->invoice_name }}</p>
+                        </div>
                     </div>
                     <p class="text-xs text-gray-400 mb-4">{{ $template->description }}</p>
 
                     <div class="flex justify-between items-end mt-4">
                         <div>
-                            <span class="text-[10px] text-gray-400 uppercase font-bold">Времетраење</span>
-                            <p class="font-bold text-gray-700">{{ $template->duration }} мин.</p>
+                            <span
+                                class="text-[10px] text-gray-400 uppercase font-bold">{{ __('admin.pricing.duration') }}</span>
+                            <p class="font-bold text-gray-700">{{ $template->duration }} {{ __('admin.pricing.minutes') }}
+                            </p>
                         </div>
                         <div class="text-right">
-                            <span class="text-[10px] text-gray-400 uppercase font-bold block">Цена</span>
+                            <span
+                                class="text-[10px] text-gray-400 uppercase font-bold block">{{ __('admin.pricing.price') }}</span>
                             <p class="text-xl font-bold text-[#10b981]">
-                                {{ number_format($template->default_price, 0, ',', '.') }} ден.
+                                {{ number_format($template->default_price, 0, ',', '.') }}
+                                {{ __('admin.pricing.currency') }}
                             </p>
                         </div>
                     </div>
@@ -61,17 +69,17 @@
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                             </path>
                         </svg>
-                        <span class="hidden md:inline">Измени</span>
+                        <span class="hidden md:inline">{{ __('admin.pricing.edit') }}</span>
                     </button>
                     <button type="button"
-                        onclick="confirmDeleteTemplate({{ $template->id }}, '{{ addslashes($template->name) }}')"
+                        onclick="confirmDeleteTemplate({{ $template->id }}, '{{ addslashes($template->admin_name) }}')"
                         class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                             </path>
                         </svg>
-                        <span class="hidden md:inline">Избриши</span>
+                        <span class="hidden md:inline">{{ __('admin.pricing.delete') }}</span>
                     </button>
                 </div>
             </div>
@@ -97,9 +105,10 @@
 
                 <div class="px-5 sm:px-8 pt-6 sm:pt-8 pb-4 flex justify-between items-start gap-3">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-800">{{ $editingId ? 'Измени тип' : 'Внес на тип на час' }}
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            {{ $editingId ? __('admin.pricing.edit_type') : __('admin.pricing.create_type') }}
                         </h2>
-                        <p class="text-sm text-gray-500 mt-1">Додадете нов или ажурирајте постоечки тип</p>
+                        <p class="text-sm text-gray-500 mt-1">{{ __('admin.pricing.modal_subtitle') }}</p>
                     </div>
                     <button @click="$dispatch('close-modal')" class="text-gray-400 hover:text-gray-600 transition p-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,16 +119,30 @@
                 </div>
 
                 <div class="px-5 sm:px-8 py-5 sm:py-6 space-y-4">
-                    <input type="text" wire:model="name" placeholder="Име на часот"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-gray-600 mb-1">{{ __('admin.pricing.label_en') }}</label>
+                        <input type="text" wire:model="name_en" placeholder="{{ __('admin.pricing.placeholder_en') }}"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
 
-                    <input type="text" wire:model="description" placeholder="Краток опис"
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-gray-600 mb-1">{{ __('admin.pricing.label_mk') }}</label>
+                        <input type="text" wire:model="name_mk" placeholder="{{ __('admin.pricing.placeholder_mk') }}"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <input type="text" wire:model="description"
+                        placeholder="{{ __('admin.pricing.placeholder_description') }}"
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
 
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-2">
-                        <input type="number" wire:model="duration" placeholder="Минути"
+                        <input type="number" wire:model="duration"
+                            placeholder="{{ __('admin.pricing.placeholder_duration') }}"
                             class="w-full sm:flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none min-w-0">
-                        <input type="number" wire:model="default_price" placeholder="Цена"
+                        <input type="number" wire:model="default_price"
+                            placeholder="{{ __('admin.pricing.placeholder_price') }}"
                             class="w-full sm:flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none min-w-0">
                     </div>
                 </div>
@@ -127,11 +150,11 @@
                 <div class="px-5 sm:px-8 py-5 sm:py-6 bg-gray-50/50 flex flex-row-reverse gap-3 items-center">
                     <button wire:click="save"
                         class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-200 transition-all transform active:scale-95">
-                        <span wire:loading.remove wire:target="save">Зачувај</span>
-                        <span wire:loading wire:target="save">Се зачувува...</span>
+                        <span wire:loading.remove wire:target="save">{{ __('admin.pricing.save') }}</span>
+                        <span wire:loading wire:target="save">{{ __('admin.pricing.saving') }}</span>
                     </button>
                     <button @click="$dispatch('close-modal')"
-                        class="px-6 py-3 text-gray-500 font-semibold hover:text-gray-700">Откажи</button>
+                        class="px-6 py-3 text-gray-500 font-semibold hover:text-gray-700">{{ __('admin.pricing.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -139,15 +162,18 @@
 </div>
 <script>
     function confirmDeleteTemplate(id, name) {
+        const deleteHtmlTemplate = @json(__('admin.pricing.delete_confirm_html'));
+        const deleteHtml = deleteHtmlTemplate.replace(':name', '<b>' + name + '</b>');
+
         Swal.fire({
-            title: 'Бришење на тип?',
-            html: "Дали сте сигурни дека сакате да го избришете '<b>" + name + "</b>' од ценовникот?",
+            title: @json(__('admin.pricing.delete_confirm_title')),
+            html: deleteHtml,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#2563eb',
-            confirmButtonText: 'Да, избриши!',
-            cancelButtonText: 'Откажи',
+            confirmButtonText: @json(__('admin.pricing.delete_confirm_button')),
+            cancelButtonText: @json(__('admin.pricing.cancel')),
             reverseButtons: true,
             backdrop: `rgba(15, 23, 42, 0.5)` // Суптилен blur ефект
         }).then((result) => {
@@ -157,7 +183,7 @@
 
                 // Мала потврда за успех
                 Swal.fire({
-                    title: 'Успешно избришано!',
+           title: @json(__('admin.pricing.deleted_title')),
                     icon: 'success',
                     timer: 1500,
                     showConfirmButton: false

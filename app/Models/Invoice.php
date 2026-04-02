@@ -14,6 +14,7 @@ class Invoice extends Model
         'student_id',
         'custom_client_name',
         'service_description',
+        'lesson_type_id',
         'quantity',
         'unit_price',
         'date_from',
@@ -39,6 +40,11 @@ class Invoice extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    public function lessonTemplate(): BelongsTo
+    {
+        return $this->belongsTo(LessonTemplate::class, 'lesson_type_id');
     }
 
     public static function generateNextInvoiceNumber()

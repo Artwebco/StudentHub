@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ auth()->user()->role === 'admin' ? 'Профил' : 'Profile' }}
+            Profile
         </h2>
     </x-slot>
 
@@ -58,13 +58,13 @@
             </div>
         </div>
 
-        {{-- СЕКЦИЈА 3: БРИШЕЊЕ НА АКАУНТ (Само за Админ) --}}
+        {{-- SECTION 3: ACCOUNT DELETION (Admins only) --}}
         @if (auth()->user()->role === 'admin')
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg border-t border-red-100">
                 <div class="max-w-xl text-red-600">
-                    <h3 class="text-lg font-bold uppercase mb-4 text-red-500">Опасна зона</h3>
+                    <h3 class="text-lg font-bold uppercase mb-4 text-red-500">Danger Zone</h3>
 
-                    {{-- Ја тргнавме линијата со Jetstream и ја оставивме само компонентата --}}
+                    {{-- Keep only the component here --}}
                     @livewire('profile.delete-user-form')
 
                 </div>

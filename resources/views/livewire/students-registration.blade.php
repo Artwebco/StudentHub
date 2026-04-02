@@ -1,8 +1,8 @@
 <div>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
         <div>
-            <h2 class="text-xl font-bold text-gray-700">Ученици</h2>
-            <p class="text-md text-gray-600">Управување со ученици и нивни информации</p>
+            <h2 class="text-xl font-bold text-gray-700">{{ __('admin.students.title') }}</h2>
+            <p class="text-md text-gray-600">{{ __('admin.students.subtitle') }}</p>
         </div>
 
         <button wire:click="create()"
@@ -10,7 +10,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>Додади ученик</button>
+            </svg>{{ __('admin.students.add_student') }}</button>
     </div>
 
 
@@ -30,7 +30,7 @@
                         </svg>
                     </div>
                     <input wire:model.live.debounce.300ms="search" type="text"
-                        placeholder="Пребарај по име, контакт или држава..."
+                        placeholder="{{ __('admin.students.search_placeholder') }}"
                         class="block w-full pl-9 pr-3 py-1.5 border border-gray-200 rounded-lg text-md focus:ring-blue-500 focus:border-blue-500 transition-all">
                 </div>
 
@@ -40,11 +40,11 @@
                         class="flex-1 sm:flex-none flex items-center gap-2 bg-white border border-gray-200 p-1 rounded-lg">
                         <button wire:click="$set('showArchived', false)"
                             class="flex-1 sm:flex-none px-3 py-1.5 text-xs font-semibold rounded-md transition {{ !$showArchived ? 'bg-blue-50 text-blue-600 shadow-sm' : 'text-gray-500 hover:bg-gray-50' }}">
-                            Активни
+                            {{ __('admin.students.active_tab') }}
                         </button>
                         <button wire:click="$set('showArchived', true)"
                             class="flex-1 sm:flex-none px-3 py-1.5 text-xs font-semibold rounded-md transition {{ $showArchived ? 'bg-red-50 text-red-600 shadow-sm' : 'text-gray-500 hover:bg-gray-50' }}">
-                            Архива (Избришани)
+                            {{ __('admin.students.archived_tab') }}
                         </button>
                     </div>
 
@@ -65,13 +65,13 @@
             <table class="w-full border-collapse bg-white">
                 <thead class=" bg-gray-50 text-left font-semibold text-sm text-gray-900">
                     <tr>
-                        <th class="px-2 py-3">Име и презиме</th>
-                        <th class="px-2 py-3">Контакт</th>
-                        <th class="px-2 py-3">Држава</th>
+                        <th class="px-2 py-3">{{ __('admin.students.col_name') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.students.col_contact') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.students.col_country') }}</th>
                         <th wire:click="sortBy('lessons_count')"
                             class="px-2 py-3 text-center cursor-pointer hover:bg-gray-50 transition group">
                             <div class="flex items-center justify-center gap-1.5">
-                                Часови
+                                {{ __('admin.students.col_lessons') }}
                                 <div class="flex flex-col items-center justify-center -space-y-1">
                                     <svg class="h-3 w-3 {{ $sortField === 'lessons_count' && $sortDirection === 'asc' ? 'text-blue-600' : 'text-gray-300 group-hover:text-gray-400' }}"
                                         fill="currentColor" viewBox="0 0 24 24">
@@ -88,7 +88,7 @@
                         <th wire:click="sortBy('invoices_sum_total_amount')"
                             class="px-2 py-3 text-right cursor-pointer hover:bg-gray-50 transition group">
                             <div class="flex items-center justify-end gap-1.5">
-                                Заработка
+                                {{ __('admin.students.col_earnings') }}
 
                                 <div class="flex flex-col items-center justify-center -space-y-1">
                                     <svg class="h-3 w-3 {{ $sortField === 'invoices_sum_total_amount' && $sortDirection === 'asc' ? 'text-blue-600' : 'text-gray-300 group-hover:text-gray-400' }}"
@@ -103,10 +103,10 @@
                                 </div>
                             </div>
                         </th>
-                        <th class="px-2 py-3 text-center">Активен</th>
-                        <th class="px-2 py-3">Регистриран</th>
-                        <th class="px-2 py-3">Последна активност</th>
-                        <th class="px-2 py-3 text-right">Акции</th>
+                        <th class="px-2 py-3 text-center">{{ __('admin.students.col_active') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.students.col_registered') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.students.col_last_activity') }}</th>
+                        <th class="px-2 py-3 text-right">{{ __('admin.students.col_actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
@@ -154,7 +154,8 @@
                                         </span>
                                     </td>
                                     <td class="px-2 py-2 text-right font-semibold text-gray-700">
-                                        {{ number_format($student->invoices_sum_total_amount ?? 0, 0, ',', '.') }} ден.
+                                        {{ number_format($student->invoices_sum_total_amount ?? 0, 0, ',', '.') }}
+                                        {{ __('admin.students.currency') }}
                                     </td>
                                     <td class="px-2 py-2 text-center">
                                         <button wire:click="toggleActive({{ $student->id }})"
@@ -167,14 +168,14 @@
                                         {{ $student->created_at ? $student->created_at->format('d.m.Y') : '/' }}
                                     </td>
 
-                                    {{-- НОВА КОЛОНА: ПОСЛЕДНА АКТИВНОСТ --}}
+                                    {{-- Last Activity --}}
                                     <td class="px-2 py-2 text-sm text-gray-600">
                                         @if($student->user && $student->user->last_login_at)
                                             <span class="px-2 py-2 text-sm text-gray-600">
-                                                {{ $student->user->last_login_at->format('d.m.Y H:i') }} ч.
+                                                {{ $student->user->last_login_at->format('d.m.Y H:i') }}
                                             </span>
                                         @else
-                                            <span class="text-gray-400 italic text-xs">Никогаш</span>
+                                            <span class="text-gray-400 italic text-xs">{{ __('admin.students.never') }}</span>
                                         @endif
                                     </td>
                                     <td class="px-2 py-2 text-right space-x-3">
@@ -187,18 +188,19 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                                 </svg>
-                                                <span class="hidden md:inline">Врати ученик</span>
+                                                <span class="hidden md:inline">{{ __('admin.students.restore') }}</span>
                                             </button>
 
                                             <button type="button"
                                                 onclick="confirmPermanentDelete({{ $student->id }}, '{{ addslashes(trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? ''))) }}')"
                                                 class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none"
-                                                title="Избриши трајно" aria-label="Избриши трајно">
+                                                title="{{ __('admin.students.delete_permanent') }}"
+                                                aria-label="{{ __('admin.students.delete_permanent') }}">
                                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
-                                                <span class="hidden md:inline">Избриши трајно</span>
+                                                <span class="hidden md:inline">{{ __('admin.students.delete_permanent') }}</span>
                                             </button>
                                         @endif
                                     </td>
@@ -206,7 +208,8 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center py-8 text-gray-400 italic">Нема избришани ученици.</td>
+                                <td colspan="9" class="text-center py-8 text-gray-400 italic">
+                                    {{ __('admin.students.no_archived') }}</td>
                             </tr>
                         @endforelse
                     @else
@@ -253,7 +256,8 @@
                                         </span>
                                     </td>
                                     <td class="px-2 py-2 text-right font-semibold text-gray-700">
-                                        {{ number_format($student->invoices_sum_total_amount ?? 0, 0, ',', '.') }} ден.
+                                        {{ number_format($student->invoices_sum_total_amount ?? 0, 0, ',', '.') }}
+                                        {{ __('admin.students.currency') }}
                                     </td>
                                     <td class="px-2 py-2 text-center">
                                         <button wire:click="toggleActive({{ $student->id }})"
@@ -266,14 +270,14 @@
                                         {{ $student->created_at ? $student->created_at->format('d.m.Y') : '/' }}
                                     </td>
 
-                                    {{-- НОВА КОЛОНА: ПОСЛЕДНА АКТИВНОСТ --}}
+                                    {{-- Last Activity --}}
                                     <td class="px-2 py-2 text-sm text-gray-600">
                                         @if($student->user && $student->user->last_login_at)
                                             <span class="px-2 py-2 text-sm text-gray-600">
-                                                {{ $student->user->last_login_at->format('d.m.Y H:i') }} ч.
+                                                {{ $student->user->last_login_at->format('d.m.Y H:i') }}
                                             </span>
                                         @else
-                                            <span class="text-gray-400 italic text-xs">Никогаш</span>
+                                            <span class="text-gray-400 italic text-xs">{{ __('admin.students.never') }}</span>
                                         @endif
                                     </td>
                                     <td class="px-2 py-2 text-right space-x-3">
@@ -286,39 +290,42 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                                 </svg>
-                                                <span class="hidden md:inline">Врати ученик</span>
+                                                <span class="hidden md:inline">{{ __('admin.students.restore') }}</span>
                                             </button>
 
                                             <button type="button"
                                                 onclick="confirmPermanentDelete({{ $student->id }}, '{{ addslashes(trim(($student->first_name ?? '') . ' ' . ($student->last_name ?? ''))) }}')"
                                                 class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none"
-                                                title="Избриши трајно" aria-label="Избриши трајно">
+                                                title="{{ __('admin.students.delete_permanent') }}"
+                                                aria-label="{{ __('admin.students.delete_permanent') }}">
                                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
-                                                <span class="hidden md:inline">Избриши трајно</span>
+                                                <span class="hidden md:inline">{{ __('admin.students.delete_permanent') }}</span>
                                             </button>
                                         @else
-                                            <button wire:click="edit({{ $student->id }})" title="Измени" aria-label="Измени"
+                                            <button wire:click="edit({{ $student->id }})" title="{{ __('admin.students.edit') }}"
+                                                aria-label="{{ __('admin.students.edit') }}"
                                                 class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-blue-600 md:bg-blue-50 md:hover:bg-blue-100 md:hover:text-blue-800 transition focus:outline-none">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
-                                                <span class="hidden md:inline">Измени</span>
+                                                <span class="hidden md:inline">{{ __('admin.students.edit') }}</span>
                                             </button>
 
                                             <button type="button"
-                                                onclick="confirmDelete({{ $student->id }}, '{{ addslashes($student->user->name ?? 'Непознат') }}')"
+                                                onclick="confirmDelete({{ $student->id }}, '{{ addslashes($student->user->name ?? 'Unknown') }}')"
                                                 class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none"
-                                                title="Избриши" aria-label="Избриши">
+                                                title="{{ __('admin.students.delete') }}"
+                                                aria-label="{{ __('admin.students.delete') }}">
                                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
-                                                <span class="hidden md:inline">Избриши</span>
+                                                <span class="hidden md:inline">{{ __('admin.students.delete') }}</span>
                                             </button>
                                         @endif
                                     </td>
@@ -354,8 +361,8 @@
 
                 <div class="px-8 py-6 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold text-gray-900">Внес на ученици</h3>
-                        <p class="text-sm text-gray-500 mt-1">Додадете нов или ажурирајте постоечки ученик</p>
+                        <h3 class="text-xl font-bold text-gray-900">{{ __('admin.students.modal_title') }}</h3>
+                        <p class="text-sm text-gray-500 mt-1">{{ __('admin.students.modal_subtitle') }}</p>
                     </div>
                     <button @click="$dispatch('close-modal')"
                         class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition text-2xl leading-none">
@@ -369,38 +376,43 @@
                 <div class="px-8 py-8 space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Име</label>
-                            <input type="text" wire:model="first_name" placeholder="пр. Петар"
+                            <label
+                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_first_name') }}</label>
+                            <input type="text" wire:model="first_name"
+                                placeholder="{{ __('admin.students.placeholder_first_name') }}"
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                             <x-input-error :messages="$errors->get('first_name')" class="mt-1" />
                         </div>
                         <div>
                             <label
-                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Презиме</label>
-                            <input type="text" wire:model="last_name" placeholder="пр. Петровски"
+                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_last_name') }}</label>
+                            <input type="text" wire:model="last_name"
+                                placeholder="{{ __('admin.students.placeholder_last_name') }}"
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                             <x-input-error :messages="$errors->get('last_name')" class="mt-1" />
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Е-пошта</label>
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_email') }}</label>
                         <input type="email" wire:model="email" placeholder="email@example.com"
                             class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                         <x-input-error :messages="$errors->get('email')" class="mt-1" />
                     </div>
-                    {{-- Полето за лозинка е тргнато, лозинката се генерира автоматски и се праќа на email --}}
+                    {{-- Password field removed; password is auto-generated and sent via email --}}
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label
-                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Телефон</label>
-                            <input type="text" wire:model="phone" placeholder="07X XXX XXX"
+                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_phone') }}</label>
+                            <input type="text" wire:model="phone" placeholder="{{ __('admin.students.placeholder_phone') }}"
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                         </div>
                         <div>
                             <label
-                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Држава</label>
-                            <input type="text" wire:model="country" placeholder="пр. Македонија"
+                                class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_country') }}</label>
+                            <input type="text" wire:model="country"
+                                placeholder="{{ __('admin.students.placeholder_country') }}"
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                         </div>
                     </div>
@@ -409,11 +421,11 @@
                 <div class="px-8 py-6 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
                     <button @click="$dispatch('close-modal')"
                         class="px-6 py-3 text-gray-500 font-semibold hover:text-gray-700">
-                        Откажи
+                        {{ __('admin.students.cancel') }}
                     </button>
                     <button wire:click="store()"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition transform active:scale-95">
-                        Зачувај
+                        {{ __('admin.students.save') }}
                     </button>
                 </div>
             </div>
@@ -421,36 +433,48 @@
     @endif
 </div>
 <script>
+    const _st = {
+        archiveTitle: @json(__('admin.students.confirm_archive_title')),
+        archiveConfirm: @json(__('admin.students.confirm_archive_button')),
+        restoreTitle: @json(__('admin.students.confirm_restore_title')),
+        restoreConfirm: @json(__('admin.students.confirm_restore_button')),
+        permTitle: @json(__('admin.students.confirm_permanent_title')),
+        permInputPlaceholder: @json(__('admin.students.confirm_permanent_input_placeholder')),
+        permInputError: @json(__('admin.students.confirm_permanent_input_error')),
+        permConfirm: @json(__('admin.students.confirm_permanent_button')),
+        cancel: @json(__('admin.students.cancel_button')),
+    };
+
     function confirmDelete(id, name) {
+        const html = @json(__('admin.students.confirm_archive_html', ['name' => ':name'])).replace(':name', '<b>' + name + '</b>');
         Swal.fire({
-            title: 'Дали сте сигурни?',
-            html: "Ученикот <b>" + name + "</b> ќе биде префрлен во архива.",
+            title: _st.archiveTitle,
+            html: html,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#2563eb',
-            confirmButtonText: 'Да, избриши!',
-            cancelButtonText: 'Откажи',
+            confirmButtonText: _st.archiveConfirm,
+            cancelButtonText: _st.cancel,
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                // Повикување на Livewire методот
                 @this.delete(id);
-
             }
         })
     }
 
     function confirmRestoreStudent(id, name) {
+        const html = @json(__('admin.students.confirm_restore_html', ['name' => ':name'])).replace(':name', '<b>' + name + '</b>');
         Swal.fire({
-            title: 'Врати ученик?',
-            html: "Дали сакате да го вратите ученикот <b>" + name + "</b> во активна листа?",
+            title: _st.restoreTitle,
+            html: html,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#059669',
             cancelButtonColor: '#2563eb',
-            confirmButtonText: 'Да, врати го',
-            cancelButtonText: 'Откажи',
+            confirmButtonText: _st.restoreConfirm,
+            cancelButtonText: _st.cancel,
             reverseButtons: true,
             backdrop: `rgba(15, 23, 42, 0.5)`
         }).then((result) => {
@@ -462,23 +486,23 @@
 
     function confirmPermanentDelete(id, name) {
         const normalizeFullName = (text) => (text || '').trim().replace(/\s+/g, ' ');
-
+        const html = @json(__('admin.students.confirm_permanent_html', ['name' => ':name'])).replace(':name', '<b>' + name + '</b>');
         Swal.fire({
-            title: 'Трајно бришење?',
-            html: "За трајно бришење на ученикот <b>" + name + "</b>, внесете го точно името и презимето.<br><br>Ова дејство не може да се врати.",
+            title: _st.permTitle,
+            html: html,
             icon: 'warning',
             input: 'text',
-            inputPlaceholder: 'Име и презиме',
+            inputPlaceholder: _st.permInputPlaceholder,
             inputValidator: (value) => {
                 if (!value || normalizeFullName(value) !== normalizeFullName(name)) {
-                    return 'Внесете го точно името и презимето за потврда.';
+                    return _st.permInputError;
                 }
             },
             showCancelButton: true,
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#2563eb',
-            confirmButtonText: 'Да, избриши трајно',
-            cancelButtonText: 'Откажи',
+            confirmButtonText: _st.permConfirm,
+            cancelButtonText: _st.cancel,
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {

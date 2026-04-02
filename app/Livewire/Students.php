@@ -80,7 +80,7 @@ class Students extends Component
             $student->user()->withTrashed()->restore();
         }
         $student->restore();
-        session()->flash('message', 'Ученикот е успешно вратен во листата.');
+        session()->flash('message', __('admin.students.restored'));
     }
 
     public function toggleActive($id)
@@ -97,7 +97,7 @@ class Students extends Component
             $user->save();
         }
 
-        session()->flash('message', 'Статусот е ажуриран.');
+        session()->flash('message', __('admin.students.status_updated'));
     }
 
     public function create()
@@ -192,7 +192,7 @@ class Students extends Component
             $user->notify(new StudentWelcomeNotification($resetUrl));
         }
 
-        session()->flash('message', $this->studentId ? 'Успешно ажурирано.' : 'Успешно креиран ученик.');
+        session()->flash('message', $this->studentId ? __('admin.students.updated') : __('admin.students.created'));
         $this->isOpen = false;
         $this->resetInputFields();
     }
@@ -219,7 +219,7 @@ class Students extends Component
             $student->user->delete();
         }
         $student->delete();
-        session()->flash('message', 'Ученикот е архивиран.');
+        session()->flash('message', __('admin.students.archived'));
     }
 
     public function forceDeleteStudent($id)
@@ -227,7 +227,7 @@ class Students extends Component
         $student = Student::withTrashed()->findOrFail($id);
 
         if (!$student->trashed()) {
-            session()->flash('error', 'Трајно бришење е дозволено само за архивирани ученици.');
+            session()->flash('error', __('admin.students.force_delete_only_archived'));
             return;
         }
 
@@ -243,6 +243,6 @@ class Students extends Component
         }
 
         $student->forceDelete();
-        session()->flash('message', 'Ученикот и сите негови часови се трајно избришани.');
+        session()->flash('message', __('admin.students.force_deleted'));
     }
 }

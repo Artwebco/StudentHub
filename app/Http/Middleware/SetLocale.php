@@ -24,11 +24,7 @@ class SetLocale
             $user->forceFill(['last_login_at' => now()])->saveQuietly();
         }
 
-        if ($user && isset($user->role) && $user->role === 'admin') {
-            App::setLocale('mk');
-        } else {
-            App::setLocale('en');
-        }
+        App::setLocale('en');
 
         return $next($request);
     }

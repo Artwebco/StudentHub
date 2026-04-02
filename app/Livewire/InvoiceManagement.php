@@ -86,7 +86,7 @@ class InvoiceManagement extends Component
                 $pricePerUnit = $template ? $template->default_price : 0;
 
                 $baseAmount = (int) ($this->advance_hours * $pricePerUnit);
-                $serviceDesc = $template->name ?? '';
+                $serviceDesc = $template?->admin_name ?? '';
                 $studentId = $this->student_id;
                 $customClient = null;
                 $quantity = $this->advance_hours;
@@ -98,7 +98,7 @@ class InvoiceManagement extends Component
                     ->get();
 
                 if ($lessons->isEmpty()) {
-                    session()->flash('error', 'Нема пронајдено одржани часови за овој ученик во избраниот период.');
+                    session()->flash('error', __('admin.invoices.no_held_lessons'));
                     return;
                 }
 
@@ -134,7 +134,7 @@ class InvoiceManagement extends Component
             'student_id' => $studentId,
             'custom_client_name' => $customClient,
             'service_description' => $serviceDesc,
-            'lesson_type_id' => $this->is_advance ? $this->lesson_type_id : null,
+            'lesson_type_id' => ($this->invoice_type === 'student' && $this->is_advance) ? $this->lesson_type_id : null,
             'quantity' => $quantity ?? 1,
             'unit_price' => $unitPrice ?? $baseAmount,
             'date_from' => $this->date_from,
@@ -146,30 +146,30 @@ class InvoiceManagement extends Component
         ]);
 
         $this->reset(['student_id', 'date_from', 'date_to', 'showCreateModal', 'service_client_name', 'service_description', 'service_amount', 'advance_hours', 'lesson_type_id', 'discount_percent']);
-        session()->flash('message', 'Фактурата е успешно генерирана.');
+        session()->flash('message', __('admin.invoices.generated'));
     }
 
     public function cancelInvoice($id, $reason = null)
     {
         $invoice = Invoice::find($id);
         if (!$invoice) {
-            session()->flash('error', 'Фактурата не е пронајдена.');
+            session()->flash('error', __('admin.invoices.not_found'));
             return;
         }
 
         if ($invoice->status === 'cancelled') {
-            session()->flash('error', 'Фактурата е веќе поништена.');
+            session()->flash('error', __('admin.invoices.already_cancelled'));
             return;
         }
 
         if ($invoice->status === 'paid') {
-            session()->flash('error', 'Платена фактура не може да се поништи.');
+            session()->flash('error', __('admin.invoices.paid_cannot_cancel'));
             return;
         }
 
         $reason = trim((string) $reason);
         if (mb_strlen($reason) < 10) {
-            session()->flash('error', 'Поништување е дозволено само со валидна причина (минимум 10 карактери).');
+            session()->flash('error', __('admin.invoices.cancel_reason_min'));
             return;
         }
 
@@ -179,19 +179,19 @@ class InvoiceManagement extends Component
             'cancelled_at' => now(),
         ]);
 
-        session()->flash('message', 'Фактурата е поништена со внесена причина.');
+        session()->flash('message', __('admin.invoices.cancelled_with_reason'));
     }
 
     public function togglePaid($id)
     {
         $invoice = Invoice::find($id);
         if (!$invoice) {
-            session()->flash('error', 'Фактурата не е пронајдена.');
+            session()->flash('error', __('admin.invoices.not_found'));
             return;
         }
 
         if ($invoice->status === 'cancelled') {
-            session()->flash('error', 'Поништена фактура не може да се менува во платена/неплатена.');
+            session()->flash('error', __('admin.invoices.cancelled_cannot_toggle'));
             return;
         }
 
@@ -221,17 +221,17 @@ class InvoiceManagement extends Component
         $invoice = Invoice::find($id);
 
         if (!$invoice) {
-            session()->flash('error', 'Фактурата не е пронајдена.');
+            session()->flash('error', __('admin.invoices.not_found'));
             return;
         }
 
         if ($invoice->status !== 'cancelled') {
-            session()->flash('error', 'Бришење е дозволено само за поништени фактури.');
+            session()->flash('error', __('admin.invoices.delete_only_cancelled'));
             return;
         }
 
         $invoice->delete();
-        session()->flash('message', 'Фактурата е избришана.');
+        session()->flash('message', __('admin.invoices.deleted'));
     }
 
     public function restoreInvoice($id)
@@ -239,12 +239,12 @@ class InvoiceManagement extends Component
         $invoice = Invoice::find($id);
 
         if (!$invoice) {
-            session()->flash('error', 'Фактурата не е пронајдена.');
+            session()->flash('error', __('admin.invoices.not_found'));
             return;
         }
 
         if ($invoice->status !== 'cancelled') {
-            session()->flash('error', 'Враќање е дозволено само за поништени фактури.');
+            session()->flash('error', __('admin.invoices.restore_only_cancelled'));
             return;
         }
 
@@ -254,7 +254,7 @@ class InvoiceManagement extends Component
             'cancelled_at' => null,
         ]);
 
-        session()->flash('message', 'Фактурата е вратена во статус неплатена.');
+        session()->flash('message', __('admin.invoices.restored'));
     }
 
     public function downloadInvoice($invoiceId)
@@ -278,23 +278,23 @@ class InvoiceManagement extends Component
         $invoice = Invoice::with('student')->find($invoiceId);
 
         if (!$invoice) {
-            session()->flash('error', 'Фактурата не е пронајдена.');
+            session()->flash('error', __('admin.invoices.not_found'));
             return;
         }
 
         if ($invoice->status === 'cancelled') {
-            session()->flash('error', 'Поништена фактура не може да се прати по е-пошта.');
+            session()->flash('error', __('admin.invoices.cancelled_cannot_send'));
             return;
         }
 
         if ($invoice->email_sent_at && !$forceResend) {
-            session()->flash('error', 'Оваа фактура веќе е испратена. За повторно праќање потребна е потврда.');
+            session()->flash('error', __('admin.invoices.already_sent_confirmation'));
             return;
         }
 
         $recipientEmail = optional($invoice->student)->email;
         if (!$recipientEmail || !filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
-            session()->flash('error', 'За оваа фактура нема валидна е-пошта кај клиентот.');
+            session()->flash('error', __('admin.invoices.invalid_recipient'));
             return;
         }
 
@@ -326,15 +326,15 @@ class InvoiceManagement extends Component
             ]);
 
             session()->flash('message', $alreadySent
-                ? 'Фактурата е повторно испратена на е-пошта: ' . $recipientEmail
-                : 'Фактурата е успешно испратена на е-пошта: ' . $recipientEmail);
+                ? __('admin.invoices.resent', ['email' => $recipientEmail])
+                : __('admin.invoices.sent', ['email' => $recipientEmail]));
         } catch (\Throwable $e) {
             $invoice->update([
                 'email_last_error' => mb_substr((string) $e->getMessage(), 0, 1000),
             ]);
 
             report($e);
-            session()->flash('error', 'Настана грешка при праќање на фактурата. Обидете се повторно.');
+            session()->flash('error', __('admin.invoices.send_error'));
         }
     }
 
@@ -343,7 +343,7 @@ class InvoiceManagement extends Component
         $settings = SchoolSetting::first();
 
         if (!$settings) {
-            session()->flash('error', 'Прво внесете ги податоците за училиштето во Подесувања!');
+            session()->flash('error', __('admin.invoices.missing_school_settings'));
             return null;
         }
 

@@ -243,7 +243,7 @@
             @if($invoice->is_advance && $invoice->student)
                 <tr>
                     <td>
-                        1. {{ $invoice->service_description }}<br>
+                        1. {{ $invoice->lessonTemplate?->invoice_name ?? $invoice->service_description }}<br>
                         <small>За период: {{ \Carbon\Carbon::parse($invoice->date_from)->format('d.m.Y') }} до
                             {{ \Carbon\Carbon::parse($invoice->date_to)->format('d.m.Y') }}</small>
                     </td>
@@ -269,7 +269,7 @@
                 @foreach($lessons->groupBy('lesson_type_id') as $typeId => $groupedLessons)
                     <tr>
                         <td>
-                            {{ $loop->iteration }}. Часови по {{ $groupedLessons->first()->lessonType->name }}<br>
+                            {{ $loop->iteration }}. Часови по {{ $groupedLessons->first()->lessonType->invoice_name }}<br>
                             <small>За период: {{ \Carbon\Carbon::parse($invoice->date_from)->format('d.m.Y') }} -
                                 {{ \Carbon\Carbon::parse($invoice->date_to)->format('d.m.Y') }}</small>
                         </td>

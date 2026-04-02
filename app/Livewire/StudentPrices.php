@@ -7,12 +7,13 @@ use App\Models\LessonTemplate;
 
 class StudentPrices extends Component
 {
-    public $name, $description, $duration, $default_price;
+    public $name_en, $name_mk, $description, $duration, $default_price;
     public $editingId = null;
     public $showModal = false;
 
     protected $rules = [
-        'name' => 'required|min:3',
+        'name_en' => 'required|min:3',
+        'name_mk' => 'required|min:3',
         'duration' => 'required|numeric',
         'default_price' => 'required|numeric',
     ];
@@ -37,14 +38,18 @@ class StudentPrices extends Component
         if ($this->editingId) {
             $template = LessonTemplate::find($this->editingId);
             $template->update([
-                'name' => $this->name,
+                'name' => $this->name_mk,
+                'name_en' => $this->name_en,
+                'name_mk' => $this->name_mk,
                 'description' => $this->description,
                 'duration' => $this->duration,
                 'default_price' => $this->default_price,
             ]);
         } else {
             LessonTemplate::create([
-                'name' => $this->name,
+                'name' => $this->name_mk,
+                'name_en' => $this->name_en,
+                'name_mk' => $this->name_mk,
                 'description' => $this->description,
                 'duration' => $this->duration,
                 'default_price' => $this->default_price,
@@ -53,7 +58,7 @@ class StudentPrices extends Component
 
         $this->resetInputFields();
         $this->showModal = false;
-        session()->flash('message', 'Успешно зачувано!');
+        session()->flash('message', __('admin.pricing.saved_message'));
     }
 
     public function edit($id)
@@ -61,7 +66,8 @@ class StudentPrices extends Component
         $this->resetInputFields(); // Чистиме претходни остатоци за секој случај
         $template = LessonTemplate::findOrFail($id);
         $this->editingId = $id;
-        $this->name = $template->name;
+        $this->name_en = $template->name_en ?: $template->name;
+        $this->name_mk = $template->name_mk ?: $template->name;
         $this->description = $template->description;
         $this->duration = $template->duration;
         $this->default_price = $template->default_price;
@@ -71,12 +77,13 @@ class StudentPrices extends Component
     public function delete($id)
     {
         LessonTemplate::find($id)->delete();
-        session()->flash('message', 'Типот на час е избришан.');
+        session()->flash('message', __('admin.pricing.deleted_message'));
     }
 
     private function resetInputFields()
     {
-        $this->name = '';
+        $this->name_en = '';
+        $this->name_mk = '';
         $this->description = '';
         $this->duration = '';
         $this->default_price = '';

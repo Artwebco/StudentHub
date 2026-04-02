@@ -2,8 +2,8 @@
     <div>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
             <div>
-                <h2 class="text-xl font-bold text-gray-700">Финансиска аналитика</h2>
-                <p class="text-md text-gray-600">Преглед на перформанси</p>
+                <h2 class="text-xl font-bold text-gray-700">{{ __('admin.dashboard.title') }}</h2>
+                <p class="text-md text-gray-600">{{ __('admin.dashboard.subtitle') }}</p>
             </div>
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
 
@@ -12,7 +12,8 @@
                     class="flex gap-2 bg-white p-2 rounded-xl shadow-sm border border-gray-200">
                     <select name="year" onchange="this.form.submit()"
                         class="rounded-lg border-gray-300 text-sm focus:ring-blue-500">
-                        <option value="all" {{ ($selectedYear ?? 'all') == 'all' ? 'selected' : '' }}>Сите години</option>
+                        <option value="all" {{ ($selectedYear ?? 'all') == 'all' ? 'selected' : '' }}>
+                            {{ __('admin.dashboard.all_years') }}</option>
                         @foreach($availableYears ?? [] as $year)
                             <option value="{{ $year }}" {{ ($selectedYear ?? '') == $year ? 'selected' : '' }}>{{ $year }}
                             </option>
@@ -21,11 +22,15 @@
 
                     <select name="quarter" onchange="this.form.submit()"
                         class="rounded-lg border-gray-300 text-sm focus:ring-blue-500">
-                        <option value="">Цела година</option>
-                        <option value="1" {{ ($selectedQuarter ?? '') == '1' ? 'selected' : '' }}>Q1 (Јан-Мар)</option>
-                        <option value="2" {{ ($selectedQuarter ?? '') == '2' ? 'selected' : '' }}>Q2 (Апр-Јун)</option>
-                        <option value="3" {{ ($selectedQuarter ?? '') == '3' ? 'selected' : '' }}>Q3 (Јул-Сеп)</option>
-                        <option value="4" {{ ($selectedQuarter ?? '') == '4' ? 'selected' : '' }}>Q4 (Окт-Дек)</option>
+                        <option value="">{{ __('admin.dashboard.full_year') }}</option>
+                        <option value="1" {{ ($selectedQuarter ?? '') == '1' ? 'selected' : '' }}>
+                            {{ __('admin.dashboard.q1') }}</option>
+                        <option value="2" {{ ($selectedQuarter ?? '') == '2' ? 'selected' : '' }}>
+                            {{ __('admin.dashboard.q2') }}</option>
+                        <option value="3" {{ ($selectedQuarter ?? '') == '3' ? 'selected' : '' }}>
+                            {{ __('admin.dashboard.q3') }}</option>
+                        <option value="4" {{ ($selectedQuarter ?? '') == '4' ? 'selected' : '' }}>
+                            {{ __('admin.dashboard.q4') }}</option>
                     </select>
                 </form>
             </div>
@@ -35,9 +40,10 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase mb-1">Вкупно приходи</p>
+                    <p class="text-xs font-bold text-gray-400 uppercase mb-1">{{ __('admin.dashboard.total_revenue') }}
+                    </p>
                     <h3 class="text-2xl font-black text-gray-800">{{ number_format($totalEarnings ?? 0, 0, ',', '.') }}
-                        <span class="text-sm font-normal text-gray-400">ден.</span>
+                        <span class="text-sm font-normal text-gray-400">{{ __('admin.dashboard.currency') }}</span>
                     </h3>
                 </div>
                 <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
@@ -52,7 +58,8 @@
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase mb-1">Раст / Тренд</p>
+                    <p class="text-xs font-bold text-gray-400 uppercase mb-1">{{ __('admin.dashboard.growth_trend') }}
+                    </p>
                     <h3 class="text-2xl font-black {{ ($growthTotal ?? 0) >= 0 ? 'text-green-600' : 'text-red-600' }}">
                         {{ ($growthTotal ?? 0) >= 0 ? '+' : '' }}{{ number_format($growthTotal ?? 0, 1) }}%
                     </h3>
@@ -76,7 +83,7 @@
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase mb-1">Студенти</p>
+                    <p class="text-xs font-bold text-gray-400 uppercase mb-1">{{ __('admin.dashboard.students') }}</p>
                     <h3 class="text-2xl font-black text-gray-800">{{ $activeStudents ?? 0 }}</h3>
                 </div>
                 <div class="p-3 bg-purple-50 text-purple-600 rounded-xl">
@@ -94,13 +101,14 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 class="text-sm font-bold text-gray-400 uppercase mb-6 tracking-widest">Месечна Рентабилност</h3>
+                <h3 class="text-sm font-bold text-gray-400 uppercase mb-6 tracking-widest">
+                    {{ __('admin.dashboard.monthly_profitability') }}</h3>
                 <div style="height: 350px;"><canvas id="bizChart"></canvas></div>
             </div>
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col">
-                <h3 class="text-sm font-bold text-gray-400 uppercase mb-6 tracking-widest text-center">Спецификација по
-                    услуги</h3>
+                <h3 class="text-sm font-bold text-gray-400 uppercase mb-6 tracking-widest text-center">
+                    {{ __('admin.dashboard.services_breakdown') }}</h3>
                 <div class="relative mb-6" style="height: 220px;"><canvas id="servicesPieChart"></canvas></div>
                 <div class="flex-1 overflow-y-auto pr-2" style="max-height: 180px;">
                     @foreach($serviceStats ?? [] as $service => $stat)
@@ -111,7 +119,7 @@
                                 <span class="text-xs font-medium text-gray-600 truncate max-w-[120px]">{{ $service }}</span>
                             </div>
                             <span class="text-xs font-bold text-gray-800">{{ number_format($stat['sum'], 0, ',', '.') }}
-                                д.</span>
+                                {{ __('admin.dashboard.service_currency') }}</span>
                         </div>
                     @endforeach
                 </div>
@@ -123,6 +131,7 @@
     <script>
         window.addEventListener('load', function () {
             const colors = ['#2563eb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#f43f5e', '#64748b'];
+            const monthLabels = @json(__('admin.dashboard.months'));
 
             // Line Chart
             const ctxL = document.getElementById('bizChart');
@@ -130,7 +139,7 @@
                 new Chart(ctxL, {
                     type: 'line',
                     data: {
-                        labels: ['Јан', 'Фев', 'Мар', 'Апр', 'Мај', 'Јун', 'Јул', 'Авг', 'Сеп', 'Окт', 'Ное', 'Дек'],
+                        labels: monthLabels,
                         datasets: {!! json_encode($chartDatasets ?? []) !!}
                     },
                     options: { responsive: true, maintainAspectRatio: false }

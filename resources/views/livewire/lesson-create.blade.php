@@ -1,8 +1,8 @@
 <div>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
         <div>
-            <h2 class="text-xl font-bold text-gray-700">Дневник на часови</h2>
-            <p class="text-md text-gray-600">Евиденција на одржани часови</p>
+            <h2 class="text-xl font-bold text-gray-700">{{ __('admin.lessons.title') }}</h2>
+            <p class="text-md text-gray-600">{{ __('admin.lessons.subtitle') }}</p>
         </div>
     </div>
     {{-- SESSION MESSAGES --}}
@@ -16,10 +16,11 @@
         <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-[0.9fr_2.35fr_1.7fr_1.1fr_0.95fr_0.78fr_0.78fr_1fr_0.95fr_0.55fr] gap-2.5 items-end">
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Цена</label>
+                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.pricing.price') }}</label>
                 <div
                     class="h-10 border border-blue-200 bg-blue-50 rounded-lg px-3 inline-flex w-full items-center justify-between whitespace-nowrap">
-                    <span class="text-[11px] uppercase tracking-wide font-semibold text-blue-700">ден.</span>
+                    <span
+                        class="text-[11px] uppercase tracking-wide font-semibold text-blue-700">{{ __('admin.pricing.currency') }}</span>
                     <span class="text-sm font-bold text-blue-800">{{ $suggestedPrice }}</span>
                 </div>
                 <div class="h-3 mt-0.5"></div>
@@ -27,7 +28,7 @@
 
             <div class="w-full relative sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto"
                 x-data="{ open: @entangle('showDropdown') }" x-on:click.outside="open = false">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Ученик</label>
+                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.nav.students') }}</label>
 
                 <div @click="open = !open"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] cursor-pointer bg-white flex justify-between items-center {{ $errors->has('student_id') ? 'border-red-500' : 'border-gray-300' }}">
@@ -37,7 +38,7 @@
                             <span class="text-black font-medium">{{ $selected->first_name }}
                                 {{ $selected->last_name }}</span>
                         @else
-                            <span class="text-gray-400">-- Избери ученик --</span>
+                            <span class="text-gray-400">-- {{ __('admin.lessons.choose_student') }} --</span>
                         @endif
                     </span>
                     <svg class="h-4 w-4 text-gray-400 transition-transform" :class="open ? 'rotate-180' : ''"
@@ -63,7 +64,7 @@
                             </div>
                             <input type="text" wire:model.live.debounce.250ms="student_search"
                                 class="w-full h-9 pl-9 p-2 border border-gray-300 rounded text-[12px] focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Барај ученик..." @click.stop>
+                                placeholder="{{ __('admin.lessons.search_student') }}..." @click.stop>
                         </div>
                     </div>
 
@@ -74,7 +75,8 @@
                                 {{ $s->first_name }} {{ $s->last_name }}
                             </li>
                         @empty
-                            <li class="p-4 text-center text-gray-400 text-xs italic">Нема резултати</li>
+                            <li class="p-4 text-center text-gray-400 text-xs italic">{{ __('admin.lessons.no_results') }}
+                            </li>
                         @endforelse
                     </ul>
                 </div>
@@ -85,12 +87,13 @@
             </div>
 
             <div class="w-full sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Тип на час</label>
+                <label
+                    class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.lesson_type') }}</label>
                 <select wire:model.live="lesson_type_id"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_type_id') ? 'border-red-500' : 'border-gray-300' }}">
-                    <option value="">-- Избери --</option>
+                    <option value="">-- {{ __('admin.lessons.choose') }} --</option>
                     @foreach($lessonTypes as $type)
-                        <option value="{{ $type->id }}">{{ str_replace('min', 'мин', $type->name) }}</option>
+                        <option value="{{ $type->id }}">{{ $type->admin_name }}</option>
                     @endforeach
                 </select>
                 <div class="h-3 mt-0.5">
@@ -99,7 +102,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Датум</label>
+                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.date') }}</label>
                 <input type="date" wire:model="lesson_date"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_date') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-3 mt-0.5">
@@ -108,11 +111,11 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Статус</label>
+                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.status') }}</label>
                 <select wire:model.live="lesson_status"
                     class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_status') ? 'border-red-500' : 'border-gray-300' }}">
-                    <option value="held">Одржан</option>
-                    <option value="not_held">Неодржан</option>
+                    <option value="held">{{ __('admin.lessons.held') }}</option>
+                    <option value="not_held">{{ __('admin.lessons.not_held') }}</option>
                 </select>
                 <div class="h-3 mt-0.5">
                     <x-input-error :messages="$errors->get('lesson_status')" class="text-[10px] leading-4 uppercase" />
@@ -120,7 +123,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Почеток</label>
+                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.start') }}</label>
                 <input type="time" wire:model.live="start_time"
                     class="w-full h-10 border px-2 rounded-lg shadow-sm text-[13px] text-right {{ $errors->has('start_time') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-3 mt-0.5">
@@ -129,7 +132,7 @@
             </div>
 
             <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-xs font-medium text-gray-800 mb-1">Крај</label>
+                <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.end') }}</label>
                 <input type="time" wire:model="end_time"
                     class="w-full h-10 border pl-2 pr-1 rounded-lg shadow-sm text-[13px] {{ $errors->has('end_time') ? 'border-red-500' : 'border-gray-300' }}">
                 <div class="h-0 sm:h-3 mt-0 sm:mt-0.5">
@@ -147,7 +150,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M5 4h10l4 4v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4z" />
                     </svg>
-                    <span>Забелешка +</span>
+                    <span>{{ __('admin.lessons.note_plus') }}</span>
                 </button>
                 <div class="h-0 sm:h-3 mt-0 sm:mt-0.5"></div>
             </div>
@@ -156,7 +159,7 @@
                 <label class="hidden sm:block text-xs font-medium text-transparent mb-1 select-none">.</label>
                 <button wire:click="saveLesson"
                     class="h-10 w-full px-3 text-sm text-white rounded-lg font-bold shadow-sm transition-all whitespace-nowrap {{ $editingLessonId ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700' }}">
-                    {{ $editingLessonId ? 'Ажурирај' : 'Зачувај' }}
+                    {{ $editingLessonId ? __('admin.lessons.update') : __('admin.pricing.save') }}
                 </button>
                 <div class="h-0 sm:h-3 mt-0 sm:mt-0.5"></div>
             </div>
@@ -165,7 +168,7 @@
                 <label class="hidden sm:block text-xs font-medium text-transparent mb-1 select-none">.</label>
                 <button wire:click="resetFields"
                     class="h-10 w-full bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold shadow-sm transition-all flex items-center justify-center"
-                    title="Исчисти полиња">
+                    title="{{ __('admin.lessons.clear_fields') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -184,8 +187,9 @@
                 class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-50">
                 <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900 tracking-tight">Детален внес</h3>
-                        <p class="text-sm text-gray-500 mt-1 font-medium">Додади дополнителна забелешка за часот.</p>
+                        <h3 class="text-lg font-bold text-gray-900 tracking-tight">
+                            {{ __('admin.lessons.detail_entry') }}</h3>
+                        <p class="text-sm text-gray-500 mt-1 font-medium">{{ __('admin.lessons.detail_subtitle') }}</p>
                     </div>
                     <button type="button" @click="showDetailModal = false"
                         class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition">
@@ -197,20 +201,20 @@
                 </div>
 
                 <div class="px-6 py-6">
-                    <label class="block text-xs font-medium text-gray-800 mb-1">Забелешка</label>
+                    <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.note') }}</label>
                     <textarea wire:model="notes" rows="6"
                         class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm text-sm resize-none"
-                        placeholder="Што работевте?"></textarea>
+                        placeholder="{{ __('admin.lessons.note_placeholder') }}"></textarea>
                 </div>
 
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
                     <button type="button" @click="showDetailModal = false"
                         class="px-6 py-3 text-gray-500 font-semibold hover:text-gray-700">
-                        Откажи
+                        {{ __('admin.pricing.cancel') }}
                     </button>
                     <button type="button" @click="showDetailModal = false"
                         class="h-9 px-5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition">
-                        Готово
+                        {{ __('admin.lessons.done') }}
                     </button>
                 </div>
             </div>
@@ -221,9 +225,11 @@
         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
             <div class="flex flex-wrap items-end gap-3 lg:gap-4">
                 <div class="w-full sm:w-[430px]">
-                    <label class="block text-[14px] font-normal text-gray-900 mb-1">Барај ученик</label>
+                    <label
+                        class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.search_student') }}</label>
                     <div class="relative">
-                        <input type="text" wire:model.live="search" placeholder="Име..."
+                        <input type="text" wire:model.live="search"
+                            placeholder="{{ __('admin.lessons.name_placeholder') }}..."
                             class="w-full border-gray-300 rounded-lg p-2 pr-9 text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -234,7 +240,8 @@
                     </div>
                 </div>
                 <div class="w-full sm:w-[240px]">
-                    <label class="block text-[14px] font-normal text-gray-900 mb-1">Тип на час</label>
+                    <label
+                        class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.lesson_type') }}</label>
                     <div class="relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-3 text-gray-400"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -243,28 +250,31 @@
                         </svg>
                         <select wire:model.live="filter_type"
                             class="w-full border-gray-300 rounded-lg p-2 pl-9 text-sm">
-                            <option value="">Сите типови</option>
+                            <option value="">{{ __('admin.lessons.all_types') }}</option>
                             @foreach($lessonTypes as $type)
-                                <option value="{{ $type->id }}">{{ str_replace('min', 'мин', $type->name) }}</option>
+                                <option value="{{ $type->id }}">{{ $type->admin_name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="w-full sm:w-[220px]">
-                    <label class="block text-[14px] font-normal text-gray-900 mb-1">Статус</label>
+                    <label
+                        class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.status') }}</label>
                     <div class="relative">
                         <select wire:model.live="filter_status" class="w-full border-gray-300 rounded-lg p-2 text-sm">
-                            <option value="">Сите статуси</option>
-                            <option value="held">Одржан</option>
-                            <option value="not_held">Неодржан</option>
+                            <option value="">{{ __('admin.lessons.all_statuses') }}</option>
+                            <option value="held">{{ __('admin.lessons.held') }}</option>
+                            <option value="not_held">{{ __('admin.lessons.not_held') }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="w-full sm:w-[145px]"><label class="block text-[14px] font-normal text-gray-900 mb-1">Период
-                        од</label><input type="date" wire:model.live="filter_from_date"
+                <div class="w-full sm:w-[145px]"><label
+                        class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.period_from') }}</label><input
+                        type="date" wire:model.live="filter_from_date"
                         class="w-full border-gray-300 rounded-lg px-2 py-2 text-sm"></div>
-                <div class="w-full sm:w-[145px]"><label class="block text-[14px] font-normal text-gray-900 mb-1">Период
-                        до</label><input type="date" wire:model.live="filter_to_date"
+                <div class="w-full sm:w-[145px]"><label
+                        class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.period_to') }}</label><input
+                        type="date" wire:model.live="filter_to_date"
                         class="w-full border-gray-300 rounded-lg px-2 py-2 text-sm"></div>
 
                 {{-- EXPORT BUTTON --}}
@@ -276,7 +286,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        Excel
+                        {{ __('admin.lessons.export_excel') }}
                     </button>
                 </div>
             </div>
@@ -287,13 +297,13 @@
             <table class="w-full border-collapse bg-white">
                 <thead class="bg-gray-50 text-left font-normal  text-sm text-gray-900">
                     <tr>
-                        <th class="px-2 py-3">Ученик</th>
-                        <th class="px-2 py-3">Тип</th>
-                        <th class="px-2 py-3">Датум / Време</th>
-                        <th class="px-2 py-3">Статус</th>
-                        <th class="px-2 py-3">Цена</th>
-                        <th class="px-2 py-3">Забелешка</th>
-                        <th class="px-2 py-3 text-right">Акции</th>
+                        <th class="px-2 py-3">{{ __('admin.nav.students') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.lessons.type') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.lessons.datetime') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.lessons.status') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.pricing.price') }}</th>
+                        <th class="px-2 py-3">{{ __('admin.lessons.note') }}</th>
+                        <th class="px-2 py-3 text-right">{{ __('admin.lessons.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50 text-gray-600">
@@ -303,7 +313,7 @@
                             <td class="px-2 py-2 font-medium text-gray-800">{{ $log->student->first_name }}
                                 {{ $log->student->last_name }}
                             </td>
-                            <td class="px-2 py-2 text-[14px]">{{ str_replace('min', 'мин', $log->lessonType->name) }}</td>
+                            <td class="px-2 py-2 text-[14px]">{{ $log->lessonType->admin_name }}</td>
                             <td class="px-2 py-2 text-black">
                                 <div class="font-normal">{{ \Carbon\Carbon::parse($log->lesson_date)->format('d.m.Y') }}
                                 </div>
@@ -317,43 +327,44 @@
                                         {{ \Carbon\Carbon::parse($log->start_time)->format('H:i') }} -
                                         {{ \Carbon\Carbon::parse($log->end_time)->format('H:i') }}
                                     @else
-                                        Нема време
+                                        {{ __('admin.lessons.no_time') }}
                                     @endif
                                 </div>
                             </td>
                             <td class="px-2 py-2 text-sm">
                                 @if($log->lesson_status === 'held')
                                     <span
-                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">Одржан</span>
+                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">{{ __('admin.lessons.held') }}</span>
                                 @else
                                     <span
-                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">Неодржан</span>
+                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">{{ __('admin.lessons.not_held') }}</span>
                                 @endif
                             </td>
                             <td class="px-2 py-2 text-md text-gray-800">
-                                {{ number_format($log->price_at_time, 0, ',', '.') }} ден.
+                                {{ number_format($log->price_at_time, 0, ',', '.') }} {{ __('admin.pricing.currency') }}
                             </td>
                             <td class="px-2 py-2 italic text-gray-400">{{ $log->notes ?: '/' }}</td>
                             <td class="p-4 text-right space-x-2">
-                                <button wire:click="editLesson({{ $log->id }})" title="Измени" aria-label="Измени"
+                                <button wire:click="editLesson({{ $log->id }})" title="{{ __('admin.pricing.edit') }}"
+                                    aria-label="{{ __('admin.pricing.edit') }}"
                                     class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-blue-600 md:bg-blue-50 md:hover:bg-blue-100 md:hover:text-blue-800 transition focus:outline-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
-                                    <span class="hidden md:inline">Измени</span>
+                                    <span class="hidden md:inline">{{ __('admin.pricing.edit') }}</span>
                                 </button>
 
-                                <button type="button" onclick="confirmDelete({{ $log->id }})" title="Избриши"
-                                    aria-label="Избриши"
+                                <button type="button" onclick="confirmDelete({{ $log->id }})"
+                                    title="{{ __('admin.pricing.delete') }}" aria-label="{{ __('admin.pricing.delete') }}"
                                     class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
-                                    <span class="hidden md:inline">Избриши</span>
+                                    <span class="hidden md:inline">{{ __('admin.pricing.delete') }}</span>
                                 </button>
                             </td>
                         </tr>
@@ -361,10 +372,11 @@
                 </tbody>
                 <tfoot class="bg-blue-50">
                     <tr>
-                        <td colspan="4" class="p-1 text-right font-semibold text-gray-700 uppercase text-xs">Вкупно:
+                        <td colspan="4" class="p-1 text-right font-semibold text-gray-700 uppercase text-xs">
+                            {{ __('admin.lessons.total') }}:
                         </td>
                         <td class="p-1 font-semibold text-blue-800 text-lg">
-                            {{ number_format($totalAmount, 0, ',', '.') }} ден.
+                            {{ number_format($totalAmount, 0, ',', '.') }} {{ __('admin.pricing.currency') }}
                         </td>
                         <td colspan="2"></td>
                     </tr>
@@ -382,14 +394,14 @@
 <script>
     function confirmDelete(id) {
         Swal.fire({
-            title: 'Дали сте сигурни?',
-            text: "Ова дејство не може да се врати!",
+            title: @json(__('admin.lessons.confirm_title')),
+            text: @json(__('admin.lessons.confirm_text')),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#2563eb',
-            confirmButtonText: 'Да, избриши го!',
-            cancelButtonText: 'Откажи',
+            confirmButtonText: @json(__('admin.lessons.confirm_delete')),
+            cancelButtonText: @json(__('admin.pricing.cancel')),
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {

@@ -101,7 +101,7 @@
                     </a>
                     <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
                         class="inline-flex items-center justify-center p-2 rounded-lg border border-gray-200 text-slate-600 bg-white hover:bg-gray-50 transition"
-                        aria-label="Отвори мени">
+                        aria-label="Open menu">
                         <svg x-show="!mobileMenuOpen" class="w-5 h-5" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -118,12 +118,12 @@
                 @if(auth()->user()->role === 'admin')
                     @php
                         $mobileAdminItems = [
-                            ['route' => 'dashboard', 'label' => 'Командна табла', 'icon' => 'M3 3h7v9H3V3zm11 0h7v5h-7V3zm0 9h7v9h-7v-9zm-11 4h7v5H3v-5z'],
-                            ['route' => 'students', 'label' => 'Ученици', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75'],
-                            ['route' => 'student-prices', 'label' => 'Ценовник', 'icon' => 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
-                            ['route' => 'lessons-log', 'label' => 'Дневник', 'icon' => 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
-                            ['route' => 'invoices', 'label' => 'Фактури', 'icon' => 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8'],
-                            ['route' => 'company-info', 'label' => 'Моја Фирма', 'icon' => 'M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16'],
+                            ['route' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'M3 3h7v9H3V3zm11 0h7v5h-7V3zm0 9h7v9h-7v-9zm-11 4h7v5H3v-5z'],
+                            ['route' => 'students', 'label' => 'Students', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75'],
+                            ['route' => 'student-prices', 'label' => 'Pricing', 'icon' => 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
+                            ['route' => 'lessons-log', 'label' => 'Lesson Log', 'icon' => 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
+                            ['route' => 'invoices', 'label' => 'Invoices', 'icon' => 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8'],
+                            ['route' => 'company-info', 'label' => 'My Company', 'icon' => 'M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16'],
                         ];
                     @endphp
                 @endif
@@ -171,7 +171,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span>{{ auth()->user()->role === 'admin' ? 'Моја Статистика' : 'My Statistics' }}</span>
+                                    <span>My Statistics</span>
                                 </a>
                             @endif
 
@@ -185,7 +185,7 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                 </span>
-                                <span>{{ auth()->user()->role === 'admin' ? 'Мој Профил' : 'My Profile' }}</span>
+                                <span>My Profile</span>
                             </a>
                         </nav>
 
@@ -198,7 +198,7 @@
                                 <div class="min-w-0">
                                     <p class="truncate text-sm font-bold text-slate-800">{{ auth()->user()->name }}</p>
                                     <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-black">
-                                        {{ auth()->user()->role === 'admin' ? 'Администратор' : 'Student' }}
+                                        {{ auth()->user()->role === 'admin' ? 'Administrator' : 'Student' }}
                                     </p>
                                 </div>
                             </div>
@@ -207,7 +207,7 @@
                                 @csrf
                                 <button type="submit"
                                     class="w-full rounded-xl bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 transition hover:bg-red-100">
-                                    {{ auth()->user()->role === 'admin' ? 'Одјави се' : 'Log Out' }}
+                                    Log Out
                                 </button>
                             </form>
                         </div>
@@ -242,12 +242,12 @@
                 @if(auth()->user()->role === 'admin')
                     @php
                         $adminItems = [
-                            ['route' => 'dashboard', 'label' => 'Командна табла', 'icon' => 'M3 3h7v9H3V3zm11 0h7v5h-7V3zm0 9h7v9h-7v-9zm-11 4h7v5H3v-5z'],
-                            ['route' => 'lessons-log', 'label' => 'Дневник', 'icon' => 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
-                            ['route' => 'invoices', 'label' => 'Фактури', 'icon' => 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8'],
-                            ['route' => 'students', 'label' => 'Ученици', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75'],
-                            ['route' => 'student-prices', 'label' => 'Ценовник', 'icon' => 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
-                            ['route' => 'company-info', 'label' => 'Моја Фирма', 'icon' => 'M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16'],
+                            ['route' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'M3 3h7v9H3V3zm11 0h7v5h-7V3zm0 9h7v9h-7v-9zm-11 4h7v5H3v-5z'],
+                            ['route' => 'lessons-log', 'label' => 'Lesson Log', 'icon' => 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
+                            ['route' => 'invoices', 'label' => 'Invoices', 'icon' => 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8'],
+                            ['route' => 'students', 'label' => 'Students', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75'],
+                            ['route' => 'student-prices', 'label' => 'Pricing', 'icon' => 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
+                            ['route' => 'company-info', 'label' => 'My Company', 'icon' => 'M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16'],
                         ];
                     @endphp
 
@@ -276,8 +276,7 @@
                                 d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                             </path>
                         </svg>
-                        <span
-                            class="hide-on-collapse ml-3 font-semibold text-sm truncate">{{ auth()->user()->role === 'admin' ? 'Моја Статистика' : 'My Statistics' }}</span>
+                        <span class="hide-on-collapse ml-3 font-semibold text-sm truncate">My Statistics</span>
                     </a>
                 @endif
 
@@ -292,8 +291,7 @@
                         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span
-                        class="hide-on-collapse ml-3 font-semibold text-sm">{{ auth()->user()->role === 'admin' ? 'Мој Профил' : 'My Profile' }}</span>
+                    <span class="hide-on-collapse ml-3 font-semibold text-sm">My Profile</span>
                 </a>
             </nav>
 
@@ -305,7 +303,7 @@
                 <div class="ml-3 overflow-hidden hide-on-collapse">
                     <p class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name }}</p>
                     <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">
-                        {{ auth()->user()->role === 'admin' ? 'Администратор' : 'Student' }}
+                        {{ auth()->user()->role === 'admin' ? 'Administrator' : 'Student' }}
                     </p>
                 </div>
             </div>
@@ -322,8 +320,7 @@
                         <polyline points="16 17 21 12 16 7"></polyline>
                         <line x1="21" y1="12" x2="9" y2="12"></line>
                     </svg>
-                    <span
-                        class="hide-on-collapse ml-3 text-sm font-bold">{{ auth()->user()->role === 'admin' ? 'Одјави се' : 'Log Out' }}</span>
+                    <span class="hide-on-collapse ml-3 text-sm font-bold">Log Out</span>
                 </button>
             </form>
         </aside>

@@ -100,7 +100,7 @@ class SchoolSettingsManager extends Component
 
         $settings->save();
 
-        session()->flash('message', 'Подесувањата се зачувани.');
+        session()->flash('message', __('admin.settings.saved'));
     }
 
     public function render()

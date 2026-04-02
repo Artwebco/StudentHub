@@ -39,7 +39,7 @@ class DashboardController extends Controller
             }
         }
 
-        $currentInvoices = $query->get();
+        $currentInvoices = $query->with('lessonTemplate')->get();
         $totalEarnings = $currentInvoices->sum('total_amount');
         $activeStudents = Student::count();
 
@@ -50,10 +50,13 @@ class DashboardController extends Controller
             $growthTotal = $prevYearTotal > 0 ? (($totalEarnings - $prevYearTotal) / $prevYearTotal) * 100 : 0;
         }
 
-        // 4. Податоци за Пита (Услуги)
-        $serviceStats = $currentInvoices->groupBy('service_description')->map(fn($group) => [
-            'sum' => $group->sum('total_amount')
-        ])->sortByDesc('sum');
+        // 4. Податоци за Пита (Услуги) - use EN admin name from lesson template
+        $serviceStats = $currentInvoices->groupBy(
+            fn($invoice) =>
+            $invoice->lessonTemplate?->admin_name ?? $invoice->service_description
+        )->map(fn($group) => [
+                'sum' => $group->sum('total_amount')
+            ])->sortByDesc('sum');
 
         $pieLabels = $serviceStats->keys()->toArray();
         $pieData = $serviceStats->pluck('sum')->toArray();

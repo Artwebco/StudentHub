@@ -80,19 +80,19 @@ class LessonCreate extends Component
                 'end_time' => 'nullable|required_if:lesson_status,held|date_format:H:i|after:start_time',
             ],
             [
-                'student_id.required' => 'Изберете ученик',
-                'lesson_type_id.required' => 'Изберете тип на час',
-                'lesson_date.required' => 'Внесете датум',
-                'lesson_date.date' => 'Внесениот датум не е валиден.',
-                'lesson_status.required' => 'Изберете статус на часот',
-                'lesson_status.in' => 'Избраниот статус не е валиден.',
-                'start_time.required' => 'Внесете почеток',
-                'start_time.required_if' => 'За одржан час внесете почеток.',
-                'start_time.date_format' => 'Почетокот мора да биде во валиден формат (чч:мм).',
-                'end_time.required' => 'Внесете крај',
-                'end_time.required_if' => 'За одржан час внесете крај.',
-                'end_time.date_format' => 'Крајот мора да биде во валиден формат (чч:мм).',
-                'end_time.after' => 'Крајот мора да биде по почетокот.',
+                'student_id.required' => __('admin.lessons.validation.student_required'),
+                'lesson_type_id.required' => __('admin.lessons.validation.lesson_type_required'),
+                'lesson_date.required' => __('admin.lessons.validation.date_required'),
+                'lesson_date.date' => __('admin.lessons.validation.date_invalid'),
+                'lesson_status.required' => __('admin.lessons.validation.status_required'),
+                'lesson_status.in' => __('admin.lessons.validation.status_invalid'),
+                'start_time.required' => __('admin.lessons.validation.start_required'),
+                'start_time.required_if' => __('admin.lessons.validation.start_required_if'),
+                'start_time.date_format' => __('admin.lessons.validation.start_invalid'),
+                'end_time.required' => __('admin.lessons.validation.end_required'),
+                'end_time.required_if' => __('admin.lessons.validation.end_required_if'),
+                'end_time.date_format' => __('admin.lessons.validation.end_invalid'),
+                'end_time.after' => __('admin.lessons.validation.end_after'),
             ]
         );
 
@@ -110,10 +110,10 @@ class LessonCreate extends Component
         if ($this->editingLessonId) {
             Lesson::find($this->editingLessonId)->update($data);
             $this->editingLessonId = null;
-            session()->flash('message', 'Успешно ажурирано!');
+            session()->flash('message', __('admin.lessons.updated'));
         } else {
             Lesson::create($data);
-            session()->flash('message', 'Успешно зачувано!');
+            session()->flash('message', __('admin.lessons.saved'));
         }
 
         $this->resetFields();
@@ -166,7 +166,7 @@ class LessonCreate extends Component
     public function deleteLesson($id)
     {
         Lesson::destroy($id);
-        session()->flash('message', 'Избришано.');
+        session()->flash('message', __('admin.lessons.deleted'));
     }
 
     public function exportExcel()
