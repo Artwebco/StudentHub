@@ -183,9 +183,9 @@
                                 @if($invoice->email_sent_at)
                                     <div class="mt-2 text-[11px] leading-4 max-w-xs" style="color:#2563eb;">
                                         <span class="inline-flex items-center gap-1 py-0.5 px-2 rounded-full border"
-                                            title="{{ 'Последно праќање: ' . $invoice->email_sent_at->format('d.m.Y H:i') . ($invoice->email_sent_to ? "\nЕ-пошта: " . $invoice->email_sent_to : '') }}"
+                                            title="{{ 'Последно праќање: ' . $invoice->email_sent_at->format('d.m.Y H:i') . ($invoice->email_sent_to ? "\nE-mail: " . $invoice->email_sent_to : '') }}"
                                             style="background-color:#dbeafe;color:#2563eb;border-color:#bfdbfe;">
-                                            {{ __('admin.invoices.sent_badge') }}{{ (int) $invoice->email_sent_count > 1 ? ' x' . (int) $invoice->email_sent_count : '' }}
+                                            {{ __('admin.invoices.sent_badge') }}{{ (int) $invoice->email_sent_count > 1 ? ' x' . (int) $invoice->email_sent_count : '' }} (Last sent: {{ $invoice->email_sent_at->format('d.m.Y H:i') }})
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 opacity-70" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <circle cx="12" cy="12" r="9"></circle>
