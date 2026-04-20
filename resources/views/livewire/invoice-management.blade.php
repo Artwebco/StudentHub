@@ -183,9 +183,9 @@
                                 @if($invoice->email_sent_at)
                                     <div class="mt-2 text-[11px] leading-4 max-w-xs" style="color:#2563eb;">
                                         <span class="inline-flex items-center gap-1 py-0.5 px-2 rounded-full border"
-                                            title="{{ 'Последно праќање: ' . $invoice->email_sent_at->format('d.m.Y H:i') . ($invoice->email_sent_to ? "\nE-mail: " . $invoice->email_sent_to : '') }}"
+                                            title="{{ 'Last sent: ' . $invoice->email_sent_at->format('d.m.Y H:i') . ($invoice->email_sent_to ? "\n E-mail: " . $invoice->email_sent_to : '') }}"
                                             style="background-color:#dbeafe;color:#2563eb;border-color:#bfdbfe;">
-                                            {{ __('admin.invoices.sent_badge') }}{{ (int) $invoice->email_sent_count > 1 ? ' x' . (int) $invoice->email_sent_count : '' }} (Last sent: {{ $invoice->email_sent_at->format('d.m.Y H:i') }})
+                                            {{ __('admin.invoices.sent_badge') }}{{ (int) $invoice->email_sent_count > 1 ? ' x' . (int) $invoice->email_sent_count : '' }}
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 opacity-70" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <circle cx="12" cy="12" r="9"></circle>
@@ -228,18 +228,23 @@
 
                                     @if($invoice->status !== 'cancelled')
                                         @if($invoice->is_cash)
-                                            <span class="p-2 bg-gray-100 border border-gray-200 rounded-lg select-none opacity-70 flex items-center justify-center" style="cursor: not-allowed; width: 40px; height: 40px;" title="Овој тип на фактура не се праќа по е-пошта">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                            <span
+                                                class="p-2 bg-gray-100 border border-gray-200 rounded-lg select-none opacity-70 flex items-center justify-center"
+                                                style="cursor: not-allowed; width: 40px; height: 40px;"
+                                                title="Овој тип на фактура не се праќа по е-пошта">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 15 22 11 13 2 9 22 2Z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M22 2 15 22 11 13 2 9 22 2Z" />
                                                 </svg>
                                             </span>
                                         @else
                                             <button type="button"
-                                                onclick="confirmSendInvoiceEmail({{ $invoice->id }}, @js($invoice->invoice_number), @js(optional($invoice->email_sent_at)?->format('d.m.Y H:i')))")"
-                                                wire:loading.attr="disabled" wire:target="sendInvoiceEmail({{ $invoice->id }})"
+                                                onclick="confirmSendInvoiceEmail({{ $invoice->id }}, @js($invoice->invoice_number), @js(optional($invoice->email_sent_at)?->format('d.m.Y H:i')))"
+                                                )" wire:loading.attr="disabled" wire:target="sendInvoiceEmail({{ $invoice->id }})"
                                                 class="p-2 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                                title="{{ $invoice->email_sent_at ? 'Препрати по е-пошта' . ((int) $invoice->email_sent_count > 0 ? ' (пратена ' . (int) $invoice->email_sent_count . ' пати)' : '') : 'Испрати по е-пошта' }}">
+                                                title="Send invoice by email">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13" />
@@ -265,33 +270,33 @@
 
                                         {{-- Dropdown мени за секундарни акции --}}
                                         <div x-data="{
-                                                                                                                            open: false,
-                                                                                                                            menuStyle: '',
-                                                                                                                            toggleMenu(el) {
-                                                                                                                                this.open = !this.open;
-                                                                                                                                if (this.open) {
-                                                                                                                                    this.$nextTick(() => this.placeMenu(el));
-                                                                                                                                }
-                                                                                                                            },
-                                                                                                                            placeMenu(el) {
-                                                                                                                                const rect = el.getBoundingClientRect();
-                                                                                                                                const menuWidth = 224;
-                                                                                                                                const menuHeight = 132;
-                                                                                                                                const gap = 8;
-                                                                                                                                const viewportWidth = window.innerWidth;
-                                                                                                                                const viewportHeight = window.innerHeight;
+                                                                                                                                    open: false,
+                                                                                                                                    menuStyle: '',
+                                                                                                                                    toggleMenu(el) {
+                                                                                                                                        this.open = !this.open;
+                                                                                                                                        if (this.open) {
+                                                                                                                                            this.$nextTick(() => this.placeMenu(el));
+                                                                                                                                        }
+                                                                                                                                    },
+                                                                                                                                    placeMenu(el) {
+                                                                                                                                        const rect = el.getBoundingClientRect();
+                                                                                                                                        const menuWidth = 224;
+                                                                                                                                        const menuHeight = 132;
+                                                                                                                                        const gap = 8;
+                                                                                                                                        const viewportWidth = window.innerWidth;
+                                                                                                                                        const viewportHeight = window.innerHeight;
 
-                                                                                                                                let left = rect.right - menuWidth;
-                                                                                                                                left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
+                                                                                                                                        let left = rect.right - menuWidth;
+                                                                                                                                        left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
 
-                                                                                                                                let top = rect.bottom + gap;
-                                                                                                                                if (top + menuHeight > viewportHeight - gap) {
-                                                                                                                                    top = Math.max(gap, rect.top - menuHeight - gap);
-                                                                                                                                }
+                                                                                                                                        let top = rect.bottom + gap;
+                                                                                                                                        if (top + menuHeight > viewportHeight - gap) {
+                                                                                                                                            top = Math.max(gap, rect.top - menuHeight - gap);
+                                                                                                                                        }
 
-                                                                                                                                this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
-                                                                                                                            }
-                                                                                                                        }"
+                                                                                                                                        this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
+                                                                                                                                    }
+                                                                                                                                }"
                                             class="relative">
                                             <button type="button" @click="toggleMenu($event.currentTarget)"
                                                 class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition-all"
@@ -451,7 +456,8 @@
                     <div class="px-5 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 tracking-tight">
-                                {{ __('admin.invoices.new_invoice') }}</h3>
+                                {{ __('admin.invoices.new_invoice') }}
+                            </h3>
                         </div>
                         <button @click="$dispatch('close-modal')"
                             class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition">
@@ -466,7 +472,8 @@
                     <div class="px-5 py-5 space-y-4">
 
                         <div>
-                            <span class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.service_type') }}</span>
+                            <span
+                                class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.service_type') }}</span>
                             <div class="grid grid-cols-2 gap-2">
                                 <label
                                     class="relative flex items-center justify-center p-1.5 h-12 border rounded-lg cursor-pointer transition focus-within:ring-2 focus-within:ring-blue-500 text-sm {{ $invoice_type === 'student' ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-gray-200 hover:bg-gray-50 text-gray-500' }}">
@@ -524,7 +531,8 @@
 
                                 @if($is_advance)
                                     <div class="mb-2 w-full relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                                        <span class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.choose_student') }}</span>
+                                        <span
+                                            class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.choose_student') }}</span>
                                         <div @click="open = !open"
                                             class="w-full h-9 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
                                             <span>
@@ -572,15 +580,16 @@
                                                     </li>
                                                 @empty
                                                     <li class="p-4 text-center text-gray-400 text-xs italic">
-                                                        {{ __('admin.lessons.no_results') }}</li>
+                                                        {{ __('admin.lessons.no_results') }}
+                                                    </li>
                                                 @endforelse
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-12 gap-2 animate-fadeIn">
                                         <div class="col-span-6">
-                                                <label
-                                                    class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.lesson_type') }}</label>
+                                            <label
+                                                class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.lesson_type') }}</label>
                                             <select wire:model="lesson_type_id"
                                                 class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium">
                                                 <option value="">{{ __('admin.invoices.choose') }}</option>
@@ -591,7 +600,7 @@
                                             </select>
                                         </div>
                                         <div class="col-span-3">
-                                                <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
+                                            <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
                                                 <span class="hidden sm:inline">Classes</span>
                                                 <span class="inline sm:hidden">Cls.</span>
                                             </label>
@@ -599,7 +608,7 @@
                                                 class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs text-blue-700 font-bold">
                                         </div>
                                         <div class="col-span-3">
-                                                <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
+                                            <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
                                                 <span class="hidden sm:inline">{{ __('admin.invoices.discount') }}</span>
                                                 <span class="inline sm:hidden">Disc (%)</span>
                                             </label>
@@ -663,7 +672,8 @@
                                                         </li>
                                                     @empty
                                                         <li class="p-4 text-center text-gray-400 text-xs italic">
-                                                            {{ __('admin.lessons.no_results') }}</li>
+                                                            {{ __('admin.lessons.no_results') }}
+                                                        </li>
                                                     @endforelse
                                                 </ul>
                                             </div>
