@@ -205,11 +205,18 @@ class LessonCreate extends Component
         if ($this->filter_to_date)
             $query->where('lesson_date', '<=', $this->filter_to_date);
 
+        $hasAnyLessons = Lesson::count() > 0;
         return view('livewire.lesson-create', [
             'lessonsLog' => $query->orderBy('lesson_date', 'desc')->paginate(10),
             'lessonTypes' => LessonTemplate::all(),
             'studentsForSelect' => $studentsForSelect,
-            'totalAmount' => $query->sum('price_at_time')
+            'totalAmount' => $query->sum('price_at_time'),
+            'hasAnyLessons' => $hasAnyLessons,
+            'search' => $this->search,
+            'filter_type' => $this->filter_type,
+            'filter_status' => $this->filter_status,
+            'filter_from_date' => $this->filter_from_date,
+            'filter_to_date' => $this->filter_to_date,
         ]);
     }
 }

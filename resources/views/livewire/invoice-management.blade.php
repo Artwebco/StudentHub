@@ -38,7 +38,8 @@
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <input type="text" wire:model.live="search" placeholder="{{ __('admin.invoices.search_placeholder') }}"
+                    <input type="text" wire:model.live="search"
+                        placeholder="{{ __('admin.invoices.search_placeholder') }}"
                         class="block w-full pl-9 pr-3 py-1.5 border border-gray-200 rounded-lg text-md focus:ring-blue-500 focus:border-blue-500 transition-all">
                 </div>
 
@@ -101,7 +102,7 @@
                                     <div class="text-gray-900">{{ $invoice->student->first_name }}
                                         {{ $invoice->student->last_name }}
                                     </div>
-                                    <div class="text-xs text-gray-400 font-medium">{{ __('admin.invoices.teaching') }}</div>
+                                    <!-- teaching label removed -->
                                 @else
                                     <div class=" text-blue-700">{{ $invoice->custom_client_name }}</div>
                                     <div class="text-xs text-gray-400 font-medium">{{ __('admin.invoices.services') }}</div>
@@ -114,7 +115,10 @@
                                 @if($invoice->is_advance && $invoice->student_id)
                                     <div class="flex flex-col items-start">
                                         <span class="font-semibold text-sm text-blue-900">
-                                            {{ $invoice->realized_lessons }}<span class="text-gray-400"> / </span>{{ $invoice->expected_lessons }}<span class="text-xs font-medium text-gray-500"> {{ __('admin.invoices.realization_lessons_suffix') }}</span>
+                                            {{ $invoice->realized_lessons }}<span class="text-gray-400"> /
+                                            </span>{{ $invoice->expected_lessons }}<span
+                                                class="text-xs font-medium text-gray-500">
+                                                {{ __('admin.invoices.realization_lessons_suffix') }}</span>
                                         </span>
                                         @if($invoice->progress_state === 'under')
                                             <span
@@ -158,7 +162,8 @@
                                     @if($invoice->cancelled_reason)
                                         <div class="mt-1.5 text-[11px] text-red-700/80 max-w-[240px] truncate flex items-center gap-1"
                                             title="{{ $invoice->cancelled_reason }}">
-                                            {{ __('admin.invoices.cancel_reason') }}: {{ \Illuminate\Support\Str::limit($invoice->cancelled_reason, 38) }}
+                                            {{ __('admin.invoices.cancel_reason') }}:
+                                            {{ \Illuminate\Support\Str::limit($invoice->cancelled_reason, 38) }}
                                             <span class="inline-flex items-center text-red-500/80 cursor-help"
                                                 title="{{ $invoice->cancelled_reason }}" aria-label="Прикажи цела причина">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none"
@@ -220,19 +225,29 @@
                             </td>
                             <td class="px-2 py-2 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex justify-end items-center gap-2">
+
                                     @if($invoice->status !== 'cancelled')
-                                        <button type="button"
-                                            onclick="confirmSendInvoiceEmail({{ $invoice->id }}, @js($invoice->invoice_number), @js(optional($invoice->email_sent_at)?->format('d.m.Y H:i')))"
-                                            wire:loading.attr="disabled" wire:target="sendInvoiceEmail"
-                                            class="p-2 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                                            title="{{ $invoice->email_sent_at ? 'Препрати по е-пошта' . ((int) $invoice->email_sent_count > 0 ? ' (пратена ' . (int) $invoice->email_sent_count . ' пати)' : '') : 'Испрати по е-пошта' }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13" />
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M22 2 15 22 11 13 2 9 22 2Z" />
-                                            </svg>
-                                        </button>
+                                        @if($invoice->is_cash)
+                                            <span class="p-2 bg-gray-100 border border-gray-200 rounded-lg select-none opacity-70 flex items-center justify-center" style="cursor: not-allowed; width: 40px; height: 40px;" title="Овој тип на фактура не се праќа по е-пошта">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 15 22 11 13 2 9 22 2Z" />
+                                                </svg>
+                                            </span>
+                                        @else
+                                            <button type="button"
+                                                onclick="confirmSendInvoiceEmail({{ $invoice->id }}, @js($invoice->invoice_number), @js(optional($invoice->email_sent_at)?->format('d.m.Y H:i')))")"
+                                                wire:loading.attr="disabled" wire:target="sendInvoiceEmail({{ $invoice->id }})"
+                                                class="p-2 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                                title="{{ $invoice->email_sent_at ? 'Препрати по е-пошта' . ((int) $invoice->email_sent_count > 0 ? ' (пратена ' . (int) $invoice->email_sent_count . ' пати)' : '') : 'Испрати по е-пошта' }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M22 2 15 22 11 13 2 9 22 2Z" />
+                                                </svg>
+                                            </button>
+                                        @endif
 
                                         {{-- Preview Копче (нов таб) --}}
                                         <a href="{{ route('student.invoice-preview', $invoice->id) }}" target="_blank"
@@ -250,33 +265,33 @@
 
                                         {{-- Dropdown мени за секундарни акции --}}
                                         <div x-data="{
-                                                                                                                    open: false,
-                                                                                                                    menuStyle: '',
-                                                                                                                    toggleMenu(el) {
-                                                                                                                        this.open = !this.open;
-                                                                                                                        if (this.open) {
-                                                                                                                            this.$nextTick(() => this.placeMenu(el));
-                                                                                                                        }
-                                                                                                                    },
-                                                                                                                    placeMenu(el) {
-                                                                                                                        const rect = el.getBoundingClientRect();
-                                                                                                                        const menuWidth = 224;
-                                                                                                                        const menuHeight = 132;
-                                                                                                                        const gap = 8;
-                                                                                                                        const viewportWidth = window.innerWidth;
-                                                                                                                        const viewportHeight = window.innerHeight;
+                                                                                                                            open: false,
+                                                                                                                            menuStyle: '',
+                                                                                                                            toggleMenu(el) {
+                                                                                                                                this.open = !this.open;
+                                                                                                                                if (this.open) {
+                                                                                                                                    this.$nextTick(() => this.placeMenu(el));
+                                                                                                                                }
+                                                                                                                            },
+                                                                                                                            placeMenu(el) {
+                                                                                                                                const rect = el.getBoundingClientRect();
+                                                                                                                                const menuWidth = 224;
+                                                                                                                                const menuHeight = 132;
+                                                                                                                                const gap = 8;
+                                                                                                                                const viewportWidth = window.innerWidth;
+                                                                                                                                const viewportHeight = window.innerHeight;
 
-                                                                                                                        let left = rect.right - menuWidth;
-                                                                                                                        left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
+                                                                                                                                let left = rect.right - menuWidth;
+                                                                                                                                left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
 
-                                                                                                                        let top = rect.bottom + gap;
-                                                                                                                        if (top + menuHeight > viewportHeight - gap) {
-                                                                                                                            top = Math.max(gap, rect.top - menuHeight - gap);
-                                                                                                                        }
+                                                                                                                                let top = rect.bottom + gap;
+                                                                                                                                if (top + menuHeight > viewportHeight - gap) {
+                                                                                                                                    top = Math.max(gap, rect.top - menuHeight - gap);
+                                                                                                                                }
 
-                                                                                                                        this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
-                                                                                                                    }
-                                                                                                                }"
+                                                                                                                                this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
+                                                                                                                            }
+                                                                                                                        }"
                                             class="relative">
                                             <button type="button" @click="toggleMenu($event.currentTarget)"
                                                 class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition-all"
@@ -365,12 +380,19 @@
                             </td>
                         </tr>
                     @empty
-                        {{-- Овој дел се прикажува ако НЕМА ниту една фактура (филтерот е празен) --}}
                         <tr>
                             <td colspan="7" class="px-6 py-12 text-center">
                                 <div class="text-gray-400">
-                                    <p class="text-lg font-semibold">{{ __('admin.invoices.empty_title') }}</p>
-                                    <p class="text-sm">{{ __('admin.invoices.empty_subtitle') }}</p>
+                                    @if(!$hasAnyInvoices)
+                                        <p class="text-lg font-semibold">{{ __('admin.invoices.no_invoices_title') }}</p>
+                                        <p class="text-sm">{{ __('admin.invoices.no_invoices_subtitle') }}</p>
+                                    @elseif($search || $filter_status || $filter_type)
+                                        <p class="text-lg font-semibold">{{ __('admin.invoices.no_results_title') }}</p>
+                                        <p class="text-sm">{{ __('admin.invoices.no_results_subtitle') }}</p>
+                                    @else
+                                        <p class="text-lg font-semibold">{{ __('admin.invoices.no_invoices_title') }}</p>
+                                        <p class="text-sm">{{ __('admin.invoices.no_invoices_subtitle') }}</p>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -381,7 +403,8 @@
                         <td colspan="7" class="px-3 py-2">
                             <div class="flex items-center justify-end gap-6 text-sm leading-none">
                                 <div class="flex items-center gap-2">
-                                    <span class="font-semibold text-blue-800 uppercase text-[11px]">{{ __('admin.invoices.total') }}:</span>
+                                    <span
+                                        class="font-semibold text-blue-800 uppercase text-[11px]">{{ __('admin.invoices.total') }}:</span>
                                     <span
                                         class="font-bold text-blue-800 text-xl">{{ number_format($totalFilteredAmount ?? 0, 0, ',', '.') }}
                                         {{ __('admin.pricing.currency') }}</span>
@@ -389,7 +412,8 @@
                                 @if(($totalUnpaidAmount ?? 0) > 0)
                                     <div
                                         class="flex items-center gap-2 px-2 py-1 rounded-md bg-amber-50 border border-amber-100">
-                                        <span class="font-semibold text-amber-800 uppercase text-[11px]">{{ __('admin.invoices.unpaid_total') }}:</span>
+                                        <span
+                                            class="font-semibold text-amber-800 uppercase text-[11px]">{{ __('admin.invoices.unpaid_total') }}:</span>
                                         <span
                                             class="font-bold text-amber-700 text-xl">{{ number_format($totalUnpaidAmount ?? 0, 0, ',', '.') }}
                                             {{ __('admin.pricing.currency') }}</span>
@@ -426,7 +450,8 @@
                     {{-- Header --}}
                     <div class="px-5 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 tracking-tight">{{ __('admin.invoices.new_invoice') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 tracking-tight">
+                                {{ __('admin.invoices.new_invoice') }}</h3>
                         </div>
                         <button @click="$dispatch('close-modal')"
                             class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition">
@@ -441,55 +466,65 @@
                     <div class="px-5 py-5 space-y-4">
 
                         <div>
-                            <label class="block text-[11px] text-gray-400 uppercase tracking-widest mb-1 font-bold">{{ __('admin.invoices.service_type') }}</label>
+                            <span class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.service_type') }}</span>
                             <div class="grid grid-cols-2 gap-2">
                                 <label
-                                    class="relative flex items-center justify-center p-1.5 border rounded-lg cursor-pointer transition focus-within:ring-2 focus-within:ring-blue-500 text-xs {{ $invoice_type === 'student' ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-gray-200 hover:bg-gray-50 text-gray-500' }}">
+                                    class="relative flex items-center justify-center p-1.5 h-12 border rounded-lg cursor-pointer transition focus-within:ring-2 focus-within:ring-blue-500 text-sm {{ $invoice_type === 'student' ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-gray-200 hover:bg-gray-50 text-gray-500' }}">
                                     <input type="radio" wire:model.live="invoice_type" value="student" class="sr-only">
-                                    <span class="text-xs font-semibold">📚 {{ __('admin.invoices.teaching') }}</span>
+                                    <span class="text-sm font-semibold">📚 {{ __('admin.invoices.teaching') }}</span>
                                 </label>
                                 <label
-                                    class="relative flex items-center justify-center p-1.5 border rounded-lg cursor-pointer transition focus-within:ring-2 focus-within:ring-blue-500 text-xs {{ $invoice_type === 'service' ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-gray-200 hover:bg-gray-50 text-gray-500' }}">
+                                    class="relative flex items-center justify-center p-1.5 h-12 border rounded-lg cursor-pointer transition focus-within:ring-2 focus-within:ring-blue-500 text-sm {{ $invoice_type === 'service' ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' : 'border-gray-200 hover:bg-gray-50 text-gray-500' }}">
                                     <input type="radio" wire:model.live="invoice_type" value="service" class="sr-only">
-                                    <span class="text-xs font-semibold">💻 {{ __('admin.invoices.services') }}</span>
+                                    <span class="text-sm font-semibold">💻 {{ __('admin.invoices.services') }}</span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="space-y-4">
                             @if($invoice_type === 'student')
-                                <div class="flex items-center justify-between py-3 px-2 bg-white rounded-xl border transition-all duration-300 shadow-sm"
-                                    style="border-color: {{ $is_advance ? '#f97316' : '#e5e7eb' }}; background-color: {{ $is_advance ? '#fffaf5' : '#ffffff' }}; min-height: 48px;">
-                                    <div class="flex items-center gap-2">
-                                        <div class="flex h-7 w-7 items-center justify-center rounded-lg transition-colors duration-300 shadow-sm"
-                                            style="background-color: {{ $is_advance ? '#f97316' : '#f3f4f6' }}; color: {{ $is_advance ? '#ffffff' : '#9ca3af' }}; text-white">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                                            </svg>
+                                <div class="flex flex-row gap-2">
+                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-xl border transition-all duration-300 shadow-sm"
+                                        style="border-color: {{ $is_advance ? '#f97316' : '#e5e7eb' }}; background-color: {{ $is_advance ? '#fffaf5' : '#ffffff' }}; min-height: 48px;">
+                                        <div class="flex items-center gap-2">
+                                            <div>
+                                                <h4 class="text-xs font-bold"
+                                                    style="color: {{ $is_advance ? '#7c2d12' : '#111827' }}; line-height: 1.1;">
+                                                    {{ $is_advance ? 'Issue in advance' : 'Issue at end of month' }}
+                                                </h4>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4 class="text-xs font-bold"
-                                                style="color: {{ $is_advance ? '#7c2d12' : '#111827' }}; line-height: 1.1;">
-                                                {{ __('admin.invoices.advance_issuing') }}</h4>
-                                            <p class="text-[9px] uppercase tracking-tight font-bold"
-                                                style="color: {{ $is_advance ? '#ea580c' : '#9ca3af' }}; line-height: 1;">
-                                                {{ __('admin.invoices.pay_in_advance') }}</p>
+                                        <div wire:click="$toggle('is_advance')"
+                                            class="relative inline-flex h-6 w-10 items-center rounded-full cursor-pointer transition-colors shadow-inner"
+                                            style="background-color: {{ $is_advance ? '#f97316' : '#d1d5db' }};">
+                                            <span
+                                                class="inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-300"
+                                                style="transform: translateX({{ $is_advance ? '1.1rem' : '0.2rem' }});"></span>
                                         </div>
                                     </div>
-                                    <div wire:click="$toggle('is_advance')"
-                                        class="relative inline-flex h-6 w-10 items-center rounded-full cursor-pointer transition-colors shadow-inner"
-                                        style="background-color: {{ $is_advance ? '#f97316' : '#d1d5db' }};">
-                                        <span
-                                            class="inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-300"
-                                            style="transform: translateX({{ $is_advance ? '1.1rem' : '0.2rem' }});"></span>
+                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-xl border transition-all duration-300 shadow-sm"
+                                        style="border-color: {{ !$is_cash ? '#22c55e' : '#e5e7eb' }}; background-color: {{ !$is_cash ? '#f0fdf4' : '#ffffff' }}; min-height: 48px;">
+                                        <div class="flex items-center gap-2">
+                                            <div>
+                                                <h4 class="text-xs font-bold"
+                                                    style="color: {{ !$is_cash ? '#166534' : '#111827' }}; line-height: 1.1;">
+                                                    {{ !$is_cash ? 'Company payment' : 'Direct payment' }}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div wire:click="$toggle('is_cash')"
+                                            class="relative inline-flex h-6 w-10 items-center rounded-full cursor-pointer transition-colors shadow-inner"
+                                            style="background-color: {{ !$is_cash ? '#22c55e' : '#d1d5db' }};">
+                                            <span
+                                                class="inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-300"
+                                                style="transform: translateX({{ !$is_cash ? '1.1rem' : '0.2rem' }});"></span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 @if($is_advance)
                                     <div class="mb-2 w-full relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                                        <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.choose_student') }}</label>
+                                        <span class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.choose_student') }}</span>
                                         <div @click="open = !open"
                                             class="w-full h-9 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
                                             <span>
@@ -536,14 +571,16 @@
                                                         {{ $s->first_name }} {{ $s->last_name }}
                                                     </li>
                                                 @empty
-                                                    <li class="p-4 text-center text-gray-400 text-xs italic">{{ __('admin.lessons.no_results') }}</li>
+                                                    <li class="p-4 text-center text-gray-400 text-xs italic">
+                                                        {{ __('admin.lessons.no_results') }}</li>
                                                 @endforelse
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-12 gap-2 animate-fadeIn">
                                         <div class="col-span-6">
-                                            <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.lesson_type') }}</label>
+                                                <label
+                                                    class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.lesson_type') }}</label>
                                             <select wire:model="lesson_type_id"
                                                 class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium">
                                                 <option value="">{{ __('admin.invoices.choose') }}</option>
@@ -554,13 +591,18 @@
                                             </select>
                                         </div>
                                         <div class="col-span-3">
-                                            <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.hours_count') }}</label>
+                                                <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
+                                                <span class="hidden sm:inline">Classes</span>
+                                                <span class="inline sm:hidden">Cls.</span>
+                                            </label>
                                             <input type="number" wire:model="advance_hours"
                                                 class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs text-blue-700 font-bold">
                                         </div>
                                         <div class="col-span-3">
-                                            <label
-                                                class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.discount') }}</label>
+                                                <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
+                                                <span class="hidden sm:inline">{{ __('admin.invoices.discount') }}</span>
+                                                <span class="inline sm:hidden">Disc (%)</span>
+                                            </label>
                                             <input type="number" min="0" max="100" wire:model="discount_percent"
                                                 class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium"
                                                 placeholder="0">
@@ -570,7 +612,8 @@
                                     <div class="grid grid-cols-5 gap-2 items-end">
                                         <div class="col-span-4 w-full relative" x-data="{ open: false }"
                                             x-on:click.outside="open = false">
-                                            <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.choose_student') }}</label>
+                                            <label
+                                                class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.choose_student') }}</label>
                                             <div @click="open = !open"
                                                 class="w-full h-9 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
                                                 <span>
@@ -579,7 +622,8 @@
                                                         <span
                                                             class="text-black font-medium">{{ $selected ? ($selected->first_name . ' ' . $selected->last_name) : '' }}</span>
                                                     @else
-                                                        <span class="text-gray-400">-- {{ __('admin.invoices.choose_student') }} --</span>
+                                                        <span class="text-gray-400">-- {{ __('admin.invoices.choose_student') }}
+                                                            --</span>
                                                     @endif
                                                 </span>
                                                 <svg class="h-4 w-4 text-gray-400 transition-transform"
@@ -618,14 +662,18 @@
                                                             {{ $s->first_name }} {{ $s->last_name }}
                                                         </li>
                                                     @empty
-                                                        <li class="p-4 text-center text-gray-400 text-xs italic">{{ __('admin.lessons.no_results') }}</li>
+                                                        <li class="p-4 text-center text-gray-400 text-xs italic">
+                                                            {{ __('admin.lessons.no_results') }}</li>
                                                     @endforelse
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
                                             <label
-                                                class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold whitespace-nowrap">{{ __('admin.invoices.discount') }}</label>
+                                                class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold whitespace-nowrap">
+                                                <span class="hidden sm:inline">{{ __('admin.invoices.discount') }}</span>
+                                                <span class="inline sm:hidden">Disc (%)</span>
+                                            </label>
                                             <input type="number" min="0" max="100" wire:model="discount_percent"
                                                 class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium px-2"
                                                 placeholder="0">
@@ -637,12 +685,14 @@
 
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.from_date') }}</label>
+                                        <label
+                                            class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.from_date') }}</label>
                                         <input type="date" wire:model="date_from"
                                             class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-sm font-medium">
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.to_date') }}</label>
+                                        <label
+                                            class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.to_date') }}</label>
                                         <input type="date" wire:model="date_to"
                                             class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-sm font-medium">
                                     </div>
@@ -650,28 +700,36 @@
                             @else
                                 <div class="space-y-3 animate-fadeIn">
                                     <div>
-                                        <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.client_company') }}</label>
-                                        <input type="text" wire:model="service_client_name" placeholder="{{ __('admin.invoices.enter_name') }}"
+                                        <label
+                                            class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.client_company') }}</label>
+                                        <input type="text" wire:model="service_client_name"
+                                            placeholder="{{ __('admin.invoices.enter_name') }}"
                                             class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-sm text-blue-800 font-bold">
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.service_desc') }}</label>
+                                        <label
+                                            class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.service_desc') }}</label>
                                         <textarea wire:model="service_description" rows="2"
                                             class="w-full border-gray-200 rounded-xl shadow-sm text-sm p-2 font-medium"
                                             placeholder="{{ __('admin.invoices.detailed_desc') }}"></textarea>
                                     </div>
                                     <div class="grid grid-cols-12 gap-2 items-end">
                                         <div class="col-span-9">
-                                            <label class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold">{{ __('admin.invoices.total_amount') }}</label>
+                                            <label
+                                                class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.total_amount') }}</label>
                                             <div class="relative">
                                                 <input type="number" wire:model="service_amount"
                                                     class="w-full h-10 pl-4 pr-12 border-gray-200 rounded-xl shadow-sm font-black text-blue-700 text-base">
-                                                <span class="absolute right-4 top-1 text-gray-400 font-bold">{{ __('admin.pricing.currency') }}</span>
+                                                <span
+                                                    class="absolute right-4 top-1 text-gray-400 font-bold">{{ __('admin.pricing.currency') }}</span>
                                             </div>
                                         </div>
                                         <div class="col-span-3">
                                             <label
-                                                class="block text-xs text-gray-500 uppercase tracking-wider mb-1 font-bold whitespace-nowrap">{{ __('admin.invoices.discount') }}</label>
+                                                class="block text-xs text-gray-500 tracking-normal mb-1 font-semibold whitespace-nowrap">
+                                                <span class="hidden sm:inline">{{ __('admin.invoices.discount') }}</span>
+                                                <span class="inline sm:hidden">Disc (%)</span>
+                                            </label>
                                             <input type="number" min="0" max="100" wire:model="discount_percent"
                                                 class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-xs font-medium px-2"
                                                 placeholder="0">

@@ -99,6 +99,8 @@ return [
         'saved' => 'Успешно зачувано!',
         'updated' => 'Успешно ажурирано!',
         'deleted' => 'Избришано.',
+        'empty_title' => 'Нема пронајдени часови',
+        'empty_subtitle' => 'Додадете нов час за да започнете.',
         'validation' => [
             'student_required' => 'Изберете ученик',
             'lesson_type_required' => 'Изберете тип на час',
@@ -229,6 +231,8 @@ return [
         'col_last_activity' => 'Последна активност',
         'col_actions' => 'Акции',
         'no_archived' => 'Нема избришани ученици.',
+        'empty_title' => 'Нема пронајдени ученици',
+        'empty_subtitle' => 'Додадете нов ученик за да започнете.',
         'never' => 'Никогаш',
         'currency' => 'ден.',
         'restore' => 'Врати ученик',

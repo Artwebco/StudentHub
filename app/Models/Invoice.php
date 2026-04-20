@@ -29,12 +29,14 @@ class Invoice extends Model
         'email_last_error',
         'is_paid',      // Твојата стара колона (ако планираш да ја избришеш, тргни ја и од тука)
         'is_advance',
+        'is_cash',
         'discount_percent'
     ];
 
     protected $casts = [
         'cancelled_at' => 'datetime',
         'email_sent_at' => 'datetime',
+        'is_cash' => 'boolean',
     ];
     // Врска со моделот Student
     public function student(): BelongsTo

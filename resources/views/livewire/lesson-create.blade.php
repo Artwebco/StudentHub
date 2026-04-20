@@ -308,68 +308,64 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50 text-gray-600">
-                    @foreach($lessonsLog as $log)
-                        <tr
-                            class="transition-colors {{ $editingLessonId == $log->id ? 'bg-orange-50' : 'hover:bg-blue-50/50' }}">
-                            <td class="px-2 py-2 font-medium text-gray-800">{{ $log->student->first_name }}
-                                {{ $log->student->last_name }}
-                            </td>
-                            <td class="px-2 py-2 text-[14px]">{{ $log->lessonType->admin_name }}</td>
-                            <td class="px-2 py-2 text-black">
-                                <div class="font-normal">{{ \Carbon\Carbon::parse($log->lesson_date)->format('d.m.Y') }}
-                                </div>
-                                <div class="text-[11px] text-blue-800 font-medium mt-0.5 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    @if($log->start_time && $log->end_time)
-                                        {{ \Carbon\Carbon::parse($log->start_time)->format('H:i') }} -
-                                        {{ \Carbon\Carbon::parse($log->end_time)->format('H:i') }}
-                                    @else
-                                        {{ __('admin.lessons.no_time') }}
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="px-2 py-2 text-sm">
-                                @if($log->lesson_status === 'held')
-                                    <span
-                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">{{ __('admin.lessons.held') }}</span>
+                    @if($lessonsLog->isEmpty())
+                        <tr>
+                            <td colspan="7" class="text-center py-8 text-gray-400 italic">
+                                @if(!$hasAnyLessons)
+                                    {{ __('admin.lessons.empty_title') ?? 'No lessons found.' }}<br>
+                                    <span class="text-xs text-gray-400">{{ __('admin.lessons.empty_subtitle') ?? '' }}</span>
+                                @elseif($search || $filter_type || $filter_status || $filter_from_date || $filter_to_date)
+                                    <span class="text-lg font-semibold">{{ __('admin.lessons.no_results_title') }}</span><br>
+                                    <span class="text-xs text-gray-400">{{ __('admin.lessons.no_results_subtitle') }}</span>
                                 @else
-                                    <span
-                                        class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">{{ __('admin.lessons.not_held') }}</span>
+                                    {{ __('admin.lessons.empty_title') ?? 'No lessons found.' }}
                                 @endif
                             </td>
-                            <td class="px-2 py-2 text-md text-gray-800">
-                                {{ number_format($log->price_at_time, 0, ',', '.') }} {{ __('admin.pricing.currency') }}
-                            </td>
-                            <td class="px-2 py-2 italic text-gray-400">{{ $log->notes ?: '/' }}</td>
-                            <td class="p-4 text-right space-x-2">
-                                <button wire:click="editLesson({{ $log->id }})" title="{{ __('admin.pricing.edit') }}"
-                                    aria-label="{{ __('admin.pricing.edit') }}"
-                                    class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-blue-600 md:bg-blue-50 md:hover:bg-blue-100 md:hover:text-blue-800 transition focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    <span class="hidden md:inline">{{ __('admin.pricing.edit') }}</span>
-                                </button>
-
-                                <button type="button" onclick="confirmDelete({{ $log->id }})"
-                                    title="{{ __('admin.pricing.delete') }}" aria-label="{{ __('admin.pricing.delete') }}"
-                                    class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    <span class="hidden md:inline">{{ __('admin.pricing.delete') }}</span>
-                                </button>
-                            </td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach($lessonsLog as $log)
+                            <tr class="transition-colors {{ $editingLessonId == $log->id ? 'bg-orange-50' : 'hover:bg-blue-50/50' }}">
+                                <td class="px-2 py-2 font-medium text-gray-800">{{ $log->student->first_name }} {{ $log->student->last_name }}</td>
+                                <td class="px-2 py-2 text-[14px]">{{ $log->lessonType->admin_name }}</td>
+                                <td class="px-2 py-2 text-black">
+                                    <div class="font-normal">{{ \Carbon\Carbon::parse($log->lesson_date)->format('d.m.Y') }}</div>
+                                    <div class="text-[11px] text-blue-800 font-medium mt-0.5 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        @if($log->start_time && $log->end_time)
+                                            {{ \Carbon\Carbon::parse($log->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($log->end_time)->format('H:i') }}
+                                        @else
+                                            {{ __('admin.lessons.no_time') }}
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-2 py-2 text-sm">
+                                    @if($log->lesson_status === 'held')
+                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-green-100 text-green-700 border border-green-200">{{ __('admin.lessons.held') }}</span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs bg-amber-100 text-amber-700 border border-amber-200">{{ __('admin.lessons.not_held') }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-2 py-2 text-md text-gray-800">{{ number_format($log->price_at_time, 0, ',', '.') }} {{ __('admin.pricing.currency') }}</td>
+                                <td class="px-2 py-2 italic text-gray-400">{{ $log->notes ?: '/' }}</td>
+                                <td class="p-4 text-right space-x-2">
+                                    <button wire:click="editLesson({{ $log->id }})" title="{{ __('admin.pricing.edit') }}" aria-label="{{ __('admin.pricing.edit') }}" class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-blue-600 md:bg-blue-50 md:hover:bg-blue-100 md:hover:text-blue-800 transition focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        <span class="hidden md:inline">{{ __('admin.pricing.edit') }}</span>
+                                    </button>
+                                    <button type="button" onclick="confirmDelete({{ $log->id }})" title="{{ __('admin.pricing.delete') }}" aria-label="{{ __('admin.pricing.delete') }}" class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        <span class="hidden md:inline">{{ __('admin.pricing.delete') }}</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
                 <tfoot class="bg-blue-50">
                     <tr>

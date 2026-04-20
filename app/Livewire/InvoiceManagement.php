@@ -33,6 +33,7 @@ class InvoiceManagement extends Component
     public $invoice_type = 'student';
     public $service_client_name, $service_description, $service_amount;
     public $is_advance = true;
+    public $is_cash = false; // Company payment is default (not direct payment)
     public $advance_hours;
     public $lesson_type_id;
     public $discount_percent = 0;
@@ -64,10 +65,19 @@ class InvoiceManagement extends Component
         $this->reset(['search', 'filter_status', 'filter_type']);
     }
 
+
     public function closeModal()
     {
         $this->showCreateModal = false;
         $this->resetValidation();
+    }
+
+    public function updatedShowCreateModal($value)
+    {
+        if ($value) {
+            $this->is_cash = false; // Always default to Company payment when opening modal
+            $this->resetErrorBag();
+        }
     }
 
     public function createInvoice()
@@ -125,12 +135,28 @@ class InvoiceManagement extends Component
         $totalAmount = $baseAmount - $discount;
 
         $referenceDate = ($this->invoice_type === 'student') ? $this->date_to : now();
+
         $numData = $this->generateInvoiceNumber($referenceDate);
 
+        if ($this->is_cash) {
+            // Generate next available cash invoice number for current year, ensure uniqueness
+            $year = now()->format('Y');
+            $next = 1;
+            do {
+                $nextStr = str_pad($next, 3, '0', STR_PAD_LEFT);
+                $invoiceNumber = 'CASH/' . $year . '/' . $nextStr;
+                $exists = Invoice::where('invoice_number', $invoiceNumber)->exists();
+                $next++;
+            } while ($exists);
+            $sequenceNumber = null;
+        } else {
+            $invoiceNumber = $numData['full_number'];
+            $sequenceNumber = $numData['sequence'];
+        }
 
         Invoice::create([
-            'invoice_number' => $numData['full_number'],
-            'sequence_number' => $numData['sequence'],
+            'invoice_number' => $invoiceNumber,
+            'sequence_number' => $sequenceNumber,
             'student_id' => $studentId,
             'custom_client_name' => $customClient,
             'service_description' => $serviceDesc,
@@ -143,6 +169,7 @@ class InvoiceManagement extends Component
             'discount_percent' => $this->discount_percent ?? 0,
             'status' => 'unpaid',
             'is_advance' => $this->is_advance ?? false,
+            'is_cash' => $this->is_cash ?? false,
         ]);
 
         $this->reset(['student_id', 'date_from', 'date_to', 'showCreateModal', 'service_client_name', 'service_description', 'service_amount', 'advance_hours', 'lesson_type_id', 'discount_percent']);
@@ -282,8 +309,15 @@ class InvoiceManagement extends Component
             return;
         }
 
+
         if ($invoice->status === 'cancelled') {
             session()->flash('error', __('admin.invoices.cancelled_cannot_send'));
+            return;
+        }
+
+        // Prevent sending email for cash/direct payment invoices
+        if ($invoice->is_cash) {
+            session()->flash('error', 'Овој тип на фактура не се праќа по е-пошта.');
             return;
         }
 
@@ -461,6 +495,9 @@ class InvoiceManagement extends Component
         $invoices = $query->orderBy('created_at', 'desc')->paginate(10);
         $this->attachAdvanceProgress($invoices);
 
+        // Дали има било какви фактури во базата (без филтри)
+        $hasAnyInvoices = Invoice::count() > 0;
+
         // Логика за студенти во модалот
         $filteredStudents = Student::where('active', true)
             ->where(function ($q) {
@@ -475,7 +512,8 @@ class InvoiceManagement extends Component
             'students' => $filteredStudents,
             'lessonTemplates' => LessonTemplate::all(),
             'totalFilteredAmount' => $this->totalFilteredAmount, // Прати ја точната променлива
-            'totalUnpaidAmount' => $totalUnpaidAmount
+            'totalUnpaidAmount' => $totalUnpaidAmount,
+            'hasAnyInvoices' => $hasAnyInvoices,
         ])->layout('layouts.app');
     }
 }

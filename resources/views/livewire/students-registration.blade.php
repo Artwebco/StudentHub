@@ -13,7 +13,6 @@
             </svg>{{ __('admin.students.add_student') }}</button>
     </div>
 
-
     @if (session()->has('message'))
         <x-flash-message :message="session('message')" />
     @endif
@@ -209,7 +208,8 @@
                         @empty
                             <tr>
                                 <td colspan="9" class="text-center py-8 text-gray-400 italic">
-                                    {{ __('admin.students.no_archived') }}</td>
+                                    {{ __('admin.students.no_archived') }}
+                                </td>
                             </tr>
                         @endforelse
                     @else
@@ -304,34 +304,25 @@
                                                 </svg>
                                                 <span class="hidden md:inline">{{ __('admin.students.delete_permanent') }}</span>
                                             </button>
-                                        @else
-                                            <button wire:click="edit({{ $student->id }})" title="{{ __('admin.students.edit') }}"
-                                                aria-label="{{ __('admin.students.edit') }}"
-                                                class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-blue-600 md:bg-blue-50 md:hover:bg-blue-100 md:hover:text-blue-800 transition focus:outline-none">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                <span class="hidden md:inline">{{ __('admin.students.edit') }}</span>
-                                            </button>
-
-                                            <button type="button"
-                                                onclick="confirmDelete({{ $student->id }}, '{{ addslashes($student->user->name ?? 'Unknown') }}')"
-                                                class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-red-600 md:bg-red-50 md:hover:bg-red-100 md:hover:text-red-800 transition focus:outline-none"
-                                                title="{{ __('admin.students.delete') }}"
-                                                aria-label="{{ __('admin.students.delete') }}">
-                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                                <span class="hidden md:inline">{{ __('admin.students.delete') }}</span>
-                                            </button>
                                         @endif
                                     </td>
                                 </tr>
                             @endif
                         @endforeach
+                        @if(!$showArchived && $students->isEmpty())
+                            <tr>
+                                <td colspan="9" class="text-center py-8 text-gray-400 italic">
+                                    @if($search)
+                                        <div>
+                                            <p class="text-lg font-semibold">{{ __('admin.students.no_results_title') }}</p>
+                                            <p class="text-sm">{{ __('admin.students.no_results_subtitle') }}</p>
+                                        </div>
+                                    @else
+                                        {{ __('admin.students.no_active') }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                     @endif
                 </tbody>
             </table>
@@ -387,8 +378,9 @@
                             <label
                                 class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_last_name') }}</label>
                             <input type="text" wire:model="last_name"
-                                placeholder="{{ __('admin.students.placeholder_last_name') }}"
-                                class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                placeholder="{{ __('admin.students.placeholder_last_name') }}" @if($students->isEmpty())
+                                @endif class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500
+                                    focus:ring-blue-500 text-sm">
                             <x-input-error :messages="$errors->get('last_name')" class="mt-1" />
                         </div>
                     </div>
