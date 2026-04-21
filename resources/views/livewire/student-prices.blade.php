@@ -1,5 +1,5 @@
 <div>
-    {{-- Секција за пораки (Успех и Грешка) --}}
+    {{-- Section for messages (success and error) --}}
     @if (session()->has('message'))
         <x-flash-message :message="session('message')" />
     @endif
@@ -36,7 +36,8 @@
                         <div>
                             <h3 class="font-bold text-gray-800">{{ $template->admin_name }}</h3>
                             <p class="text-[11px] text-gray-400 mt-0.5">{{ __('admin.pricing.invoice_label') }}
-                                {{ $template->invoice_name }}</p>
+                                {{ $template->invoice_name }}
+                            </p>
                         </div>
                     </div>
                     <p class="text-xs text-gray-400 mb-4">{{ $template->description }}</p>
@@ -60,7 +61,7 @@
                 </div>
 
                 <div class="flex gap-2 mt-6 pt-4 border-t border-gray-100">
-                    {{-- Вратени оригинални копчиња Измени/Избриши --}}
+                    {{-- Restored original Edit/Delete buttons --}}
                     <button wire:click="edit({{ $template->id }})"
                         class="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md text-blue-600 md:bg-blue-50 md:hover:bg-blue-100 md:hover:text-blue-800 transition focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -86,20 +87,20 @@
         @endforeach
     </div>
 
-    {{-- МОДАЛ СО ALPINE АНИМАЦИЈА --}}
+    {{-- MODAL WITH ALPINE ANIMATION --}}
     @if($showModal)
         <div x-data="{ open: false }" x-init="setTimeout(() => open = true, 10)"
             x-on:close-modal.window="open = false; setTimeout(() => @this.closeModal(), 200)"
             class="fixed inset-0 z-50 flex items-center justify-center p-4">
 
-            {{-- BACKDROP (Позадина со Blur) --}}
+            {{-- BACKDROP (Blurred background) --}}
             <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300"
                 x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                 class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$dispatch('close-modal')">
             </div>
 
-            {{-- MODAL CONTENT (Содржина со Zoom ефект) --}}
+            {{-- MODAL CONTENT (With Zoom effect) --}}
             <div x-show="open" x-transition:enter="animate-swal-show" x-transition:leave="animate-swal-hide"
                 class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden z-50 border border-gray-100">
 
@@ -183,7 +184,7 @@
 
                 // Мала потврда за успех
                 Swal.fire({
-           title: @json(__('admin.pricing.deleted_title')),
+                    title: @json(__('admin.pricing.deleted_title')),
                     icon: 'success',
                     timer: 1500,
                     showConfirmButton: false

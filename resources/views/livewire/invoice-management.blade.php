@@ -25,12 +25,12 @@
 
 
     <div class="bg-white p-4 mt-4 rounded-xl shadow">
-        {{-- НОВ ДЕЛ: ФИЛТРИ --}}
+        {{-- NEW SECTION: FILTERS --}}
         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-            {{-- УЛТРА КОМПАКТНИ ФИЛТРИ --}}
+            {{-- Ultra compact filters --}}
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
 
-                {{-- Пребарување --}}
+                {{-- Search --}}
                 <div class="relative w-full sm:w-80 order-1">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="order-2 grid grid-cols-[1fr_1fr_auto] gap-2 w-full sm:flex sm:w-auto sm:items-center">
-                    {{-- Статус --}}
+                    {{-- Status --}}
                     <select wire:model.live="filter_status"
                         class="block w-full sm:w-auto py-1.5 pl-3 pr-8 border border-gray-200 rounded-lg text-md bg-white cursor-pointer focus:ring-blue-500">
                         <option value="">{{ __('admin.invoices.all_statuses') }}</option>
@@ -55,7 +55,7 @@
                         <option value="unsent">{{ __('admin.invoices.unsent_status') }}</option>
                     </select>
 
-                    {{-- Тип --}}
+                    {{-- Type --}}
                     <select wire:model.live="filter_type"
                         class="block w-full sm:w-auto py-1.5 pl-3 pr-8 border border-gray-200 rounded-lg text-md bg-white cursor-pointer focus:ring-blue-500">
                         <option value="">{{ __('admin.invoices.all_types') }}</option>
@@ -63,7 +63,7 @@
                         <option value="service">{{ __('admin.invoices.services') }}</option>
                     </select>
 
-                    {{-- Ресетирај --}}
+                    {{-- Reset --}}
                     <button wire:click="resetFilters" title="{{ __('admin.lessons.clear_fields') }}"
                         class="px-2 py-2 hover:bg-gray-300 text-gray-700 rounded-lg font-bold shadow transition-all flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -212,13 +212,13 @@
                             </td>
                             <td class="px-2 py-2 text-sm text-gray-500 max-w-xs truncate">
                                 @if($invoice->service_description)
-                                    {{-- Приказ на описот ако е рачно внесен (за услуги) --}}
+                                    {{-- Show description if manually entered (for services) --}}
                                     {{ $invoice->service_description }}
                                 @elseif($invoice->is_advance)
-                                    {{-- Автоматски текст за авансни фактури --}}
+                                    {{-- Auto text for advance invoices --}}
                                     <span class="italic">{{ __('admin.invoices.advance_teaching') }}</span>
                                 @else
-                                    {{-- Период за редовна настава --}}
+                                    {{-- Period for regular lessons --}}
                                     {{ \Carbon\Carbon::parse($invoice->date_from)->format('d.m') }} -
                                     {{ \Carbon\Carbon::parse($invoice->date_to)->format('d.m.Y') }}
                                 @endif
@@ -270,33 +270,33 @@
 
                                         {{-- Dropdown мени за секундарни акции --}}
                                         <div x-data="{
-                                                                                                                                    open: false,
-                                                                                                                                    menuStyle: '',
-                                                                                                                                    toggleMenu(el) {
-                                                                                                                                        this.open = !this.open;
-                                                                                                                                        if (this.open) {
-                                                                                                                                            this.$nextTick(() => this.placeMenu(el));
-                                                                                                                                        }
-                                                                                                                                    },
-                                                                                                                                    placeMenu(el) {
-                                                                                                                                        const rect = el.getBoundingClientRect();
-                                                                                                                                        const menuWidth = 224;
-                                                                                                                                        const menuHeight = 132;
-                                                                                                                                        const gap = 8;
-                                                                                                                                        const viewportWidth = window.innerWidth;
-                                                                                                                                        const viewportHeight = window.innerHeight;
+                                                                                                                                                                            open: false,
+                                                                                                                                                                            menuStyle: '',
+                                                                                                                                                                            toggleMenu(el) {
+                                                                                                                                                                                this.open = !this.open;
+                                                                                                                                                                                if (this.open) {
+                                                                                                                                                                                    this.$nextTick(() => this.placeMenu(el));
+                                                                                                                                                                                }
+                                                                                                                                                                            },
+                                                                                                                                                                            placeMenu(el) {
+                                                                                                                                                                                const rect = el.getBoundingClientRect();
+                                                                                                                                                                                const menuWidth = 224;
+                                                                                                                                                                                const menuHeight = 132;
+                                                                                                                                                                                const gap = 8;
+                                                                                                                                                                                const viewportWidth = window.innerWidth;
+                                                                                                                                                                                const viewportHeight = window.innerHeight;
 
-                                                                                                                                        let left = rect.right - menuWidth;
-                                                                                                                                        left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
+                                                                                                                                                                                let left = rect.right - menuWidth;
+                                                                                                                                                                                left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
 
-                                                                                                                                        let top = rect.bottom + gap;
-                                                                                                                                        if (top + menuHeight > viewportHeight - gap) {
-                                                                                                                                            top = Math.max(gap, rect.top - menuHeight - gap);
-                                                                                                                                        }
+                                                                                                                                                                                let top = rect.bottom + gap;
+                                                                                                                                                                                if (top + menuHeight > viewportHeight - gap) {
+                                                                                                                                                                                    top = Math.max(gap, rect.top - menuHeight - gap);
+                                                                                                                                                                                }
 
-                                                                                                                                        this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
-                                                                                                                                    }
-                                                                                                                                }"
+                                                                                                                                                                                this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
+                                                                                                                                                                            }
+                                                                                                                                                                        }"
                                             class="relative">
                                             <button type="button" @click="toggleMenu($event.currentTarget)"
                                                 class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition-all"
@@ -440,7 +440,7 @@
                 x-on:close-modal.window="open = false; setTimeout(() => @this.closeModal(), 200)"
                 class="fixed inset-0 z-50 flex items-center justify-center p-4">
 
-                {{-- BACKDROP (Позадина) --}}
+                {{-- BACKDROP (Background) --}}
                 <div x-show="open" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
@@ -491,7 +491,7 @@
                         <div class="space-y-4">
                             @if($invoice_type === 'student')
                                 <div class="flex flex-row gap-2">
-                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-xl border transition-all duration-300 shadow-sm"
+                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-lg border transition-all duration-300 shadow-sm"
                                         style="border-color: {{ $is_advance ? '#f97316' : '#e5e7eb' }}; background-color: {{ $is_advance ? '#fffaf5' : '#ffffff' }}; min-height: 48px;">
                                         <div class="flex items-center gap-2">
                                             <div>
@@ -502,14 +502,14 @@
                                             </div>
                                         </div>
                                         <div wire:click="$toggle('is_advance')"
-                                            class="relative inline-flex h-6 w-10 items-center rounded-full cursor-pointer transition-colors shadow-inner"
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors shadow-inner"
                                             style="background-color: {{ $is_advance ? '#f97316' : '#d1d5db' }};">
                                             <span
-                                                class="inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-300"
-                                                style="transform: translateX({{ $is_advance ? '1.1rem' : '0.2rem' }});"></span>
+                                                class="inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300"
+                                                style="transform: translateX({{ $is_advance ? '1.2rem' : '0.2rem' }});"></span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-xl border transition-all duration-300 shadow-sm"
+                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-lg border transition-all duration-300 shadow-sm"
                                         style="border-color: {{ !$is_cash ? '#22c55e' : '#e5e7eb' }}; background-color: {{ !$is_cash ? '#f0fdf4' : '#ffffff' }}; min-height: 48px;">
                                         <div class="flex items-center gap-2">
                                             <div>
@@ -520,11 +520,11 @@
                                             </div>
                                         </div>
                                         <div wire:click="$toggle('is_cash')"
-                                            class="relative inline-flex h-6 w-10 items-center rounded-full cursor-pointer transition-colors shadow-inner"
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors shadow-inner"
                                             style="background-color: {{ !$is_cash ? '#22c55e' : '#d1d5db' }};">
                                             <span
-                                                class="inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-300"
-                                                style="transform: translateX({{ !$is_cash ? '1.1rem' : '0.2rem' }});"></span>
+                                                class="inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform duration-300"
+                                                style="transform: translateX({{ !$is_cash ? '1.2rem' : '0.2rem' }});"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -534,7 +534,7 @@
                                         <span
                                             class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.choose_student') }}</span>
                                         <div @click="open = !open"
-                                            class="w-full h-9 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
+                                            class="w-full h-10 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
                                             <span>
                                                 @if($student_id)
                                                     @php $selected = $students->where('id', $student_id)->first(); @endphp
@@ -567,7 +567,7 @@
                                                         </svg>
                                                     </div>
                                                     <input type="text" wire:model.live.debounce.250ms="student_search"
-                                                        class="w-full h-9 pl-9 p-2 border border-gray-300 rounded text-[12px] focus:ring-blue-500 focus:border-blue-500"
+                                                        class="w-full h-10 pl-9 p-2 border border-gray-300 rounded text-[12px] focus:ring-blue-500 focus:border-blue-500"
                                                         placeholder="{{ __('admin.invoices.search_student') }}" @click.stop>
                                                 </div>
                                             </div>
@@ -591,7 +591,7 @@
                                             <label
                                                 class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.lesson_type') }}</label>
                                             <select wire:model="lesson_type_id"
-                                                class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium">
+                                                class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-xs font-medium">
                                                 <option value="">{{ __('admin.invoices.choose') }}</option>
                                                 @foreach($lessonTemplates as $template)
                                                     <option value="{{ $template->id }}">{{ $template->admin_name }}
@@ -605,7 +605,7 @@
                                                 <span class="inline sm:hidden">Cls.</span>
                                             </label>
                                             <input type="number" wire:model="advance_hours"
-                                                class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs text-blue-700 font-bold">
+                                                class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-xs text-blue-700 font-bold">
                                         </div>
                                         <div class="col-span-3">
                                             <label class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">
@@ -613,7 +613,7 @@
                                                 <span class="inline sm:hidden">Disc (%)</span>
                                             </label>
                                             <input type="number" min="0" max="100" wire:model="discount_percent"
-                                                class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium"
+                                                class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-xs font-medium"
                                                 placeholder="0">
                                         </div>
                                     </div>
@@ -624,7 +624,7 @@
                                             <label
                                                 class="block text-sm text-gray-600 tracking-normal mb-1 font-semibold">{{ __('admin.invoices.choose_student') }}</label>
                                             <div @click="open = !open"
-                                                class="w-full h-9 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
+                                                class="w-full h-10 border border-gray-200 rounded-xl shadow-sm text-xs font-medium bg-white flex items-center justify-between px-3 cursor-pointer">
                                                 <span>
                                                     @if($student_id)
                                                         @php $selected = $students->where('id', $student_id)->first(); @endphp
@@ -659,7 +659,7 @@
                                                             </svg>
                                                         </div>
                                                         <input type="text" wire:model.live.debounce.250ms="student_search"
-                                                            class="w-full h-9 pl-9 p-2 border border-gray-300 rounded text-[12px] focus:ring-blue-500 focus:border-blue-500"
+                                                            class="w-full h-10 pl-9 p-2 border border-gray-300 rounded text-[12px] focus:ring-blue-500 focus:border-blue-500"
                                                             placeholder="{{ __('admin.invoices.search_student') }}" @click.stop>
                                                     </div>
                                                 </div>
@@ -685,7 +685,7 @@
                                                 <span class="inline sm:hidden">Disc (%)</span>
                                             </label>
                                             <input type="number" min="0" max="100" wire:model="discount_percent"
-                                                class="w-full h-9 border-gray-200 rounded-xl shadow-sm text-xs font-medium px-2"
+                                                class="w-full h-10 border-gray-200 rounded-xl shadow-sm text-xs font-medium px-2"
                                                 placeholder="0">
                                         </div>
                                     </div>

@@ -239,7 +239,7 @@
             </tr>
         </thead>
         <tbody>
-            {{-- 1. АВАНСНА ФАКТУРА (ЗА СТУДЕНТ) --}}
+            {{-- 1. ADVANCE INVOICE (FOR STUDENT) --}}
             @if($invoice->is_advance && $invoice->student)
                 <tr>
                     <td>
@@ -252,19 +252,19 @@
                     <td class="text-right">{{ number_format($invoice->total_amount, 0, ',', '.') }}</td>
                 </tr>
 
-                {{-- 2. ОПШТА УСЛУГА (ИТ / ПРЕВОД) --}}
+                {{-- 2. GENERAL SERVICE (IT / TRANSLATION) --}}
             @elseif(!$invoice->student)
                 <tr>
                     <td>
                         1. {{ $invoice->service_description }}
-                        {{-- ТУКА НЕМА ДАТУМИ --}}
+                        {{-- NO DATES HERE --}}
                     </td>
                     <td class="text-center">1</td>
                     <td class="text-right">{{ number_format($invoice->total_amount, 0, ',', '.') }}</td>
                     <td class="text-right">{{ number_format($invoice->total_amount, 0, ',', '.') }}</td>
                 </tr>
 
-                {{-- 3. РЕДОВНА ФАКТУРА ОД ДНЕВНИК --}}
+                {{-- 3. REGULAR INVOICE FROM DIARY --}}
             @elseif($invoice->student && isset($lessons) && $lessons->isNotEmpty())
                 @foreach($lessons->groupBy('lesson_type_id') as $typeId => $groupedLessons)
                     <tr>
@@ -280,7 +280,7 @@
                 @endforeach
             @endif
 
-            {{-- ВКУПНО (СЕКОГАШ БЕЗ ДЕЦИМАЛИ) --}}
+            {{-- TOTAL (ALWAYS WITHOUT DECIMALS) --}}
             <tr class="total-row">
                 <td colspan="3" class="text-right">Вкупно:</td>
                 <td class="text-right">
@@ -316,7 +316,7 @@
     </div>
 
     <div class="signature-container">
-        {{-- Го користиме $sigData што го пративме од InvoiceManagement.php --}}
+        {{-- Using $sigData sent from InvoiceManagement.php --}}
         @if(isset($sigData) && $sigData)
             <img src="{{ $sigData }}" class="signature-img">
         @endif

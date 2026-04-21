@@ -7,14 +7,14 @@
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 py-12">
 
-        {{-- СЕКЦИЈА 1: ПРОФИЛНИ ИНФОРМАЦИИ --}}
+        {{-- SECTION 1: PROFILE INFORMATION --}}
         <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
             <div class="max-w-xl">
                 @if(auth()->user()->role === 'admin')
-                    {{-- Админот може да ја гледа и користи формата за промена --}}
+                    {{-- Admin can view and use the update form --}}
                     <livewire:profile.update-profile-information-form />
                 @else
-                    {{-- Ученикот гледа само текст (Read-only) --}}
+                    {{-- Student sees only read-only text --}}
                     <div class="space-y-6">
                         <header>
                             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase tracking-wider">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        {{-- СЕКЦИЈА 2: ПРОМЕНА НА ЛОЗИНКА (Достапно за сите) --}}
+        {{-- SECTION 2: PASSWORD CHANGE (Available to all) --}}
         <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
             <div class="max-w-xl">
                 <livewire:profile.update-password-form />
