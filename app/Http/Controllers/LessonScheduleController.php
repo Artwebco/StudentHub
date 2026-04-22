@@ -93,7 +93,7 @@ class LessonScheduleController extends Controller
         $startsAt = now()->parse($validated['starts_at']);
         $endsAt = (clone $startsAt)->addMinutes((int) $validated['duration_minutes']);
 
-        Appointment::create([
+        $appointment = Appointment::create([
             'admin_id' => $request->user()->id,
             'student_id' => $validated['student_id'],
             'starts_at' => $startsAt,
@@ -101,6 +101,23 @@ class LessonScheduleController extends Controller
             'status' => 'scheduled',
             'note' => $validated['note'] ?? null,
         ]);
+
+        // Get student
+        $student = \App\Models\User::find($validated['student_id']);
+        $studentName = $student?->name ?? 'Student';
+
+        // Calculate reminder text
+        $now = now();
+        $diffMinutes = $appointment->starts_at->diffInMinutes($now);
+        if ($diffMinutes >= 1440) {
+            $reminderText = "You will receive a reminder 24 hours and 30 minutes before the lesson starts.";
+        } elseif ($diffMinutes >= 30) {
+            $reminderText = "You will receive a reminder 30 minutes before the lesson starts.";
+        } else {
+            $reminderText = "Your lesson is starting soon!";
+        }
+
+        \Mail::to($student->email)->send(new \App\Mail\LessonCreatedMail($appointment, $studentName, $reminderText));
 
         return redirect()
             ->route('lesson-schedule')
