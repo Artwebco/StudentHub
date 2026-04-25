@@ -270,33 +270,33 @@
 
                                         {{-- Dropdown мени за секундарни акции --}}
                                         <div x-data="{
-                                                                                                                                                                            open: false,
-                                                                                                                                                                            menuStyle: '',
-                                                                                                                                                                            toggleMenu(el) {
-                                                                                                                                                                                this.open = !this.open;
-                                                                                                                                                                                if (this.open) {
-                                                                                                                                                                                    this.$nextTick(() => this.placeMenu(el));
-                                                                                                                                                                                }
-                                                                                                                                                                            },
-                                                                                                                                                                            placeMenu(el) {
-                                                                                                                                                                                const rect = el.getBoundingClientRect();
-                                                                                                                                                                                const menuWidth = 224;
-                                                                                                                                                                                const menuHeight = 132;
-                                                                                                                                                                                const gap = 8;
-                                                                                                                                                                                const viewportWidth = window.innerWidth;
-                                                                                                                                                                                const viewportHeight = window.innerHeight;
+                                                                                                                                                                                                                    open: false,
+                                                                                                                                                                                                                    menuStyle: '',
+                                                                                                                                                                                                                    toggleMenu(el) {
+                                                                                                                                                                                                                        this.open = !this.open;
+                                                                                                                                                                                                                        if (this.open) {
+                                                                                                                                                                                                                            this.$nextTick(() => this.placeMenu(el));
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                    placeMenu(el) {
+                                                                                                                                                                                                                        const rect = el.getBoundingClientRect();
+                                                                                                                                                                                                                        const menuWidth = 224;
+                                                                                                                                                                                                                        const menuHeight = 132;
+                                                                                                                                                                                                                        const gap = 8;
+                                                                                                                                                                                                                        const viewportWidth = window.innerWidth;
+                                                                                                                                                                                                                        const viewportHeight = window.innerHeight;
 
-                                                                                                                                                                                let left = rect.right - menuWidth;
-                                                                                                                                                                                left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
+                                                                                                                                                                                                                        let left = rect.right - menuWidth;
+                                                                                                                                                                                                                        left = Math.max(gap, Math.min(left, viewportWidth - menuWidth - gap));
 
-                                                                                                                                                                                let top = rect.bottom + gap;
-                                                                                                                                                                                if (top + menuHeight > viewportHeight - gap) {
-                                                                                                                                                                                    top = Math.max(gap, rect.top - menuHeight - gap);
-                                                                                                                                                                                }
+                                                                                                                                                                                                                        let top = rect.bottom + gap;
+                                                                                                                                                                                                                        if (top + menuHeight > viewportHeight - gap) {
+                                                                                                                                                                                                                            top = Math.max(gap, rect.top - menuHeight - gap);
+                                                                                                                                                                                                                        }
 
-                                                                                                                                                                                this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
-                                                                                                                                                                            }
-                                                                                                                                                                        }"
+                                                                                                                                                                                                                        this.menuStyle = `position: fixed; left: ${left}px; top: ${top}px;`;
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                }"
                                             class="relative">
                                             <button type="button" @click="toggleMenu($event.currentTarget)"
                                                 class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition-all"
@@ -491,7 +491,7 @@
                         <div class="space-y-4">
                             @if($invoice_type === 'student')
                                 <div class="flex flex-row gap-2">
-                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-lg border transition-all duration-300 shadow-sm"
+                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-lg border shadow-sm"
                                         style="border-color: {{ $is_advance ? '#f97316' : '#e5e7eb' }}; background-color: {{ $is_advance ? '#fffaf5' : '#ffffff' }}; min-height: 48px;">
                                         <div class="flex items-center gap-2">
                                             <div>
@@ -509,7 +509,7 @@
                                                 style="transform: translateX({{ $is_advance ? '1.2rem' : '0.2rem' }});"></span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-lg border transition-all duration-300 shadow-sm"
+                                    <div class="flex flex-1 items-center justify-between py-3 px-2 bg-white rounded-lg border shadow-sm"
                                         style="border-color: {{ !$is_cash ? '#22c55e' : '#e5e7eb' }}; background-color: {{ !$is_cash ? '#f0fdf4' : '#ffffff' }}; min-height: 48px;">
                                         <div class="flex items-center gap-2">
                                             <div>
