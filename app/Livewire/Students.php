@@ -13,7 +13,8 @@ class Students extends Component
 {
     use WithPagination;
 
-    public $first_name, $last_name, $email, $phone, $country;
+    public $first_name, $last_name, $first_name_mk, $last_name_mk;
+    public $email, $phone, $country;
     public $password = null;
     public $active = true, $invoice_type = 'individual', $hourly_rate = 0;
     public $studentId;
@@ -121,13 +122,15 @@ class Students extends Component
         $this->studentId = null;
         $this->first_name = '';
         $this->last_name = '';
+        $this->first_name_mk = '';
+        $this->last_name_mk = '';
         $this->email = '';
         $this->phone = '';
         $this->country = '';
         $this->active = true;
         $this->invoice_type = 'individual';
         $this->hourly_rate = 0;
-        $this->search = ''; // Опционално чистење на пребарувањето
+        $this->search = '';
     }
 
     public function store()
@@ -144,6 +147,20 @@ class Students extends Component
         } else {
             $rules['email'] .= '|unique:users,email';
         }
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'first_name_mk' => 'required',
+            'last_name_mk' => 'required',
+            'email' => 'required|email',
+        ];
+        if ($this->studentId) {
+            $student = Student::find($this->studentId);
+            $userId = $student ? $student->user_id : null;
+            $rules['email'] .= '|unique:users,email,' . $userId;
+        } else {
+            $rules['email'] .= '|unique:users,email';
+        }
         $this->validate($rules);
 
         if ($this->studentId) {
@@ -151,6 +168,8 @@ class Students extends Component
             $student->update([
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
+                'first_name_mk' => $this->first_name_mk,
+                'last_name_mk' => $this->last_name_mk,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'country' => $this->country,
@@ -158,15 +177,16 @@ class Students extends Component
                 'invoice_type' => $this->invoice_type,
             ]);
 
-            $student->user->update([
-                'name' => $this->first_name . ' ' . $this->last_name,
-                'email' => $this->email,
-            ]);
+            if ($student->user) {
+                $student->user->update([
+                    'name' => $this->first_name . ' ' . $this->last_name,
+                    'email' => $this->email,
+                ]);
+            }
         } else {
             $user = User::create([
                 'name' => $this->first_name . ' ' . $this->last_name,
                 'email' => $this->email,
-                // Постави привремена лозинка, но корисникот ќе добие линк за ресет
                 'password' => Hash::make(bin2hex(random_bytes(8))),
                 'role' => 'student',
             ]);
@@ -175,6 +195,8 @@ class Students extends Component
                 'user_id' => $user->id,
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
+                'first_name_mk' => $this->first_name_mk,
+                'last_name_mk' => $this->last_name_mk,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'country' => $this->country,
@@ -182,33 +204,27 @@ class Students extends Component
                 'invoice_type' => $this->invoice_type,
             ]);
 
-            // Испрати welcome email со валиден линк за поставување лозинка
-            $token = app('auth.password.broker')->createToken($user);
-            $resetUrl = url(route('password.reset', [
-                'token' => $token,
-                'email' => $user->email,
-            ], false));
-
-            $user->notify(new StudentWelcomeNotification($resetUrl));
+            $user->notify(new StudentWelcomeNotification($user));
         }
-
-        session()->flash('message', $this->studentId ? __('admin.students.updated') : __('admin.students.created'));
-        $this->isOpen = false;
+        $isUpdate = (bool) $this->studentId;
         $this->resetInputFields();
+        $this->closeModal();
+        session()->flash('message', __($isUpdate ? 'admin.students.updated' : 'admin.students.created'));
     }
 
     public function edit($id)
     {
         $student = Student::findOrFail($id);
-        $this->studentId = $id;
+        $this->studentId = $student->id;
         $this->first_name = $student->first_name;
         $this->last_name = $student->last_name;
+        $this->first_name_mk = $student->first_name_mk;
+        $this->last_name_mk = $student->last_name_mk;
         $this->email = $student->email;
         $this->phone = $student->phone;
         $this->country = $student->country;
         $this->active = $student->active;
         $this->invoice_type = $student->invoice_type;
-
         $this->openModal();
     }
 

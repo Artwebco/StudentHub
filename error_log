@@ -1,0 +1,1 @@
+[22-Apr-2026 20:07:45 Europe/Skopje] PHP Fatal error:  Cannot redeclare class App\Console\Kernel (previously declared in /home/besekgei/edu.besedi.mk/app/Console/Commands/Kernel.php:8) in /home/besekgei/edu.besedi.mk/app/Console/Commands/Kernel.php on line 8

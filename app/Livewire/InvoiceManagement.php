@@ -154,11 +154,21 @@ class InvoiceManagement extends Component
             $sequenceNumber = $numData['sequence'];
         }
 
+        $studentMkFirstName = null;
+        $studentMkLastName = null;
+        if ($studentId) {
+            $studentModel = Student::find($studentId);
+            $studentMkFirstName = $studentModel?->first_name_mk;
+            $studentMkLastName = $studentModel?->last_name_mk;
+        }
+
         Invoice::create([
             'invoice_number' => $invoiceNumber,
             'sequence_number' => $sequenceNumber,
             'student_id' => $studentId,
             'custom_client_name' => $customClient,
+            'first_name_mk' => $studentMkFirstName,
+            'last_name_mk' => $studentMkLastName,
             'service_description' => $serviceDesc,
             'lesson_type_id' => ($this->invoice_type === 'student' && $this->is_advance) ? $this->lesson_type_id : null,
             'quantity' => $quantity ?? 1,

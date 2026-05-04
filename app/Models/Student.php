@@ -15,6 +15,8 @@ class Student extends Model
         'user_id',
         'first_name',
         'last_name',
+        'first_name_mk',
+        'last_name_mk',
         'email',
         'phone',
         'country',
@@ -26,8 +28,6 @@ class Student extends Model
     {
         return $this->belongsTo(User::class)->withTrashed();
     }
-
-    // ОВАА ФУНКЦИЈА МОРА ДА ЈА ДОДАДЕШ:
     public function invoices(): HasMany
     {
         // Провери дали моделот се вика точно Invoice (или StudentInvoice)

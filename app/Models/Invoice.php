@@ -30,7 +30,9 @@ class Invoice extends Model
         'is_paid',      // Твојата стара колона (ако планираш да ја избришеш, тргни ја и од тука)
         'is_advance',
         'is_cash',
-        'discount_percent'
+        'discount_percent',
+        'first_name_mk',
+        'last_name_mk',
     ];
 
     protected $casts = [
