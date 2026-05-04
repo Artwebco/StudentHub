@@ -223,7 +223,8 @@
     <div class="section-header">Корисник</div>
     <div class="user-details">
         @if($invoice->student)
-            {{ $invoice->student->first_name }} {{ $invoice->student->last_name }}
+            {{ ($invoice->first_name_mk ?: $invoice->student->first_name_mk ?: $invoice->student->first_name) }}
+            {{ ($invoice->last_name_mk ?: $invoice->student->last_name_mk ?: $invoice->student->last_name) }}
         @else
             {{ $invoice->custom_client_name }}
         @endif
