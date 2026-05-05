@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\StudentWelcomeNotification;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class Students extends Component
 {
@@ -139,18 +140,6 @@ class Students extends Component
         $rules = [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
-        ];
-        if ($this->studentId) {
-            $student = Student::find($this->studentId);
-            $userId = $student ? $student->user_id : null;
-            $rules['email'] .= '|unique:users,email,' . $userId;
-        } else {
-            $rules['email'] .= '|unique:users,email';
-        }
-        $rules = [
-            'first_name' => 'required',
-            'last_name' => 'required',
             'first_name_mk' => 'required',
             'last_name_mk' => 'required',
             'email' => 'required|email',
@@ -207,7 +196,14 @@ class Students extends Component
                 'invoice_type' => $this->invoice_type,
             ]);
 
-            $user->notify(new StudentWelcomeNotification($user));
+            Password::sendResetLink(['email' => $user->email], function ($resetUser, $token) {
+                $resetUrl = url(route('password.reset', [
+                    'token' => $token,
+                    'email' => $resetUser->getEmailForPasswordReset(),
+                ], false));
+
+                $resetUser->notify(new StudentWelcomeNotification($resetUrl));
+            });
         }
         $isUpdate = (bool) $this->studentId;
         $this->resetInputFields();
