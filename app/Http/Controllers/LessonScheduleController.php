@@ -56,7 +56,7 @@ class LessonScheduleController extends Controller
         $events = $appointments->map(function (Appointment $appointment) use ($user) {
             $title = $user->role === 'admin'
                 ? ($appointment->student?->name ?? 'Student')
-                : 'Lesson with ' . ($appointment->admin?->name ?? 'Admin');
+                : 'Class with ' . ($appointment->admin?->name ?? 'Admin');
 
             return [
                 'id' => $appointment->id,
@@ -110,18 +110,18 @@ class LessonScheduleController extends Controller
         $now = now();
         $diffMinutes = $appointment->starts_at->diffInMinutes($now);
         if ($diffMinutes >= 1440) {
-            $reminderText = "You will receive a reminder 24 hours and 30 minutes before the lesson starts.";
+            $reminderText = "You will receive a reminder 24 hours and 30 minutes before the class starts.";
         } elseif ($diffMinutes >= 30) {
-            $reminderText = "You will receive a reminder 30 minutes before the lesson starts.";
+            $reminderText = "You will receive a reminder 30 minutes before the class starts.";
         } else {
-            $reminderText = "Your lesson is starting soon!";
+            $reminderText = "Your class is starting soon!";
         }
 
         \Mail::to($student->email)->send(new \App\Mail\LessonCreatedMail($appointment, $studentName, $reminderText));
 
         return redirect()
             ->route('lesson-schedule')
-            ->with('success', 'Lesson has been scheduled successfully.');
+            ->with('success', 'Class has been scheduled successfully.');
     }
 
     public function update(Request $request, Appointment $appointment): JsonResponse
@@ -132,7 +132,7 @@ class LessonScheduleController extends Controller
 
         if ($appointment->status !== 'scheduled') {
             return response()->json([
-                'message' => 'Only scheduled lessons can be updated.',
+                'message' => 'Only scheduled classes can be updated.',
             ], 422);
         }
 
@@ -149,7 +149,7 @@ class LessonScheduleController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Lesson was rescheduled successfully.',
+            'message' => 'Class was rescheduled successfully.',
         ]);
     }
 
@@ -161,7 +161,7 @@ class LessonScheduleController extends Controller
 
         if ($appointment->status !== 'scheduled') {
             return response()->json([
-                'message' => 'Only scheduled lessons can be cancelled.',
+                'message' => 'Only scheduled classes can be cancelled.',
             ], 422);
         }
 
@@ -170,7 +170,7 @@ class LessonScheduleController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Lesson was cancelled successfully.',
+            'message' => 'Class was cancelled successfully.',
         ]);
     }
 

@@ -425,26 +425,28 @@
                         </div>
                     </div>
                     <div x-data="{
-                                                    open: false,
-                                                    search: '',
-                                                    selected: @entangle('timezone'),
-                                                    timezones: @js(\DateTimeZone::listIdentifiers()),
-                                                    label(tz) {
-                                                        try {
-                                                            const gmt = new Intl.DateTimeFormat('en', {
-                                                                timeZone: tz, timeZoneName: 'shortOffset'
-                                                            }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
-                                                            const m = gmt.match(/GMT([+-])(\d+)(?::(\d+))?/);
-                                                            if (!m) return '(UTC+00:00) ' + tz;
-                                                            return '(UTC' + m[1] + m[2].padStart(2,'0') + ':' + (m[3]||'0').padStart(2,'0') + ') ' + tz;
-                                                        } catch(e) { return tz; }
-                                                    },
-                                                    get filtered() {
-                                                        if (!this.search) return this.timezones;
-                                                        const s = this.search.toLowerCase();
-                                                        return this.timezones.filter(tz => this.label(tz).toLowerCase().includes(s));
-                                                    }
-                                                }" x-init="$watch('selected', v => { if (!v) search = '' })"
+                                                                open: false,
+                                                                search: '',
+                                                                selected: @entangle('timezone'),
+                                                                timezones: @js(\DateTimeZone::listIdentifiers()),
+                                                                label(tz) {
+                                                                    try {
+                                                                        const offsetStr = new Intl.DateTimeFormat('en', {
+                                                                            timeZone: tz, timeZoneName: 'shortOffset'
+                                                                        }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
+                                                                        const m = offsetStr.match(/GMT([+-])(\d+)(?::(\d+))?/);
+                                                                        const offset = m ? '(GMT' + m[1] + m[2].padStart(2,'0') + ':' + (m[3]||'0').padStart(2,'0') + ')' : '(GMT+00:00)';
+                                                                        const parts = tz.split('/');
+                                                                        const friendly = parts.map(p => p.replace(/_/g, ' ')).join(' - ');
+                                                                        return offset + ' ' + friendly;
+                                                                    } catch(e) { return tz; }
+                                                                },
+                                                                get filtered() {
+                                                                    if (!this.search) return this.timezones;
+                                                                    const s = this.search.toLowerCase();
+                                                                    return this.timezones.filter(tz => this.label(tz).toLowerCase().includes(s));
+                                                                }
+                                                            }" x-init="$watch('selected', v => { if (!v) search = '' })"
                         @click.outside="open = false" class="relative">
                         <label
                             class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_timezone') }}</label>

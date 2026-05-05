@@ -24,7 +24,7 @@ class LessonCreatedMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Lesson Scheduled Successfully')
+        return $this->subject('Class Scheduled Successfully')
             ->view('emails.lesson-created');
     }
 }
