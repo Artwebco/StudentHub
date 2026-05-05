@@ -9,6 +9,16 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
     ],
+    safelist: [
+        'transform',
+        'translate-x-0',
+        'translate-x-full',
+        'transition',
+        'duration-200',
+        'duration-300',
+        'ease-in',
+        'ease-out',
+    ],
 
     theme: {
         extend: {
