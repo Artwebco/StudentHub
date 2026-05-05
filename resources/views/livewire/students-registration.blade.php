@@ -333,8 +333,7 @@
     <!-- Modal -->
     @if($isOpen)
         <div x-data="{ open: false }" x-init="setTimeout(() => open = true, 10)"
-            x-on:close-modal.window="open = false; setTimeout(() => @this.closeModal(), 200)"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4">
+            x-on:close-modal.window="open = false; setTimeout(() => @this.closeModal(), 200)" class="fixed inset-0 z-50">
 
             {{-- BACKDROP --}}
             <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
@@ -343,11 +342,14 @@
                 class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$dispatch('close-modal')">
             </div>
 
-            {{-- MODAL CONTENT (Содржина) --}}
-            <div x-show="open" x-transition:enter="animate-swal-show" x-transition:leave="animate-swal-hide"
-                class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden z-50 border border-gray-100">
+            {{-- SLIDE-OVER CONTENT (Содржина) --}}
+            <div x-show="open" x-transition:enter="transform transition ease-out duration-300"
+                x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+                x-transition:leave="transform transition ease-in duration-200" x-transition:leave-start="translate-x-0"
+                x-transition:leave-end="translate-x-full"
+                class="fixed inset-y-0 right-0 w-full sm:max-w-xl bg-white rounded-none sm:rounded-l-3xl shadow-2xl z-50 border-l border-gray-100 flex flex-col">
 
-                <div class="px-8 py-6 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
                     <div>
                         <h3 class="text-xl font-bold text-gray-900">{{ __('admin.students.modal_title') }}</h3>
                         <p class="text-sm text-gray-500 mt-1">{{ __('admin.students.modal_subtitle') }}</p>
@@ -361,7 +363,7 @@
                     </button>
                 </div>
 
-                <div class="px-8 py-8 space-y-4">
+                <div class="px-8 py-8 space-y-4 overflow-y-auto flex-1">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label
@@ -422,9 +424,67 @@
                                 class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                         </div>
                     </div>
+                    <div x-data="{
+                                                    open: false,
+                                                    search: '',
+                                                    selected: @entangle('timezone'),
+                                                    timezones: @js(\DateTimeZone::listIdentifiers()),
+                                                    label(tz) {
+                                                        try {
+                                                            const gmt = new Intl.DateTimeFormat('en', {
+                                                                timeZone: tz, timeZoneName: 'shortOffset'
+                                                            }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
+                                                            const m = gmt.match(/GMT([+-])(\d+)(?::(\d+))?/);
+                                                            if (!m) return '(UTC+00:00) ' + tz;
+                                                            return '(UTC' + m[1] + m[2].padStart(2,'0') + ':' + (m[3]||'0').padStart(2,'0') + ') ' + tz;
+                                                        } catch(e) { return tz; }
+                                                    },
+                                                    get filtered() {
+                                                        if (!this.search) return this.timezones;
+                                                        const s = this.search.toLowerCase();
+                                                        return this.timezones.filter(tz => this.label(tz).toLowerCase().includes(s));
+                                                    }
+                                                }" x-init="$watch('selected', v => { if (!v) search = '' })"
+                        @click.outside="open = false" class="relative">
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_timezone') }}</label>
+                        <button type="button" @click="open = !open"
+                            class="w-full h-11 border border-gray-200 rounded-xl shadow-sm bg-white px-3 text-left text-sm flex items-center justify-between focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                            <span x-text="selected ? label(selected) : '{{ __('admin.students.placeholder_timezone') }}'"
+                                :class="selected ? 'text-gray-900' : 'text-gray-400'"></span>
+                            <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="open" x-transition
+                            class="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg">
+                            <div class="p-2 border-b border-gray-100">
+                                <input type="text" x-model="search" placeholder="Search timezone..." @click.stop
+                                    class="w-full h-9 border border-gray-200 rounded-lg px-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                                    x-ref="searchInput">
+                            </div>
+                            <ul class="max-h-52 overflow-y-auto py-1" x-ref="listbox">
+                                <li @click="selected = ''; open = false; search = ''"
+                                    class="px-3 py-2 text-sm text-gray-400 cursor-pointer hover:bg-blue-50"
+                                    :class="selected === '' ? 'bg-blue-50 font-semibold text-blue-600' : ''">
+                                    {{ __('admin.students.placeholder_timezone') }}
+                                </li>
+                                <template x-for="tz in filtered" :key="tz">
+                                    <li @click="selected = tz; open = false; search = ''"
+                                        class="px-3 py-2 text-sm cursor-pointer hover:bg-blue-50"
+                                        :class="selected === tz ? 'bg-blue-50 font-semibold text-blue-600' : 'text-gray-700'"
+                                        x-text="label(tz)">
+                                    </li>
+                                </template>
+                                <li x-show="filtered.length === 0" class="px-3 py-2 text-sm text-gray-400">No results</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="px-8 py-6 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <div class="px-8 py-6 border-t border-gray-100 flex justify-end gap-3">
                     <button @click="$dispatch('close-modal')"
                         class="px-6 py-3 text-gray-500 font-semibold hover:text-gray-700">
                         {{ __('admin.students.cancel') }}

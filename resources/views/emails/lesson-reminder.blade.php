@@ -14,9 +14,13 @@
         <p style="margin: 0 0 8px;"><strong>Student:</strong> {{ $appointment->student?->name ?? 'N/A' }}</p>
         <p style="margin: 0 0 8px;"><strong>Teacher/Admin:</strong> {{ $appointment->admin?->name ?? 'N/A' }}</p>
         <p style="margin: 0 0 8px;"><strong>Start:</strong>
-            {{ optional($appointment->starts_at)->timezone(config('app.timezone'))->format('Y-m-d H:i') }}</p>
+            @php $tz = $appointment->student?->student?->timezone ?: config('app.timezone'); @endphp
+            {{ optional($appointment->starts_at)->timezone($tz)->format('Y-m-d H:i') }}
+            ({{ $tz }})
+        </p>
         <p style="margin: 0;"><strong>End:</strong>
-            {{ optional($appointment->ends_at)->timezone(config('app.timezone'))->format('Y-m-d H:i') }}</p>
+            {{ optional($appointment->ends_at)->timezone($tz)->format('Y-m-d H:i') }}
+            ({{ $tz }})</p>
     </div>
 
     @if ($appointment->note)

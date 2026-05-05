@@ -255,6 +255,8 @@ return [
         'label_email' => 'Email',
         'label_phone' => 'Phone',
         'label_country' => 'Country',
+        'label_timezone' => 'Timezone',
+        'placeholder_timezone' => '— Select timezone —',
         'placeholder_first_name' => 'e.g. Peter',
         'placeholder_last_name' => 'e.g. Petrovski',
         'placeholder_phone' => '07X XXX XXX',

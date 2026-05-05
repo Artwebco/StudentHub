@@ -14,7 +14,7 @@ class Students extends Component
     use WithPagination;
 
     public $first_name, $last_name, $first_name_mk, $last_name_mk;
-    public $email, $phone, $country;
+    public $email, $phone, $country, $timezone = '';
     public $password = null;
     public $active = true, $invoice_type = 'individual', $hourly_rate = 0;
     public $studentId;
@@ -127,6 +127,7 @@ class Students extends Component
         $this->email = '';
         $this->phone = '';
         $this->country = '';
+        $this->timezone = '';
         $this->active = true;
         $this->invoice_type = 'individual';
         $this->hourly_rate = 0;
@@ -173,6 +174,7 @@ class Students extends Component
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'country' => $this->country,
+                'timezone' => $this->timezone,
                 'active' => $this->active,
                 'invoice_type' => $this->invoice_type,
             ]);
@@ -200,6 +202,7 @@ class Students extends Component
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'country' => $this->country,
+                'timezone' => $this->timezone,
                 'active' => $this->active,
                 'invoice_type' => $this->invoice_type,
             ]);
@@ -223,6 +226,7 @@ class Students extends Component
         $this->email = $student->email;
         $this->phone = $student->phone;
         $this->country = $student->country;
+        $this->timezone = $student->timezone ?? '';
         $this->active = $student->active;
         $this->invoice_type = $student->invoice_type;
         $this->openModal();

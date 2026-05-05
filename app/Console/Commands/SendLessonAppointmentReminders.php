@@ -47,7 +47,7 @@ class SendLessonAppointmentReminders extends Command
         $windowEnd = now()->addMinutes($toMinutes);
 
         $appointments = Appointment::query()
-            ->with(['student:id,name,email', 'admin:id,name,email'])
+            ->with(['student:id,name,email', 'student.student:id,user_id,timezone', 'admin:id,name,email'])
             ->where('status', 'scheduled')
             ->whereNull($column)
             ->whereBetween('starts_at', [$windowStart, $windowEnd])

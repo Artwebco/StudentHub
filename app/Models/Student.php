@@ -20,6 +20,7 @@ class Student extends Model
         'email',
         'phone',
         'country',
+        'timezone',
         'active',
         'invoice_type'
     ];
