@@ -19,7 +19,8 @@ class LessonCreate extends Component
     public $student_id, $lesson_type_id, $lesson_date, $notes, $lesson_status = 'held';
     public $suggestedPrice = 0;
     public $editingLessonId = null;
-    public $start_time, $end_time;
+    public $start_time, $end_time, $duration = '';
+    public $isFormOpen = false;
 
     // Dropdown state
     public $student_search = '';
@@ -37,6 +38,17 @@ class LessonCreate extends Component
     public function mount()
     {
         $this->lesson_date = now()->format('Y-m-d');
+    }
+
+    public function openCreatePanel()
+    {
+        $this->resetFields();
+        $this->isFormOpen = true;
+    }
+
+    public function closeForm()
+    {
+        $this->isFormOpen = false;
     }
 
     // Функција за избор на студент од листата
@@ -65,10 +77,35 @@ class LessonCreate extends Component
         }
     }
 
+    public function updatedStartTime()
+    {
+        $this->recalculateEndTime();
+    }
+
+    public function updatedDuration()
+    {
+        $this->recalculateEndTime();
+    }
+
+    private function recalculateEndTime()
+    {
+        if ($this->start_time && is_numeric($this->duration) && $this->duration > 0) {
+            try {
+                $this->end_time = Carbon::createFromFormat('H:i', $this->normalizeTime($this->start_time))
+                    ->addMinutes((int) $this->duration)
+                    ->format('H:i');
+            } catch (\Throwable $e) {
+                $this->end_time = null;
+            }
+        } else {
+            $this->end_time = null;
+        }
+    }
+
     public function saveLesson()
     {
         $this->start_time = $this->normalizeTime($this->start_time);
-        $this->end_time = $this->normalizeTime($this->end_time);
+        $this->recalculateEndTime();
 
         $this->validate(
             [
@@ -77,7 +114,7 @@ class LessonCreate extends Component
                 'lesson_date' => 'required|date',
                 'lesson_status' => 'required|in:held,not_held',
                 'start_time' => 'nullable|required_if:lesson_status,held|date_format:H:i',
-                'end_time' => 'nullable|required_if:lesson_status,held|date_format:H:i|after:start_time',
+                'duration' => 'nullable|required_if:lesson_status,held|integer|min:1',
             ],
             [
                 'student_id.required' => __('admin.lessons.validation.student_required'),
@@ -89,10 +126,9 @@ class LessonCreate extends Component
                 'start_time.required' => __('admin.lessons.validation.start_required'),
                 'start_time.required_if' => __('admin.lessons.validation.start_required_if'),
                 'start_time.date_format' => __('admin.lessons.validation.start_invalid'),
-                'end_time.required' => __('admin.lessons.validation.end_required'),
-                'end_time.required_if' => __('admin.lessons.validation.end_required_if'),
-                'end_time.date_format' => __('admin.lessons.validation.end_invalid'),
-                'end_time.after' => __('admin.lessons.validation.end_after'),
+                'duration.required_if' => __('admin.lessons.validation.duration_required'),
+                'duration.integer' => __('admin.lessons.validation.duration_invalid'),
+                'duration.min' => __('admin.lessons.validation.duration_min'),
             ]
         );
 
@@ -117,6 +153,7 @@ class LessonCreate extends Component
         }
 
         $this->resetFields();
+        $this->closeForm();
     }
 
     private function normalizeTime($value)
@@ -145,12 +182,22 @@ class LessonCreate extends Component
     public function editLesson($id)
     {
         $lesson = Lesson::findOrFail($id);
+        $this->isFormOpen = true;
         $this->editingLessonId = $id;
         $this->student_id = $lesson->student_id;
         $this->lesson_type_id = $lesson->lesson_type_id;
         $this->lesson_date = \Carbon\Carbon::parse($lesson->lesson_date)->format('Y-m-d');
         $this->start_time = $this->normalizeTime($lesson->start_time);
         $this->end_time = $this->normalizeTime($lesson->end_time);
+        // Derive duration from stored start/end so the field is pre-filled when editing
+        if ($this->start_time && $this->end_time) {
+            try {
+                $this->duration = (string) Carbon::createFromFormat('H:i', $this->start_time)
+                    ->diffInMinutes(Carbon::createFromFormat('H:i', $this->end_time));
+            } catch (\Throwable $e) {
+                $this->duration = '';
+            }
+        }
         $this->lesson_status = ($lesson->lesson_status === 'held') ? 'held' : 'not_held';
         $this->notes = $lesson->notes;
         $this->suggestedPrice = $lesson->price_at_time;
@@ -158,7 +205,7 @@ class LessonCreate extends Component
 
     public function resetFields()
     {
-        $this->reset(['student_id', 'lesson_type_id', 'notes', 'suggestedPrice', 'editingLessonId', 'student_search', 'showDropdown', 'start_time', 'end_time', 'lesson_status']);
+        $this->reset(['student_id', 'lesson_type_id', 'notes', 'suggestedPrice', 'editingLessonId', 'student_search', 'showDropdown', 'start_time', 'end_time', 'duration', 'lesson_status']);
         $this->lesson_date = now()->format('Y-m-d');
         $this->lesson_status = 'held';
     }

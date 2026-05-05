@@ -4,223 +4,189 @@
             <h2 class="text-xl font-bold text-gray-700">{{ __('admin.lessons.title') }}</h2>
             <p class="text-md text-gray-600">{{ __('admin.lessons.subtitle') }}</p>
         </div>
+        <button wire:click="openCreatePanel"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:scale-105 active:scale-95 inline-flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            {{ __('admin.lessons.add_lesson') }}
+        </button>
     </div>
     {{-- SESSION MESSAGES --}}
     @if (session()->has('message'))
         <x-flash-message :message="session('message')" />
     @endif
 
-    {{-- ENTRY FORM --}}
-    <div x-data="{ showDetailModal: false }"
-        class="text-black bg-white px-4 pt-4 pb-2 rounded-xl border border-gray-100 shadow-sm w-full">
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-[0.9fr_2.35fr_1.7fr_1.1fr_0.95fr_0.78fr_0.78fr_1fr_0.95fr_0.55fr] gap-2.5 items-end">
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.pricing.price') }}</label>
-                <div
-                    class="h-10 border border-blue-200 bg-blue-50 rounded-lg px-3 inline-flex w-full items-center justify-between whitespace-nowrap">
-                    <span
-                        class="text-[11px] uppercase tracking-wide font-semibold text-blue-700">{{ __('admin.pricing.currency') }}</span>
-                    <span class="text-sm font-bold text-blue-800">{{ $suggestedPrice }}</span>
-                </div>
-                <div class="h-3 mt-0.5"></div>
+    @if($isFormOpen)
+        <div x-data="{ open: false }" x-init="setTimeout(() => open = true, 10)"
+            x-on:close-lesson-form.window="open = false; setTimeout(() => @this.closeForm(), 200)" class="fixed inset-0 z-50">
+
+            <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$dispatch('close-lesson-form')">
             </div>
 
-            <div class="w-full relative sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto"
-                x-data="{ open: @entangle('showDropdown') }" x-on:click.outside="open = false">
-                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.nav.students') }}</label>
+            <div x-show="open" x-transition:enter="transform transition ease-out duration-300"
+                x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+                x-transition:leave="transform transition ease-in duration-200" x-transition:leave-start="translate-x-0"
+                x-transition:leave-end="translate-x-full"
+                class="fixed inset-y-0 right-0 w-full sm:max-w-2xl bg-white rounded-none sm:rounded-l-3xl shadow-2xl z-50 border-l border-gray-100 flex flex-col">
 
-                <div @click="open = !open"
-                    class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] cursor-pointer bg-white flex justify-between items-center {{ $errors->has('student_id') ? 'border-red-500' : 'border-gray-300' }}">
-                    <span>
-                        @if($student_id)
-                            @php $selected = \App\Models\Student::find($student_id); @endphp
-                            <span class="text-black font-medium">{{ $selected->first_name }}
-                                {{ $selected->last_name }}</span>
-                        @else
-                            <span class="text-gray-400">-- {{ __('admin.lessons.choose_student') }} --</span>
-                        @endif
-                    </span>
-                    <svg class="h-4 w-4 text-gray-400 transition-transform" :class="open ? 'rotate-180' : ''"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-
-                <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="opacity-0 transform scale-95"
-                    x-transition:enter-end="opacity-100 transform scale-100"
-                    class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-2xl"
-                    style="display: none;">
-
-                    <div class="p-2 border-b bg-gray-50 relative">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </div>
-                            <input type="text" wire:model.live.debounce.250ms="student_search"
-                                class="w-full h-9 pl-9 p-2 border border-gray-300 rounded text-[12px] focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="{{ __('admin.lessons.search_student') }}..." @click.stop>
-                        </div>
-                    </div>
-
-                    <ul class="max-h-60 overflow-y-auto">
-                        @forelse($studentsForSelect as $s)
-                            <li wire:click="selectStudent({{ $s->id }}); open = false"
-                                class="px-3 py-2 hover:bg-blue-600 hover:text-white cursor-pointer text-sm border-b border-gray-50 last:border-0">
-                                {{ $s->first_name }} {{ $s->last_name }}
-                            </li>
-                        @empty
-                            <li class="p-4 text-center text-gray-400 text-xs italic">{{ __('admin.lessons.no_results') }}
-                            </li>
-                        @endforelse
-                    </ul>
-                </div>
-
-                <div class="h-3 mt-0.5">
-                    <x-input-error :messages="$errors->get('student_id')" class="text-[10px] leading-4 uppercase" />
-                </div>
-            </div>
-
-            <div class="w-full sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto">
-                <label
-                    class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.lesson_type') }}</label>
-                <select wire:model.live="lesson_type_id"
-                    class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_type_id') ? 'border-red-500' : 'border-gray-300' }}">
-                    <option value="">-- {{ __('admin.lessons.choose') }} --</option>
-                    @foreach($lessonTypes as $type)
-                        <option value="{{ $type->id }}">{{ $type->admin_name }}</option>
-                    @endforeach
-                </select>
-                <div class="h-3 mt-0.5">
-                    <x-input-error :messages="$errors->get('lesson_type_id')" class="text-[10px] leading-4 uppercase" />
-                </div>
-            </div>
-
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.date') }}</label>
-                <input type="date" wire:model="lesson_date"
-                    class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_date') ? 'border-red-500' : 'border-gray-300' }}">
-                <div class="h-3 mt-0.5">
-                    <x-input-error :messages="$errors->get('lesson_date')" class="text-[10px] leading-4 uppercase" />
-                </div>
-            </div>
-
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.status') }}</label>
-                <select wire:model.live="lesson_status"
-                    class="w-full h-10 border px-3 rounded-lg shadow-sm text-[13px] {{ $errors->has('lesson_status') ? 'border-red-500' : 'border-gray-300' }}">
-                    <option value="held">{{ __('admin.lessons.held') }}</option>
-                    <option value="not_held">{{ __('admin.lessons.not_held') }}</option>
-                </select>
-                <div class="h-3 mt-0.5">
-                    <x-input-error :messages="$errors->get('lesson_status')" class="text-[10px] leading-4 uppercase" />
-                </div>
-            </div>
-
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.start') }}</label>
-                <input type="time" wire:model.live="start_time"
-                    class="w-full h-10 border px-2 rounded-lg shadow-sm text-[13px] text-right {{ $errors->has('start_time') ? 'border-red-500' : 'border-gray-300' }}">
-                <div class="h-3 mt-0.5">
-                    <x-input-error :messages="$errors->get('start_time')" class="text-[10px] leading-4 uppercase" />
-                </div>
-            </div>
-
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="block text-[14px] font-normal text-gray-900 mb-1">{{ __('admin.lessons.end') }}</label>
-                <input type="time" wire:model="end_time"
-                    class="w-full h-10 border pl-2 pr-1 rounded-lg shadow-sm text-[13px] {{ $errors->has('end_time') ? 'border-red-500' : 'border-gray-300' }}">
-                <div class="h-0 sm:h-3 mt-0 sm:mt-0.5">
-                    <x-input-error :messages="$errors->get('end_time')" class="text-[10px] leading-4 uppercase" />
-                </div>
-            </div>
-
-            <div class="w-full sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-1 2xl:col-auto">
-                <label class="hidden sm:block text-xs font-medium text-transparent mb-1 select-none">.</label>
-                <button type="button" @click="showDetailModal = true"
-                    class="h-10 w-full px-3 text-sm rounded-lg border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 transition-all whitespace-nowrap inline-flex items-center justify-center gap-2 font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M9 16h6M9 8h6" />
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M5 4h10l4 4v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4z" />
-                    </svg>
-                    <span>{{ __('admin.lessons.note_plus') }}</span>
-                </button>
-                <div class="h-0 sm:h-3 mt-0 sm:mt-0.5"></div>
-            </div>
-
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 2xl:col-auto">
-                <label class="hidden sm:block text-xs font-medium text-transparent mb-1 select-none">.</label>
-                <button wire:click="saveLesson"
-                    class="h-10 w-full px-3 text-sm text-white rounded-lg font-bold shadow-sm transition-all whitespace-nowrap {{ $editingLessonId ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700' }}">
-                    {{ $editingLessonId ? __('admin.lessons.update') : __('admin.pricing.save') }}
-                </button>
-                <div class="h-0 sm:h-3 mt-0 sm:mt-0.5"></div>
-            </div>
-
-            <div class="w-full sm:col-span-1 md:col-span-1 lg:col-span-1 xl:max-w-[78px] 2xl:col-auto">
-                <label class="hidden sm:block text-xs font-medium text-transparent mb-1 select-none">.</label>
-                <button wire:click="resetFields"
-                    class="h-10 w-full bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold shadow-sm transition-all flex items-center justify-center"
-                    title="{{ __('admin.lessons.clear_fields') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                </button>
-                <div class="h-0 sm:h-3 mt-0 sm:mt-0.5"></div>
-            </div>
-        </div>
-
-        <div x-show="showDetailModal" x-transition.opacity style="display:none;"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" @click="showDetailModal = false"></div>
-
-            <div
-                class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-50">
-                <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900 tracking-tight">
-                            {{ __('admin.lessons.detail_entry') }}
-                        </h3>
-                        <p class="text-sm text-gray-500 mt-1 font-medium">{{ __('admin.lessons.detail_subtitle') }}</p>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $editingLessonId ? __('admin.lessons.update') : __('admin.lessons.add_lesson') }}</h3>
+                        <p class="text-sm text-gray-500 mt-1">{{ __('admin.lessons.form_subtitle') }}</p>
                     </div>
-                    <button type="button" @click="showDetailModal = false"
-                        class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    <button @click="$dispatch('close-lesson-form')"
+                        class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition text-2xl leading-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 6L6 18M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
 
-                <div class="px-6 py-6">
-                    <label class="block text-xs font-medium text-gray-800 mb-1">{{ __('admin.lessons.note') }}</label>
-                    <textarea wire:model="notes" rows="6"
-                        class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm text-sm resize-none"
-                        placeholder="{{ __('admin.lessons.note_placeholder') }}"></textarea>
+                <div class="px-8 py-8 overflow-y-auto flex-1 space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.pricing.price') }}</label>
+                        <div class="h-11 border border-blue-200 bg-blue-50 rounded-xl px-4 inline-flex w-full items-center justify-between whitespace-nowrap shadow-sm">
+                            <span class="text-[11px] uppercase tracking-wide font-semibold text-blue-700">{{ __('admin.pricing.currency') }}</span>
+                            <span class="text-sm font-bold text-blue-800">{{ $suggestedPrice }}</span>
+                        </div>
+                    </div>
+
+                    <div class="relative" x-data="{ open: @entangle('showDropdown') }" x-on:click.outside="open = false">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.nav.students') }}</label>
+
+                        <div @click="open = !open"
+                            class="w-full h-11 border px-3 rounded-xl shadow-sm text-sm cursor-pointer bg-white flex justify-between items-center {{ $errors->has('student_id') ? 'border-red-500' : 'border-gray-200' }}">
+                            <span>
+                                @if($student_id)
+                                    @php $selected = \App\Models\Student::find($student_id); @endphp
+                                    <span class="text-gray-900 font-medium">{{ $selected->first_name }} {{ $selected->last_name }}</span>
+                                @else
+                                    <span class="text-gray-400">-- {{ __('admin.lessons.choose_student') }} --</span>
+                                @endif
+                            </span>
+                            <svg class="h-4 w-4 text-gray-400 transition-transform" :class="open ? 'rotate-180' : ''"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+
+                        <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="opacity-0 transform scale-95"
+                            x-transition:enter-end="opacity-100 transform scale-100"
+                            class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl"
+                            style="display: none;">
+                            <div class="p-2 border-b bg-gray-50 relative rounded-t-xl">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                    </div>
+                                    <input type="text" wire:model.live.debounce.250ms="student_search"
+                                        class="w-full h-9 pl-9 p-2 border border-gray-200 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="{{ __('admin.lessons.search_student') }}..." @click.stop>
+                                </div>
+                            </div>
+
+                            <ul class="max-h-60 overflow-y-auto">
+                                @forelse($studentsForSelect as $s)
+                                    <li wire:click="selectStudent({{ $s->id }}); open = false"
+                                        class="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm border-b border-gray-50 last:border-0 text-gray-700">
+                                        {{ $s->first_name }} {{ $s->last_name }}
+                                    </li>
+                                @empty
+                                    <li class="p-4 text-center text-gray-400 text-xs italic">{{ __('admin.lessons.no_results') }}</li>
+                                @endforelse
+                            </ul>
+                        </div>
+
+                        <x-input-error :messages="$errors->get('student_id')" class="mt-1" />
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.lessons.lesson_type') }}</label>
+                            <select wire:model.live="lesson_type_id"
+                                class="w-full h-11 border px-3 rounded-xl shadow-sm text-sm {{ $errors->has('lesson_type_id') ? 'border-red-500' : 'border-gray-200' }}">
+                                <option value="">-- {{ __('admin.lessons.choose') }} --</option>
+                                @foreach($lessonTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->admin_name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('lesson_type_id')" class="mt-1" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.lessons.status') }}</label>
+                            <select wire:model.live="lesson_status"
+                                class="w-full h-11 border px-3 rounded-xl shadow-sm text-sm {{ $errors->has('lesson_status') ? 'border-red-500' : 'border-gray-200' }}">
+                                <option value="held">{{ __('admin.lessons.held') }}</option>
+                                <option value="not_held">{{ __('admin.lessons.not_held') }}</option>
+                            </select>
+                            <x-input-error :messages="$errors->get('lesson_status')" class="mt-1" />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-1">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.lessons.date') }}</label>
+                            <input type="date" wire:model="lesson_date"
+                                class="w-full h-11 border px-3 rounded-xl shadow-sm text-sm {{ $errors->has('lesson_date') ? 'border-red-500' : 'border-gray-200' }}">
+                            <x-input-error :messages="$errors->get('lesson_date')" class="mt-1" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.lessons.start') }}</label>
+                            <input type="time" wire:model.live="start_time"
+                                class="w-full h-11 border px-3 rounded-xl shadow-sm text-sm {{ $errors->has('start_time') ? 'border-red-500' : 'border-gray-200' }}">
+                            <x-input-error :messages="$errors->get('start_time')" class="mt-1" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.lessons.duration') }}</label>
+                            <div class="relative">
+                                <input type="number" wire:model.live="duration" min="1" placeholder="e.g. 60"
+                                    class="w-full h-11 border px-3 pr-12 rounded-xl shadow-sm text-sm {{ $errors->has('duration') ? 'border-red-500' : 'border-gray-200' }}">
+                                <span class="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400 font-medium">{{ __('admin.lessons.min') }}</span>
+                            </div>
+                            @if($end_time)
+                                <p class="text-xs text-blue-600 mt-1 font-medium">{{ __('admin.lessons.ends_at') }}: {{ $end_time }}</p>
+                            @endif
+                            <x-input-error :messages="$errors->get('duration')" class="mt-1" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.lessons.note') }}</label>
+                        <textarea wire:model="notes" rows="6"
+                            class="w-full border border-gray-200 px-3 py-3 rounded-xl shadow-sm text-sm resize-none focus:border-blue-500 focus:ring-blue-500"
+                            placeholder="{{ __('admin.lessons.note_placeholder') }}"></textarea>
+                    </div>
                 </div>
 
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
-                    <button type="button" @click="showDetailModal = false"
+                <div class="px-8 py-6 border-t border-gray-100 flex justify-end gap-3">
+                    <button type="button" @click="$dispatch('close-lesson-form')"
                         class="px-6 py-3 text-gray-500 font-semibold hover:text-gray-700">
                         {{ __('admin.pricing.cancel') }}
                     </button>
-                    <button type="button" @click="showDetailModal = false"
-                        class="h-9 px-5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition">
-                        {{ __('admin.lessons.done') }}
+                    <button wire:click="resetFields"
+                        class="px-6 py-3 text-gray-700 font-semibold bg-gray-100 hover:bg-gray-200 rounded-xl transition">
+                        {{ __('admin.lessons.clear_fields') }}
+                    </button>
+                    <button wire:click="saveLesson"
+                        class="px-8 py-3 text-white rounded-xl font-bold shadow-lg transition {{ $editingLessonId ? 'bg-orange-500 hover:bg-orange-600 shadow-orange-100' : 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' }}">
+                        {{ $editingLessonId ? __('admin.lessons.update') : __('admin.pricing.save') }}
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+
     <div class="bg-white p-4 mt-10 rounded-xl shadow">
         {{-- FILTERS --}}
         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">

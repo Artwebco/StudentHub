@@ -63,6 +63,8 @@ return [
     'lessons' => [
         'title' => 'Lesson Log',
         'subtitle' => 'Records of delivered lessons',
+        'add_lesson' => 'Add lesson',
+        'form_subtitle' => 'Add a new lesson log entry or update an existing one',
         'choose_student' => 'Choose student',
         'search_student' => 'Search student',
         'no_results' => 'No results',
@@ -74,6 +76,9 @@ return [
         'not_held' => 'Not held',
         'start' => 'Start',
         'end' => 'End',
+        'duration' => 'Duration',
+        'min' => 'min',
+        'ends_at' => 'Ends at',
         'note_plus' => 'Note +',
         'update' => 'Update',
         'clear_fields' => 'Clear fields',
