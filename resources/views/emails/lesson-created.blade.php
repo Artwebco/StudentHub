@@ -1,6 +1,7 @@
 <p>Dear {{ $studentName }},</p>
 
-<p>Your class has been successfully scheduled for <strong>{{ $appointment->starts_at->format('F j, Y H:i') }}</strong>.
+<p>Your class has been successfully scheduled for
+    <strong>{{ $appointment->starts_at->setTimezone($timezone)->format('F j, Y H:i') }}</strong> ({{ $timezone }}).
 </p>
 
 <p>{{ $reminderText }}</p>

@@ -103,8 +103,9 @@ class LessonScheduleController extends Controller
         ]);
 
         // Get student
-        $student = \App\Models\User::find($validated['student_id']);
+        $student = \App\Models\User::with('student')->find($validated['student_id']);
         $studentName = $student?->name ?? 'Student';
+        $timezone = $student?->student?->timezone ?? config('app.timezone');
 
         // Calculate reminder text
         $now = now();
@@ -117,7 +118,7 @@ class LessonScheduleController extends Controller
             $reminderText = "Your class is starting soon!";
         }
 
-        \Mail::to($student->email)->send(new \App\Mail\LessonCreatedMail($appointment, $studentName, $reminderText));
+        \Mail::to($student->email)->send(new \App\Mail\LessonCreatedMail($appointment, $studentName, $reminderText, $timezone));
 
         return redirect()
             ->route('lesson-schedule')

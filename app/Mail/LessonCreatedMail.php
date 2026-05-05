@@ -14,12 +14,14 @@ class LessonCreatedMail extends Mailable
     public $appointment;
     public $reminderText;
     public $studentName;
+    public $timezone;
 
-    public function __construct(Appointment $appointment, $studentName, $reminderText)
+    public function __construct(Appointment $appointment, $studentName, $reminderText, string $timezone = 'UTC')
     {
         $this->appointment = $appointment;
         $this->studentName = $studentName;
         $this->reminderText = $reminderText;
+        $this->timezone = $timezone;
     }
 
     public function build()
