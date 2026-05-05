@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Notifications\StudentWelcomeNotification;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
@@ -247,20 +248,28 @@ class Students extends Component
             return;
         }
 
+        DB::transaction(function () use ($student) {
+            // Hard-delete lessons first — lessons.student_id has RESTRICT (no cascade)
+            $student->lessons()->delete();
 
-        // Избриши ги сите часови поврзани со ученикот
-        $student->lessons()->delete();
+            $userId = $student->user_id;
 
-        // Избриши ги сите фактури поврзани со ученикот
-        $student->invoices()->delete();
+            if ($userId) {
+                // Delete the user; DB cascades handle the rest:
+                //   students      (students.user_id → users, onDelete cascade)
+                //   invoices      (invoices.student_id → students, onDelete cascade)
+                //   lesson_logs   (lesson_logs.student_id → students, onDelete cascade)
+                //   student_lesson_prices (student_lesson_prices.student_id → students, onDelete cascade)
+                //   appointments  (appointments.student_id → users, onDelete cascade)
+                $user = User::withTrashed()->findOrFail($userId);
+                $user->forceDelete();
+            } else {
+                // No linked user — clean up manually and delete student
+                $student->invoices()->delete();
+                $student->forceDelete();
+            }
+        });
 
-        $userId = $student->user_id;
-
-        $student->forceDelete();
-
-        if ($userId) {
-            User::withTrashed()->whereKey($userId)->forceDelete();
-        }
         session()->flash('message', __('admin.students.force_deleted'));
     }
 }
