@@ -17,6 +17,8 @@ class Students extends Component
 
     public $first_name, $last_name, $first_name_mk, $last_name_mk;
     public $email, $phone, $country, $timezone = '';
+    public $parent_name = '', $parent_email = '';
+    public $send_invoices_to_parent = false, $send_notifications_to_parent = false;
     public $password = null;
     public $active = true, $invoice_type = 'individual', $hourly_rate = 0;
     public $studentId;
@@ -32,6 +34,33 @@ class Students extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function updatedSendInvoicesToParent($value)
+    {
+        $this->validateParentEmailRequirement((bool) $value || (bool) $this->send_notifications_to_parent);
+    }
+
+    public function updatedSendNotificationsToParent($value)
+    {
+        $this->validateParentEmailRequirement((bool) $value || (bool) $this->send_invoices_to_parent);
+    }
+
+    public function updatedParentEmail()
+    {
+        if ($this->send_invoices_to_parent || $this->send_notifications_to_parent) {
+            $this->validateOnly('parent_email', ['parent_email' => 'required|email']);
+        }
+    }
+
+    private function validateParentEmailRequirement(bool $mustBePresent): void
+    {
+        if ($mustBePresent) {
+            $this->validateOnly('parent_email', ['parent_email' => 'required|email']);
+            return;
+        }
+
+        $this->resetValidation('parent_email');
     }
 
     public function sortBy($field)
@@ -130,6 +159,10 @@ class Students extends Component
         $this->phone = '';
         $this->country = '';
         $this->timezone = '';
+        $this->parent_name = '';
+        $this->parent_email = '';
+        $this->send_invoices_to_parent = false;
+        $this->send_notifications_to_parent = false;
         $this->active = true;
         $this->invoice_type = 'individual';
         $this->hourly_rate = 0;
@@ -144,6 +177,10 @@ class Students extends Component
             'first_name_mk' => 'required',
             'last_name_mk' => 'required',
             'email' => 'required|email',
+            'parent_name' => 'nullable|string|max:255',
+            'parent_email' => 'nullable|email',
+            'send_invoices_to_parent' => 'boolean',
+            'send_notifications_to_parent' => 'boolean',
         ];
         if ($this->studentId) {
             $student = Student::find($this->studentId);
@@ -152,6 +189,11 @@ class Students extends Component
         } else {
             $rules['email'] .= '|unique:users,email';
         }
+
+        if ($this->send_invoices_to_parent || $this->send_notifications_to_parent) {
+            $rules['parent_email'] = 'required|email';
+        }
+
         $this->validate($rules);
 
         if ($this->studentId) {
@@ -165,6 +207,10 @@ class Students extends Component
                 'phone' => $this->phone,
                 'country' => $this->country,
                 'timezone' => $this->timezone,
+                'parent_name' => $this->parent_name,
+                'parent_email' => $this->parent_email,
+                'send_invoices_to_parent' => (bool) $this->send_invoices_to_parent,
+                'send_notifications_to_parent' => (bool) $this->send_notifications_to_parent,
                 'active' => $this->active,
                 'invoice_type' => $this->invoice_type,
             ]);
@@ -193,6 +239,10 @@ class Students extends Component
                 'phone' => $this->phone,
                 'country' => $this->country,
                 'timezone' => $this->timezone,
+                'parent_name' => $this->parent_name,
+                'parent_email' => $this->parent_email,
+                'send_invoices_to_parent' => (bool) $this->send_invoices_to_parent,
+                'send_notifications_to_parent' => (bool) $this->send_notifications_to_parent,
                 'active' => $this->active,
                 'invoice_type' => $this->invoice_type,
             ]);
@@ -224,6 +274,10 @@ class Students extends Component
         $this->phone = $student->phone;
         $this->country = $student->country;
         $this->timezone = $student->timezone ?? '';
+        $this->parent_name = $student->parent_name ?? '';
+        $this->parent_email = $student->parent_email ?? '';
+        $this->send_invoices_to_parent = (bool) ($student->send_invoices_to_parent ?? false);
+        $this->send_notifications_to_parent = (bool) ($student->send_notifications_to_parent ?? false);
         $this->active = $student->active;
         $this->invoice_type = $student->invoice_type;
         $this->openModal();

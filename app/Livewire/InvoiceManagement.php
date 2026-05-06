@@ -336,7 +336,15 @@ class InvoiceManagement extends Component
             return;
         }
 
-        $recipientEmail = optional($invoice->student)->email;
+        $student = $invoice->student;
+        $recipientEmail = null;
+
+        if ($student) {
+            $recipientEmail = $student->send_invoices_to_parent
+                ? ($student->parent_email ?: $student->email)
+                : $student->email;
+        }
+
         if (!$recipientEmail || !filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
             session()->flash('error', __('admin.invoices.invalid_recipient'));
             return;

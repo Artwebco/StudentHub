@@ -21,8 +21,17 @@ class Student extends Model
         'phone',
         'country',
         'timezone',
+        'parent_name',
+        'parent_email',
+        'send_invoices_to_parent',
+        'send_notifications_to_parent',
         'active',
         'invoice_type'
+    ];
+
+    protected $casts = [
+        'send_invoices_to_parent' => 'boolean',
+        'send_notifications_to_parent' => 'boolean',
     ];
 
     public function user(): BelongsTo

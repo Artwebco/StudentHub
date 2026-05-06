@@ -403,10 +403,48 @@
 
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_email') }}</label>
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_student_email') }}</label>
                         <input type="email" wire:model="email" placeholder="email@example.com"
                             class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                         <x-input-error :messages="$errors->get('email')" class="mt-1" />
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                        <h4 class="text-sm font-semibold text-gray-700">{{ __('admin.students.parent_contact_title') }}</h4>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_parent_name') }}</label>
+                                <input type="text" wire:model="parent_name"
+                                    placeholder="{{ __('admin.students.placeholder_parent_name') }}"
+                                    class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                <x-input-error :messages="$errors->get('parent_name')" class="mt-1" />
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_parent_email') }}</label>
+                                <input type="email" wire:model.live.debounce.400ms="parent_email"
+                                    placeholder="{{ __('admin.students.placeholder_parent_email') }}"
+                                    class="w-full h-11 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                <x-input-error :messages="$errors->get('parent_email')" class="mt-1" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                                <input type="checkbox" wire:model="send_invoices_to_parent"
+                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span>{{ __('admin.students.send_invoices_to_parent') }}</span>
+                            </label>
+
+                            <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                                <input type="checkbox" wire:model="send_notifications_to_parent"
+                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span>{{ __('admin.students.send_notifications_to_parent') }}</span>
+                            </label>
+                        </div>
+
                     </div>
                     {{-- Password field removed; password is auto-generated and sent via email --}}
                     <div class="grid grid-cols-2 gap-4">
@@ -425,29 +463,30 @@
                         </div>
                     </div>
                     <div x-data="{
-                                                                open: false,
-                                                                search: '',
-                                                                selected: @entangle('timezone'),
-                                                                timezones: @js(\DateTimeZone::listIdentifiers()),
-                                                                label(tz) {
-                                                                    try {
-                                                                        const offsetStr = new Intl.DateTimeFormat('en', {
-                                                                            timeZone: tz, timeZoneName: 'shortOffset'
-                                                                        }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
-                                                                        const m = offsetStr.match(/GMT([+-])(\d+)(?::(\d+))?/);
-                                                                        const offset = m ? '(GMT' + m[1] + m[2].padStart(2,'0') + ':' + (m[3]||'0').padStart(2,'0') + ')' : '(GMT+00:00)';
-                                                                        const parts = tz.split('/');
-                                                                        const friendly = parts.map(p => p.replace(/_/g, ' ')).join(' - ');
-                                                                        return offset + ' ' + friendly;
-                                                                    } catch(e) { return tz; }
-                                                                },
-                                                                get filtered() {
-                                                                    if (!this.search) return this.timezones;
-                                                                    const s = this.search.toLowerCase();
-                                                                    return this.timezones.filter(tz => this.label(tz).toLowerCase().includes(s));
-                                                                }
-                                                            }" x-init="$watch('selected', v => { if (!v) search = '' })"
-                        @click.outside="open = false" class="relative">
+                                                                        open: false,
+                                                                        search: '',
+                                                                        selected: @entangle('timezone'),
+                                                                        timezones: @js(\DateTimeZone::listIdentifiers()),
+                                                                        label(tz) {
+                                                                            try {
+                                                                                const offsetStr = new Intl.DateTimeFormat('en', {
+                                                                                    timeZone: tz, timeZoneName: 'shortOffset'
+                                                                                }).formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
+                                                                                const m = offsetStr.match(/GMT([+-])(\d+)(?::(\d+))?/);
+                                                                                const offset = m ? '(GMT' + m[1] + m[2].padStart(2,'0') + ':' + (m[3]||'0').padStart(2,'0') + ')' : '(GMT+00:00)';
+                                                                                const parts = tz.split('/');
+                                                                                const friendly = parts.map(p => p.replace(/_/g, ' ')).join(' - ');
+                                                                                return offset + ' ' + friendly;
+                                                                            } catch(e) { return tz; }
+                                                                        },
+                                                                        get filtered() {
+                                                                            if (!this.search) return this.timezones;
+                                                                            const s = this.search.toLowerCase();
+                                                                            return this.timezones.filter(tz => this.label(tz).toLowerCase().includes(s));
+                                                                        }
+                                                                    }"
+                        x-init="$watch('selected', v => { if (!v) search = '' })" @click.outside="open = false"
+                        class="relative">
                         <label
                             class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{{ __('admin.students.label_timezone') }}</label>
                         <button type="button" @click="open = !open"

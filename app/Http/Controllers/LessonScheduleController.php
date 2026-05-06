@@ -102,10 +102,16 @@ class LessonScheduleController extends Controller
             'note' => $validated['note'] ?? null,
         ]);
 
-        // Get student
+        // Get student and resolve recipient based on student notification preference.
         $student = \App\Models\User::with('student')->find($validated['student_id']);
+        $studentProfile = $student?->student;
         $studentName = $student?->name ?? 'Student';
-        $timezone = $student?->student?->timezone ?? config('app.timezone');
+        $timezone = $studentProfile?->timezone ?? config('app.timezone');
+        $recipientEmail = $student?->email;
+
+        if ($studentProfile?->send_notifications_to_parent && filled($studentProfile->parent_email)) {
+            $recipientEmail = $studentProfile->parent_email;
+        }
 
         // Calculate reminder text
         $now = now();
@@ -118,7 +124,9 @@ class LessonScheduleController extends Controller
             $reminderText = "Your class is starting soon!";
         }
 
-        \Mail::to($student->email)->send(new \App\Mail\LessonCreatedMail($appointment, $studentName, $reminderText, $timezone));
+        if ($recipientEmail) {
+            \Mail::to($recipientEmail)->send(new \App\Mail\LessonCreatedMail($appointment, $studentName, $reminderText, $timezone));
+        }
 
         return redirect()
             ->route('lesson-schedule')
