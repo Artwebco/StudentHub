@@ -14,7 +14,7 @@ Route::middleware('guest')->group(function () {
     Volt::route('forgot-password', 'pages.auth.forgot-password')
         ->name('password.request');
 
-    Route::view('reset-password/{token}', 'livewire.auth.reset-password')
+    Volt::route('reset-password/{token}', 'pages.auth.reset-password')
         ->name('password.reset');
 });
 
