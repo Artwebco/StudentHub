@@ -222,30 +222,34 @@ class Students extends Component
                 ]);
             }
         } else {
-            $user = User::create([
-                'name' => $this->first_name . ' ' . $this->last_name,
-                'email' => $this->email,
-                'password' => Hash::make(bin2hex(random_bytes(8))),
-                'role' => 'student',
-            ]);
+            $user = DB::transaction(function () {
+                $user = User::create([
+                    'name' => $this->first_name . ' ' . $this->last_name,
+                    'email' => $this->email,
+                    'password' => Hash::make(bin2hex(random_bytes(8))),
+                    'role' => 'student',
+                ]);
 
-            $student = Student::create([
-                'user_id' => $user->id,
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'first_name_mk' => $this->first_name_mk,
-                'last_name_mk' => $this->last_name_mk,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'country' => $this->country,
-                'timezone' => $this->timezone,
-                'parent_name' => $this->parent_name,
-                'parent_email' => $this->parent_email,
-                'send_invoices_to_parent' => (bool) $this->send_invoices_to_parent,
-                'send_notifications_to_parent' => (bool) $this->send_notifications_to_parent,
-                'active' => $this->active,
-                'invoice_type' => $this->invoice_type,
-            ]);
+                Student::create([
+                    'user_id' => $user->id,
+                    'first_name' => $this->first_name,
+                    'last_name' => $this->last_name,
+                    'first_name_mk' => $this->first_name_mk,
+                    'last_name_mk' => $this->last_name_mk,
+                    'email' => $this->email,
+                    'phone' => $this->phone,
+                    'country' => $this->country,
+                    'timezone' => $this->timezone,
+                    'parent_name' => $this->parent_name,
+                    'parent_email' => $this->parent_email,
+                    'send_invoices_to_parent' => (bool) $this->send_invoices_to_parent,
+                    'send_notifications_to_parent' => (bool) $this->send_notifications_to_parent,
+                    'active' => $this->active,
+                    'invoice_type' => $this->invoice_type,
+                ]);
+
+                return $user;
+            });
 
             Password::sendResetLink(['email' => $user->email], function ($resetUser, $token) {
                 $resetUrl = url(route('password.reset', [
