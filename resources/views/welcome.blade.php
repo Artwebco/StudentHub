@@ -112,7 +112,7 @@
         </div>
 
         <p class="relative z-10 mt-8 text-sm text-slate-400 font-medium">
-            Besedi &copy; {{ date('Y') }} | Invoicing System
+            Besedi &copy; {{ date('Y') }} | School System
         </p>
     </div>
 </body>
