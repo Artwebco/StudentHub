@@ -97,14 +97,14 @@ class SendLessonAppointmentReminders extends Command
 
     private function formatReminderLabel(int $minutes): string
     {
-        if ($minutes % 1440 === 0) {
-            $days = (int) ($minutes / 1440);
-
-            return $days === 1 ? '1 day' : "{$days} days";
-        }
-
         if ($minutes % 60 === 0) {
             $hours = (int) ($minutes / 60);
+
+            if ($hours > 24 && $hours % 24 === 0) {
+                $days = (int) ($hours / 24);
+
+                return $days === 1 ? '1 day' : "{$days} days";
+            }
 
             return $hours === 1 ? '1 hour' : "{$hours} hours";
         }

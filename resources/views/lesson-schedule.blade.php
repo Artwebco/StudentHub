@@ -22,23 +22,23 @@
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 items-stretch">
                     <div class="rounded-2xl border border-gray-200 bg-gray-50 p-3 h-full">
                         <form method="POST" action="{{ route('lesson-schedule.store') }}" x-data="{
-                                                open: false,
-                                                search: '',
-                                                selectedId: @js((string) old('student_id', '')),
-                                                selectedName: @js(optional($students->firstWhere('id', (int) old('student_id')))->name ?? ''),
-                                                students: @js($students->map(fn($student) => ['id' => (string) $student->id, 'name' => $student->name])->values()),
-                                                filteredStudents() {
-                                                    const term = this.search.trim().toLowerCase();
-                                                    if (!term) return this.students;
-                                                    return this.students.filter(student => student.name.toLowerCase().includes(term));
-                                                },
-                                                selectStudent(student) {
-                                                    this.selectedId = student.id;
-                                                    this.selectedName = student.name;
-                                                    this.search = '';
-                                                    this.open = false;
-                                                }
-                                            }" x-on:click.outside="open = false"
+                                                    open: false,
+                                                    search: '',
+                                                    selectedId: @js((string) old('student_id', '')),
+                                                    selectedName: @js(optional($students->firstWhere('id', (int) old('student_id')))->name ?? ''),
+                                                    students: @js($students->map(fn($student) => ['id' => (string) $student->id, 'name' => $student->name])->values()),
+                                                    filteredStudents() {
+                                                        const term = this.search.trim().toLowerCase();
+                                                        if (!term) return this.students;
+                                                        return this.students.filter(student => student.name.toLowerCase().includes(term));
+                                                    },
+                                                    selectStudent(student) {
+                                                        this.selectedId = student.id;
+                                                        this.selectedName = student.name;
+                                                        this.search = '';
+                                                        this.open = false;
+                                                    }
+                                                }" x-on:click.outside="open = false"
                             class="grid grid-cols-1 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1.05fr)_minmax(150px,0.6fr)] gap-2.5">
                             @csrf
 
@@ -233,13 +233,12 @@
                     return 'n/a';
                 }
 
-                if (minutes % 1440 === 0) {
-                    const days = minutes / 1440;
-                    return days === 1 ? '1 day before' : `${days} days before`;
-                }
-
                 if (minutes % 60 === 0) {
                     const hours = minutes / 60;
+                    if (hours > 24 && hours % 24 === 0) {
+                        const days = hours / 24;
+                        return days === 1 ? '1 day before' : `${days} days before`;
+                    }
                     return hours === 1 ? '1 hour before' : `${hours} hours before`;
                 }
 
