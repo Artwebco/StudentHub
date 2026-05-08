@@ -19,7 +19,12 @@ new #[Layout('layouts.guest')] class extends Component {
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $user = auth()->user();
+        $defaultRoute = $user && $user->role === 'admin'
+            ? route('dashboard', absolute: false)
+            : route('student.my-statistic', absolute: false);
+
+        $this->redirectIntended(default: $defaultRoute, navigate: true);
     }
 }; ?>
 
